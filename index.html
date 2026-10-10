@@ -587,10 +587,12 @@ section.content-section {
   line-height:2;
   font-family:'Cormorant Garamond',serif;
   font-size:23px;
-  animation:fadeUp .8s both;
 }
 
-#secret.show { display:block; }
+#secret.show {
+  display:block;
+  animation:fadeUp .8s both;
+}
 
 /* FOOTER */
 footer {
@@ -680,7 +682,10 @@ footer small {
   transition:opacity .85s ease,transform .85s ease;
 }
 
-.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal.visible {
+  opacity:1;
+  transform:translateY(0);
+}
 
 .confetti {
   position:fixed;
@@ -713,19 +718,33 @@ footer small {
 @keyframes blink { to { opacity:0; } }
 
 @keyframes fall {
-  to { transform:translate(var(--drift),110vh) rotate(720deg); opacity:.1; }
+  to {
+    transform:translate(var(--drift),110vh) rotate(720deg);
+    opacity:.1;
+  }
 }
 
 @media (max-width:700px) {
   nav { padding:19px 6%; }
   .brand { font-size:21px; }
   .nav-note { font-size:8px; letter-spacing:.1em; }
-  .hero { min-height:680px; min-height:86svh; padding:70px 20px 90px; }
+  .hero {
+    min-height:680px;
+    min-height:86svh;
+    padding:70px 20px 90px;
+  }
   .hero h1 { font-size:clamp(65px,17vw,105px); }
   section.content-section { padding:78px 6%; }
   .section-heading { margin-bottom:35px; }
-  .gallery { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
-  .photo-card:last-child { grid-column:1 / -1; width:calc(50% - 6px); justify-self:center; }
+  .gallery {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+  }
+  .photo-card:last-child {
+    grid-column:1 / -1;
+    width:calc(50% - 6px);
+    justify-self:center;
+  }
   .photo-caption { padding:12px 8px; }
   .photo-caption h3 { font-size:19px; }
   .cake-panel { padding:38px 12px; }
@@ -733,9 +752,15 @@ footer small {
 }
 
 @media (max-width:360px) {
-  .hero-actions { flex-direction:column; align-items:stretch; }
+  .hero-actions {
+    flex-direction:column;
+    align-items:stretch;
+  }
   .gallery { grid-template-columns:1fr; }
-  .photo-card:last-child { grid-column:auto; width:100%; }
+  .photo-card:last-child {
+    grid-column:auto;
+    width:100%;
+  }
   .photo-frame { aspect-ratio:4/3; }
 }
 
@@ -936,14 +961,12 @@ footer small {
     </div>
   </section>
 
+  <!-- FOOTER: SHARE OPTION REMOVED -->
   <footer>
     <div class="footer-heart">N.</div>
     <p>May life be as beautiful as your heart.</p>
     <div class="gold-line"></div>
     <small>MADE WITH CARE · JUST FOR NOWSHIN</small>
-    <div style="margin-top:22px">
-      <button class="btn btn-outline" id="shareBtn">Share This Surprise</button>
-    </div>
   </footer>
 </div>
 
@@ -963,7 +986,7 @@ function goTo(id) {
   document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
 }
 
-/* BACKGROUND MUSIC — YOUR OWN MP3 FILE */
+/* BACKGROUND MUSIC — UPLOAD music.mp3 BESIDE index.html */
 const bgMusic = new Audio('music.mp3');
 bgMusic.loop = true;
 bgMusic.preload = 'auto';
@@ -979,8 +1002,8 @@ async function startMusic() {
     $('#musicBtn').setAttribute('aria-label','Turn background music off');
   } catch (err) {
     musicOn = false;
-    $('#musicBtn').textContent = '♫';
-    showToast('Upload music.mp3 beside index.html in GitHub.');
+    $('#musicBtn').textContent = '♪';
+    showToast('Check that music.mp3 is uploaded beside index.html.');
   }
 }
 
@@ -991,13 +1014,13 @@ function stopMusic() {
   $('#musicBtn').setAttribute('aria-label','Turn background music on');
 }
 
-$('#musicBtn').addEventListener('click', () => {
+$('#musicBtn').addEventListener('click',() => {
   if (musicOn) stopMusic();
   else startMusic();
 });
 
-/* OPEN THE SURPRISE */
-$('#openBtn').addEventListener('click', () => {
+/* OPEN THE SURPRISE — MUSIC STARTS AFTER USER TAP */
+$('#openBtn').addEventListener('click',() => {
   $('#intro').classList.add('hidden');
   document.body.classList.remove('locked');
   startMusic();
@@ -1195,30 +1218,6 @@ function launchConfetti(amount=50) {
     piece.addEventListener('animationend',() => piece.remove(),{once:true});
   }
 }
-
-/* SHARE WEBSITE */
-$('#shareBtn').addEventListener('click',async () => {
-  const shareData = {
-    title:'A Birthday Surprise for Nowshin',
-    text:'A little world of golden wishes and friendship.',
-    url:window.location.href
-  };
-
-  try {
-    if (navigator.share) {
-      await navigator.share(shareData);
-    } else if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(window.location.href);
-      showToast('Website link copied. Share it with Nowshin.');
-    } else {
-      showToast('Copy the website address from your browser to share it.');
-    }
-  } catch (err) {
-    if (err.name !== 'AbortError') {
-      showToast('You can copy the website address from your browser.');
-    }
-  }
-});
 
 /* BACK TO TOP */
 $('#topBtn').addEventListener('click',() => {
