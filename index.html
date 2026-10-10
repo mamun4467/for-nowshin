@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<title>Happy Birthday Nowshin ✨</title>
+<style>
+:root{--bg:#080808;--gold:#d4af37;--light:#f6e4a6;--white:#fff8e7}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--white);font-family:Georgia,serif;overflow-x:hidden}
+button{font:inherit}
+canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+#stars{z-index:0}#confetti{z-index:5}
+main{position:relative;z-index:1}
+.screen{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:35px 20px}
+.wrap,.inner{width:min(740px,100%);margin:auto;text-align:center}
+.eyebrow,.section-label{color:var(--gold);font:600 11px Arial,sans-serif;letter-spacing:3px;text-transform:uppercase;line-height:1.8}
+.monogram{width:78px;height:78px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--light);font-size:36px;margin:25px auto;box-shadow:0 0 35px #d4af3722;animation:glow 3s infinite alternate}
+h1{font-size:clamp(48px,12vw,100px);font-weight:400;line-height:.95;letter-spacing:-3px;color:var(--light);margin:15px 0}
+h1 span{display:block;color:var(--white);font-size:.43em;font-style:italic;letter-spacing:1px;margin-top:20px}
+.line{height:1px;width:75px;background:var(--gold);margin:25px auto;box-shadow:0 0 12px var(--gold)}
+.lead,.copy{max-width:580px;margin:25px auto;color:#c6bda8;font:15px/1.9 Arial,sans-serif}
+.btn{border:1px solid var(--gold);background:linear-gradient(135deg,#f6e4a6,#c49a27);color:#100e08;padding:15px 22px;cursor:pointer;font:700 11px Arial,sans-serif;letter-spacing:1.2px;text-transform:uppercase;transition:.3s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 8px 30px #d4af373b}
+.btn.outline{color:var(--light);background:transparent}
+.hint{margin-top:20px;color:#82785f;font:10px Arial,sans-serif;letter-spacing:2px}
+#surprise{display:none}
+#surprise.show{display:block;animation:appear 1s ease}
+h2{font-size:clamp(42px,9vw,75px);line-height:1;font-weight:400;color:var(--light);margin:0}
+h2 em{color:var(--white)}
+.cake-stage{width:300px;max-width:90vw;height:250px;position:relative;margin:35px auto 10px}
+.plate{position:absolute;bottom:15px;left:10px;width:280px;max-width:calc(100% - 20px);height:22px;border:2px solid var(--gold);border-radius:50%;background:#18140b}
+.cake{position:absolute;bottom:35px;left:50%;transform:translateX(-50%);width:215px;height:95px;border-radius:8px 8px 17px 17px;background:linear-gradient(90deg,#795316,#f2d779,#b18425,#f5d878,#795316);box-shadow:inset 0 10px #fff0b9}
+.cake:after{content:"";position:absolute;top:30px;left:0;width:100%;height:8px;background:#fff0b9}
+.topcake{position:absolute;bottom:130px;left:50%;transform:translateX(-50%);width:145px;height:40px;border-radius:50% 50% 8px 8px;background:linear-gradient(90deg,#a47b20,#f8e5a0,#c39a36);border:1px solid var(--light)}
+.candle{position:absolute;bottom:165px;width:8px;height:37px;background:repeating-linear-gradient(45deg,#fff1bf 0 5px,#b18425 5px 9px);border-radius:2px}
+.c1{left:calc(50% - 30px)}.c2{left:calc(50% - 4px);height:47px}.c3{left:calc(50% + 22px)}
+.flame{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);width:13px;height:20px;background:radial-gradient(ellipse,#fffbd4 10%,#ffcf53 45%,#dc7920 70%,transparent 75%);filter:drop-shadow(0 0 9px #ffc744);border-radius:50% 50% 50% 0;animation:flicker .5s infinite alternate}
+.candle.off .flame{display:none}
+.cake-caption{font:10px Arial,sans-serif;letter-spacing:2px;color:#998759}
+.actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:25px 0}
+.card{position:relative;max-width:680px;margin:40px auto 25px;padding:clamp(24px,6vw,45px);border:1px solid #6f5925;background:linear-gradient(145deg,#15130f,#0b0b0b);box-shadow:0 20px 70px #0008}
+.card:before{content:"✦";position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 14px;color:var(--gold)}
+.card p{font:15px/2 Arial,sans-serif;color:#ded5bf;margin:0 0 17px}
+.card .signature{font:italic 24px Georgia,serif;color:var(--light);margin-top:25px}
+.memory-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:30px auto}
+.memory{border:1px solid #40351b;background:#0e0d0a;padding:22px 12px;transition:.3s}
+.memory:hover{transform:translateY(-4px);border-color:var(--gold)}
+.memory b{display:block;color:var(--light);font-weight:400;font-size:19px;margin:12px 0}
+.memory p{font:12px/1.7 Arial,sans-serif;color:#aaa08b}
+.hidden{display:none!important}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .8s,transform .8s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+footer{text-align:center;padding:35px 15px 45px;color:#82785f;font:10px/2 Arial,sans-serif;letter-spacing:2px}
+#musicBtn{position:fixed;z-index:8;right:15px;top:15px;width:43px;height:43px;border-radius:50%;background:#111;border:1px solid var(--gold);color:var(--light);cursor:pointer}
+#toast{position:fixed;z-index:9;bottom:20px;left:50%;transform:translateX(-50%);background:#17130b;border:1px solid var(--gold);color:var(--light);padding:12px 16px;font:12px Arial,sans-serif;display:none;max-width:90%;text-align:center}
+@keyframes glow{to{box-shadow:0 0 50px #d4af374d}}
+@keyframes flicker{to{transform:translateX(-50%) rotate(5deg) scale(1.08)}}
+@keyframes appear{from{opacity:0}to{opacity:1}}
+@media(max-width:560px){.memory-grid{grid-template-columns:1fr}.memory{text-align:left;padding:15px 20px}.screen{padding:30px 18px}.card{margin-top:30px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<canvas id="confetti"></canvas>
+<button id="musicBtn" aria-label="Toggle music">♫</button>
+
+<main>
+<section class="screen" id="welcome">
+<div class="wrap">
+<div class="eyebrow">A little something, just for you</div>
+<div class="monogram">N</div>
+<div class="eyebrow">A special day · A special soul</div>
+<h1>Happy Birthday<span>Dear Nowshin</span></h1>
+<div class="line"></div>
+<p class="lead">Some people make ordinary days feel special. Today is all about celebrating one of those people.</p>
+<button class="btn" id="openBtn">Open Your Surprise ✦</button>
+<div class="hint">MADE WITH FRIENDSHIP, WRAPPED IN GOLD</div>
+</div>
+</section>
+
+<div id="surprise">
+<section class="screen" style="min-height:auto;padding-top:75px">
+<div class="inner">
+<div class="section-label reveal">Today, the spotlight is yours</div>
+<h2 class="reveal">Make a wish,<br><em>Nowshin.</em></h2>
+<p class="copy reveal">May this new chapter bring you happiness that stays, peace that feels like home, and a thousand little reasons to smile.</p>
+
+<div class="cake-stage reveal" aria-label="Golden birthday cake">
+<div class="plate"></div>
+<div class="cake"></div>
+<div class="topcake"></div>
+<div class="candle c1"><span class="flame"></span></div>
+<div class="candle c2"><span class="flame"></span></div>
+<div class="candle c3"><span class="flame"></span></div>
+</div>
+<div class="cake-caption reveal">THREE CANDLES · INFINITE WISHES</div>
+<div class="actions reveal">
+<button class="btn" id="wishBtn">Make a Wish ✨</button>
+<button class="btn outline" id="relightBtn">Relight Candles</button>
+</div>
+</div>
+</section>
+
+<section class="screen" style="min-height:auto;padding:55px 20px">
+<div class="inner">
+<div class="section-label reveal">A note from the heart</div>
+<h2 class="reveal">For <em>you,</em><br>always.</h2>
+
+<article class="card reveal">
+<p>Dear Nowshin,</p>
+<p>On your birthday, I just want to remind you how special you are. Life brings so many people into our world, but only a few become the kind of people we’re genuinely grateful to have met. I’m thankful that our paths crossed.</p>
+<p>Maybe we won’t remember every little conversation or every ordinary day, but I hope we’ll always remember the laughter, the silly moments, the honest talks, and the memories that became special simply because we shared them.</p>
+<p>I may not always find the perfect words to say it, but I truly wish the best for you. Whenever life feels heavy, I hope you find the strength to keep going. Whenever you feel lost, I hope you find your way back to happiness.</p>
+<p>May this year bring you closer to your dreams, surround you with people who value you, and give you countless reasons to smile. You deserve kindness, peace, success, and a happiness that feels real.</p>
+<p>Thank you for being you, Nowshin. Here’s to more laughter, more memories, and more beautiful chapters ahead. I hope we’ll always have a little space for friendship and good memories.</p>
+<p class="signature">Happy Birthday, Nowshin. ✨</p>
+</article>
+
+<div class="actions reveal">
+<button class="btn outline" id="promiseBtn">A Tiny Promise ♡</button>
+<button class="btn outline" id="shareBtn">Share Surprise ↗</button>
+</div>
+
+<article class="card hidden" id="promiseCard">
+<p>My tiny promise to our friendship:</p>
+<p>I’ll always wish good things for you, cheer for your growth, and hope life gives you more reasons to smile than reasons to worry. Here’s to a friendship that keeps collecting beautiful memories. ♡</p>
+</article>
+</div>
+</section>
+
+<section class="screen" style="min-height:auto;padding:35px 20px 80px">
+<div class="inner">
+<div class="section-label reveal">The little things that matter</div>
+<h2 class="reveal">Here’s to the<br><em>memories.</em></h2>
+<p class="copy reveal">The best memories aren’t always grand adventures. Sometimes, they’re tiny moments that become priceless with time.</p>
+
+<div class="memory-grid">
+<div class="memory reveal"><span>✧</span><b>The Laughter</b><p>For the silly moments that make a normal day unforgettable.</p></div>
+<div class="memory reveal"><span>♡</span><b>The Friendship</b><p>For being ourselves, without needing everything to be perfect.</p></div>
+<div class="memory reveal"><span>∞</span><b>What's Ahead</b><p>For new stories, unexpected joy, and memories still waiting to happen.</p></div>
+</div>
+
+<div class="line"></div>
+<p class="copy reveal" style="font-family:Georgia,serif;font-style:italic;color:var(--light);font-size:21px">“May your next chapter be your most beautiful one yet.”</p>
+<button class="btn reveal" id="finalBtn">One Last Little Surprise ✦</button>
+</div>
+</section>
+<footer>CRAFTED WITH CARE FOR NOWSHIN ♥<br>ONE FRIENDSHIP · MANY MEMORIES · ENDLESS WISHES</footer>
+</div>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+"use strict";
+const $=s=>document.querySelector(s);
+const welcome=$("#welcome"), surprise=$("#surprise"), toast=$("#toast");
+const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let opened=false, music=false, audioCtx=null, musicTimer=null, note=0, toastTimer;
+
+function message(text){
+ toast.textContent=text;
+ toast.style.display="block";
+ clearTimeout(toastTimer);
+ toastTimer=setTimeout(()=>toast.style.display="none",2600);
+}
+function audio(){
+ if(!audioCtx){
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC)return null;
+  audioCtx=new AC();
+ }
+ if(audioCtx.state==="suspended")audioCtx.resume();
+ return audioCtx;
+}
+function tone(freq=660,duration=.2,volume=.04){
+ const a=audio();if(!a)return;
+ const o=a.createOscillator(),g=a.createGain();
+ o.type="sine";o.frequency.value=freq;
+ g.gain.setValueAtTime(volume,a.currentTime);
+ g.gain.exponentialRampToValueAtTime(.001,a.currentTime+duration);
+ o.connect(g);g.connect(a.destination);
+ o.start();o.stop(a.currentTime+duration);
+}
+function chord(){[523,659,784].forEach((f,i)=>setTimeout(()=>tone(f,.4,.035),i*110));}
+
+$("#openBtn").addEventListener("click",()=>{
+ if(opened)return;
+ opened=true;
+ welcome.style.display="none";
+ surprise.classList.add("show");
+ document.querySelectorAll(".reveal").forEach((el,i)=>{
+  if(reduced)el.classList.add("visible");
+  else setTimeout(()=>el.classList.add("visible"),100+i*75);
+ });
+ confettiBurst(190);chord();
+ window.scrollTo({top:0,behavior:reduced?"auto":"smooth"});
+});
+
+$("#wishBtn").addEventListener("click",()=>{
+ document.querySelectorAll(".candle").forEach(c=>c.classList.add("off"));
+ confettiBurst(240);
+ [587,494,392].forEach((f,i)=>setTimeout(()=>tone(f,.25),i*140));
+ message("Wish made! May beautiful things find you. ✨");
+});
+$("#relightBtn").addEventListener("click",()=>{
+ document.querySelectorAll(".candle").forEach(c=>c.classList.remove("off"));
+ tone(720,.15);
+ message("Three little flames, a thousand wishes ✨");
+});
+$("#promiseBtn").addEventListener("click",()=>{
+ const card=$("#promiseCard");
+ card.classList.toggle("hidden");
+ if(!card.classList.contains("hidden")){
+  card.scrollIntoView({behavior:reduced?"auto":"smooth",block:"center"});
+  tone(660,.15);
+ }
+});
+$("#shareBtn").addEventListener("click",async()=>{
+ const data={title:"A Birthday Surprise for Nowshin",text:"A little birthday surprise made with friendship and love ✨",url:location.href};
+ try{
+  if(navigator.share)await navigator.share(data);
+  else if(navigator.clipboard&&location.protocol==="https:"){
+   await navigator.clipboard.writeText(location.href);
+   message("Website link copied! Share it with Nowshin ✨");
+  }else message("Copy the website link from your browser address bar.");
+ }catch(e){
+  if(e.name!=="AbortError")message("Copy the website link from your browser address bar.");
+ }
+});
+$("#finalBtn").addEventListener("click",()=>{
+ confettiBurst(300);chord();
+ message("Happy Birthday, Nowshin! Keep shining. ✨");
+ $("#finalBtn").textContent="Keep Shining, Nowshin ♡";
+});
+
+$("#musicBtn").addEventListener("click",()=>{
+ if(music){
+  music=false;clearTimeout(musicTimer);
+  $("#musicBtn").textContent="♫";
+  message("Music paused.");
+  return;
+ }
+ const a=audio();
+ if(!a){message("Audio isn't supported in this browser.");return}
+ music=true;
+ $("#musicBtn").textContent="Ⅱ";
+ const notes=[261.63,329.63,392,523.25,392,329.63,293.66,349.23,440,523.25,440,349.23];
+ function play(){
+  if(!music)return;
+  const o=a.createOscillator(),g=a.createGain();
+  o.type="sine";o.frequency.value=notes[note++%notes.length];
+  g.gain.setValueAtTime(.0001,a.currentTime);
+  g.gain.exponentialRampToValueAtTime(.022,a.currentTime+.05);
+  g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+.65);
+  o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.68);
+  musicTimer=setTimeout(play,460);
+ }
+ play();message("Soft birthday melody is playing ♫");
+});
+
+// Golden star background
+const stars=$("#stars"),sctx=stars.getContext("2d");
+let starData=[];
+function resizeStars(){
+ const d=Math.min(devicePixelRatio||1,2);
+ stars.width=innerWidth*d;stars.height=innerHeight*d;
+ sctx.setTransform(d,0,0,d,0,0);
+ starData=Array.from({length:Math.min(130,Math.floor(innerWidth/7))},()=>({
+  x:Math.random()*innerWidth,y:Math.random()*innerHeight,
+  r:Math.random()*1.2+.2,a:Math.random()*.55+.1,p:Math.random()*6.28
+ }));
+}
+function drawStars(t=0){
+ sctx.clearRect(0,0,innerWidth,innerHeight);
+ starData.forEach(s=>{
+  sctx.beginPath();sctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+  sctx.fillStyle=`rgba(232,202,113,${s.a*(.65+.35*Math.sin(t*.001+s.p))})`;
+  sctx.fill();
+ });
+ if(!reduced)requestAnimationFrame(drawStars);
+}
+resizeStars();drawStars();
+
+// Confetti animation
+const conf=$("#confetti"),ctx=conf.getContext("2d");
+let bits=[],frame=0;
+function resizeConf(){
+ const d=Math.min(devicePixelRatio||1,2);
+ conf.width=innerWidth*d;conf.height=innerHeight*d;
+ ctx.setTransform(d,0,0,d,0,0);
+}
+function confettiBurst(count=180){
+ if(reduced){message("Wishing you joy, peace and beautiful memories ✨");return}
+ resizeConf();
+ const colors=["#d4af37","#f6e4a6","#fff8e7","#9d7824","#e7c968"];
+ for(let i=0;i<count;i++)bits.push({
+  x:innerWidth*.5+(Math.random()-.5)*innerWidth*.3,
+  y:innerHeight*.38+(Math.random()-.5)*innerHeight*.15,
+  vx:(Math.random()-.5)*8,vy:Math.random()*-7-2,
+  g:.09+Math.random()*.08,w:3+Math.random()*4,
+  h:5+Math.random()*7,r:Math.random()*6,
+  vr:(Math.random()-.5)*.2,
+  color:colors[Math.floor(Math.random()*colors.length)],
+  life:120+Math.random()*50
+ });
+ if(!frame)animateConfetti();
+}
+function animateConfetti(){
+ ctx.clearRect(0,0,innerWidth,innerHeight);
+ bits=bits.filter(b=>b.life>0&&b.y<innerHeight+30);
+ bits.forEach(b=>{
+  b.vy+=b.g;b.x+=b.vx;b.y+=b.vy;b.r+=b.vr;b.life--;
+  ctx.save();ctx.translate(b.x,b.y);ctx.rotate(b.r);
+  ctx.globalAlpha=Math.min(1,b.life/35);ctx.fillStyle=b.color;
+  ctx.fillRect(-b.w/2,-b.h/2,b.w,b.h);ctx.restore();
+ });
+ if(bits.length)frame=requestAnimationFrame(animateConfetti);
+ else{cancelAnimationFrame(frame);frame=0;ctx.clearRect(0,0,innerWidth,innerHeight)}
+}
+addEventListener("resize",()=>{resizeStars();resizeConf()});
+
+if("IntersectionObserver"in window){
+ const observer=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add("visible");observer.unobserve(e.target)}
+ }),{threshold:.12});
+ document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+}else document.querySelectorAll(".reveal").forEach(el=>el.classList.add("visible"));
+})();
+</script>
+</body>
+</html>
