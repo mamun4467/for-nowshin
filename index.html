@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -676,7 +675,7 @@ img {
 
 .letter-card::before,
 .letter-card::after {
-  content: "✦";
+  content: "";
   position: absolute;
   color: rgba(212,175,55,.7);
   font-size: 1rem;
@@ -1313,7 +1312,7 @@ img {
         </p>
 
         <div class="hero-actions">
-          <a href="#cake" class="primary-btn"> Wish for you <span aria-hidden="true">✦</span></a>
+          <a href="#cake" class="primary-btn">Wish for you</a>
           <a href="#letter" class="outline-btn">A Letter for You <span aria-hidden="true">↗</span></a>
         </div>
 
@@ -1350,7 +1349,7 @@ img {
           May the year ahead bring you the kind of happiness that stays, the kind of peace you deserve, and countless reasons to smile.
         </p>
         <div class="cake-actions">
-          <button class="primary-btn" id="wishBtn" type="button">Make a Wish ✦</button>
+          <button class="primary-btn" id="wishBtn" type="button">Make a Wish</button>
           <button class="outline-btn" id="relightBtn" type="button">Relight Candle</button>
         </div>
       </div>
@@ -1377,7 +1376,7 @@ img {
         <div class="letter-content" id="letterText" aria-live="polite"></div>
 
         <div class="letter-signature" id="letterSignature">
-          With love, always. ✦
+          With love, always.
         </div>
       </div>
 
@@ -1453,15 +1452,15 @@ img {
   <section class="section secret-section" id="secret">
     <div class="container">
       <div class="reveal">
-        <div class="secret-symbol">✦</div>
+        <div class="secret-symbol"></div>
         <div class="section-label">Chapter 04 · One last thing</div>
         <h2 class="section-title">There is one more<br><span class="gold">little surprise.</span></h2>
         <p class="secret-description">
           Before you leave, there is one final message waiting for you. Open it when you're ready.
         </p>
-        <button class="primary-btn" id="secretBtn" type="button">Reveal the Secret ✦</button>
+        <button class="primary-btn" id="secretBtn" type="button">Reveal the Secret</button>
         <div class="secret-message" id="secretMessage" aria-live="polite">
-          No matter how much life changes, I hope you always find reasons to smile, courage to chase your dreams, and people who remind you how special you are. Happy Birthday, Nowshin. May your story keep getting more beautiful. ✦
+          No matter how much life changes, I hope you always find reasons to smile, courage to chase your dreams, and people who remind you how special you are. Happy Birthday, Nowshin. May your story keep getting more beautiful.
         </div>
       </div>
     </div>
@@ -1526,7 +1525,7 @@ On your birthday, I wish you more than gifts or celebrations. I wish you a heart
 
 Keep smiling, keep growing, and never stop believing in the beautiful things waiting ahead.
 
-Happy Birthday, Nowshin. May this year be kind to you. ✦`;
+Happy Birthday, Nowshin. May this year be kind to you.`;
 
   /* Toast message */
   function showToast(message) {
@@ -1588,7 +1587,7 @@ Happy Birthday, Nowshin. May this year be kind to you. ✦`;
     if (!musicStarted) startMusic(false);
 
     launchConfetti(45);
-    showToast("This little world is all yours, Nowshin ✦");
+    showToast("This little world is all yours, Nowshin");
 
     setTimeout(() => {
       intro.style.display = "none";
@@ -1724,17 +1723,17 @@ Happy Birthday, Nowshin. May this year be kind to you. ✦`;
   /* Cake wish */
   wishBtn.addEventListener("click", () => {
     if (wishMade) {
-      showToast("Your wish is already on its way ✦");
+      showToast("Your wish is already on its way");
       return;
     }
 
     wishMade = true;
     flame.classList.add("out");
-    cakeWish.textContent = "Your wish is on its way ✦";
+    cakeWish.textContent = "Your wish is on its way";
     wishBtn.textContent = "Wish Made ✓";
 
     launchConfetti(35);
-    showToast("May your wish come true, Nowshin! ✦");
+    showToast("May your wish come true, Nowshin!");
 
     setTimeout(() => {
       cakeWish.textContent = "Keep believing in beautiful things";
@@ -1745,8 +1744,8 @@ Happy Birthday, Nowshin. May this year be kind to you. ✦`;
     flame.classList.remove("out");
     cakeWish.textContent = "Make a wish, Nowshin";
     wishMade = false;
-    wishBtn.textContent = "Make a Wish ✦";
-    showToast("A new wish, a new little beginning ✦");
+    wishBtn.textContent = "Make a Wish";
+    showToast("A new wish, a new little beginning");
   });
 
   /* Letter typing: Read Again replays the animation */
@@ -1782,7 +1781,7 @@ Happy Birthday, Nowshin. May this year be kind to you. ✦`;
 
   readAgainBtn.addEventListener("click", () => {
     typeLetter();
-    showToast("A little note, from the beginning ✦");
+    showToast("A little note, from the beginning");
   });
 
   /* Start letter typing once the section enters view */
@@ -1812,7 +1811,7 @@ Happy Birthday, Nowshin. May this year be kind to you. ✦`;
     if (isOpen) {
       secretMessage.classList.remove("visible");
       secretMessage.style.display = "none";
-      secretBtn.textContent = "Reveal the Secret ✦";
+      secretBtn.textContent = "Reveal the Secret";
       showToast("Your little secret is tucked away again.");
       return;
     }
@@ -1829,7 +1828,7 @@ Happy Birthday, Nowshin. May this year be kind to you. ✦`;
 
     secretBtn.textContent = "Hide the Secret ↑";
     launchConfetti(28);
-    showToast("One last little message, just for you ✦");
+    showToast("One last little message, just for you");
   });
 
   /* Gold confetti */
