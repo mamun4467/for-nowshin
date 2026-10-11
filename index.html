@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1376,7 +1377,7 @@ img {
         <div class="letter-content" id="letterText" aria-live="polite"></div>
 
         <div class="letter-signature" id="letterSignature">
-          With love, always. ✨
+          With love, always. ✦
         </div>
       </div>
 
@@ -1458,9 +1459,9 @@ img {
         <p class="secret-description">
           Before you leave, there is one final message waiting for you. Open it when you're ready.
         </p>
-        <button class="primary-btn" id="secretBtn" type="button">Reveal the Secret ✨</button>
+        <button class="primary-btn" id="secretBtn" type="button">Reveal the Secret ✦</button>
         <div class="secret-message" id="secretMessage" aria-live="polite">
-          No matter how much life changes, I hope you always find reasons to smile, courage to chase your dreams, and people who remind you how special you are. Happy Birthday, Nowshin. May your story keep getting more beautiful. ✨
+          No matter how much life changes, I hope you always find reasons to smile, courage to chase your dreams, and people who remind you how special you are. Happy Birthday, Nowshin. May your story keep getting more beautiful. ✦
         </div>
       </div>
     </div>
@@ -1525,7 +1526,7 @@ On your birthday, I wish you more than gifts or celebrations. I wish you a heart
 
 Keep smiling, keep growing, and never stop believing in the beautiful things waiting ahead.
 
-Happy Birthday, Nowshin. May this year be kind to you. ✨`;
+Happy Birthday, Nowshin. May this year be kind to you. ✦`;
 
   /* Toast message */
   function showToast(message) {
@@ -1587,7 +1588,7 @@ Happy Birthday, Nowshin. May this year be kind to you. ✨`;
     if (!musicStarted) startMusic(false);
 
     launchConfetti(45);
-    showToast("This little world is all yours, Nowshin ✨");
+    showToast("This little world is all yours, Nowshin ✦");
 
     setTimeout(() => {
       intro.style.display = "none";
@@ -1723,17 +1724,17 @@ Happy Birthday, Nowshin. May this year be kind to you. ✨`;
   /* Cake wish */
   wishBtn.addEventListener("click", () => {
     if (wishMade) {
-      showToast("Your wish is already on its way ✨");
+      showToast("Your wish is already on its way ✦");
       return;
     }
 
     wishMade = true;
     flame.classList.add("out");
-    cakeWish.textContent = "Your wish is on its way ✨";
+    cakeWish.textContent = "Your wish is on its way ✦";
     wishBtn.textContent = "Wish Made ✓";
 
     launchConfetti(35);
-    showToast("May your wish come true, Nowshin! ✨");
+    showToast("May your wish come true, Nowshin! ✦");
 
     setTimeout(() => {
       cakeWish.textContent = "Keep believing in beautiful things";
@@ -1745,12 +1746,12 @@ Happy Birthday, Nowshin. May this year be kind to you. ✨`;
     cakeWish.textContent = "Make a wish, Nowshin";
     wishMade = false;
     wishBtn.textContent = "Make a Wish ✦";
-    showToast("A new wish, a new little beginning ✨");
+    showToast("A new wish, a new little beginning ✦");
   });
 
   /* Letter typing: Read Again replays the animation */
   function typeLetter() {
-    clearInterval(typingTimer);
+    clearTimeout(typingTimer);
 
     letterText.textContent = "";
     letterText.classList.remove("done");
@@ -1781,7 +1782,7 @@ Happy Birthday, Nowshin. May this year be kind to you. ✨`;
 
   readAgainBtn.addEventListener("click", () => {
     typeLetter();
-    showToast("A little note, from the beginning 💌");
+    showToast("A little note, from the beginning ✦");
   });
 
   /* Start letter typing once the section enters view */
@@ -1811,7 +1812,7 @@ Happy Birthday, Nowshin. May this year be kind to you. ✨`;
     if (isOpen) {
       secretMessage.classList.remove("visible");
       secretMessage.style.display = "none";
-      secretBtn.textContent = "Reveal the Secret ✨";
+      secretBtn.textContent = "Reveal the Secret ✦";
       showToast("Your little secret is tucked away again.");
       return;
     }
@@ -1828,7 +1829,7 @@ Happy Birthday, Nowshin. May this year be kind to you. ✨`;
 
     secretBtn.textContent = "Hide the Secret ↑";
     launchConfetti(28);
-    showToast("One last little message, just for you 💛");
+    showToast("One last little message, just for you ✦");
   });
 
   /* Gold confetti */
