@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,7 +52,7 @@ button:focus-visible, a:focus-visible {
 }
 
 a { color: inherit; text-decoration: none; }
-img { display: block; max-width: 100%; }
+img, video { display: block; max-width: 100%; }
 .gold { color: var(--gold-light); }
 .serif { font-family: "Cormorant Garamond", serif; }
 
@@ -798,7 +799,7 @@ img { display: block; max-width: 100%; }
   margin-top: 28px;
 }
 
-/* Gallery */
+/* Premium gallery: original three-photo layout and image ratios preserved */
 
 .gallery-section {
   background: linear-gradient(180deg, transparent, rgba(212,175,55,.025), transparent);
@@ -820,17 +821,34 @@ img { display: block; max-width: 100%; }
 
 .memory-card {
   min-width: 0;
-  border: 1px solid rgba(212,175,55,.2);
-  background: #100f0c;
+  position: relative;
+  border: 1px solid rgba(212,175,55,.32);
+  background: linear-gradient(145deg, rgba(212,175,55,.07), transparent 42%), #100f0c;
   transition: border-color .4s, transform .5s, box-shadow .5s;
   cursor: pointer;
   overflow: hidden;
+  box-shadow: 0 12px 34px rgba(0,0,0,.2);
+}
+
+.memory-card::before {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  inset: 7px;
+  border: 1px solid rgba(247,231,164,.2);
+  pointer-events: none;
+  transition: inset .5s ease, border-color .5s ease;
 }
 
 .memory-card:hover {
   transform: translateY(-8px);
-  border-color: rgba(247,231,164,.8);
-  box-shadow: 0 18px 45px rgba(0,0,0,.3), 0 0 25px rgba(212,175,55,.1);
+  border-color: rgba(247,231,164,.85);
+  box-shadow: 0 22px 48px rgba(0,0,0,.4), 0 0 30px rgba(212,175,55,.15);
+}
+
+.memory-card:hover::before {
+  inset: 10px;
+  border-color: rgba(247,231,164,.65);
 }
 
 .memory-image {
@@ -849,7 +867,7 @@ img { display: block; max-width: 100%; }
   width: 60%;
   height: 160%;
   transform: rotate(20deg);
-  background: linear-gradient(90deg, transparent, rgba(247,231,164,.22), transparent);
+  background: linear-gradient(90deg, transparent, rgba(247,231,164,.28), transparent);
   pointer-events: none;
 }
 
@@ -860,10 +878,11 @@ img { display: block; max-width: 100%; }
 .memory-image::after {
   content: "";
   position: absolute;
+  z-index: 1;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.3));
-  opacity: .8;
+  background: linear-gradient(180deg, rgba(8,8,7,.02) 45%, rgba(8,8,7,.55));
+  opacity: .9;
 }
 
 .memory-image img {
@@ -875,11 +894,12 @@ img { display: block; max-width: 100%; }
 
 .memory-card:hover .memory-image img {
   transform: scale(1.08);
-  filter: brightness(1.08);
+  filter: brightness(1.08) contrast(1.03);
 }
 
 .memory-placeholder {
   position: absolute;
+  z-index: 0;
   inset: 0;
   display: grid;
   place-items: center;
@@ -902,7 +922,13 @@ img { display: block; max-width: 100%; }
   text-transform: uppercase;
 }
 
-.memory-caption { padding: 20px; }
+.memory-caption {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+  border-top: 1px solid rgba(212,175,55,.12);
+  background: linear-gradient(145deg, rgba(212,175,55,.035), transparent 70%);
+}
 
 .memory-number {
   color: var(--gold);
@@ -921,6 +947,228 @@ img { display: block; max-width: 100%; }
   color: var(--muted);
   font-size: .77rem;
   margin-top: 7px;
+}
+
+/* Cinematic video section */
+
+.video-section {
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(212,175,55,.075), transparent 58%),
+    linear-gradient(180deg, transparent, rgba(212,175,55,.025), transparent);
+  border-top: 1px solid rgba(212,175,55,.1);
+  border-bottom: 1px solid rgba(212,175,55,.1);
+}
+
+.video-heading {
+  text-align: center;
+  margin: 0 auto 42px;
+}
+
+.video-heading .section-label {
+  justify-content: center;
+}
+
+.video-heading .section-label::before {
+  display: none;
+}
+
+.video-heading .section-title {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.video-heading .section-description {
+  margin-inline: auto;
+}
+
+.cinematic-frame {
+  position: relative;
+  width: 100%;
+  padding: 9px;
+  border: 1px solid rgba(212,175,55,.55);
+  background: linear-gradient(135deg, rgba(247,231,164,.13), rgba(212,175,55,.025) 38%, rgba(212,175,55,.1));
+  box-shadow: 0 25px 80px rgba(0,0,0,.45), 0 0 45px rgba(212,175,55,.09);
+  isolation: isolate;
+}
+
+.cinematic-frame::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  inset: 15px;
+  border: 1px solid rgba(247,231,164,.17);
+  pointer-events: none;
+}
+
+.cinematic-frame::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 9px;
+  background: linear-gradient(180deg, rgba(0,0,0,.12), transparent 20%, transparent 72%, rgba(0,0,0,.25));
+  pointer-events: none;
+}
+
+.video-screen {
+  position: relative;
+  overflow: hidden;
+  background: #030302;
+  aspect-ratio: 16 / 9;
+}
+
+.video-screen video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #030302;
+}
+
+.video-overlay {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 25%, rgba(0,0,0,.2));
+  transition: opacity .35s;
+}
+
+.video-overlay.hidden {
+  opacity: 0;
+}
+
+.video-big-play {
+  width: 74px;
+  height: 74px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(247,231,164,.8);
+  border-radius: 50%;
+  background: rgba(8,8,7,.58);
+  color: var(--gold-light);
+  font-size: 1.55rem;
+  padding-left: 4px;
+  box-shadow: 0 0 35px rgba(212,175,55,.22), inset 0 0 18px rgba(212,175,55,.08);
+  backdrop-filter: blur(8px);
+  animation: monogramGlow 3s ease-in-out infinite;
+}
+
+.video-controls {
+  display: grid;
+  grid-template-columns: auto auto minmax(50px, 1fr) auto;
+  align-items: center;
+  gap: 13px;
+  padding: 16px 18px;
+  border-top: 1px solid rgba(212,175,55,.2);
+  background: linear-gradient(135deg, #15130e, #090908);
+}
+
+.video-control-btn {
+  min-width: 42px;
+  height: 40px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(212,175,55,.38);
+  background: rgba(212,175,55,.045);
+  color: var(--gold-light);
+  cursor: pointer;
+  font-size: .7rem;
+  letter-spacing: .04em;
+  transition: background .3s, border-color .3s, transform .3s;
+}
+
+.video-control-btn:hover {
+  background: rgba(212,175,55,.14);
+  border-color: var(--gold-light);
+  transform: translateY(-1px);
+}
+
+.video-control-btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.video-progress-wrap {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.video-time {
+  color: var(--muted);
+  font-size: .66rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.video-progress {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  min-width: 0;
+  height: 4px;
+  border-radius: 10px;
+  background: linear-gradient(to right, var(--gold) 0%, var(--gold) 0%, rgba(212,175,55,.2) 0%, rgba(212,175,55,.2) 100%);
+  outline: none;
+  cursor: pointer;
+}
+
+.video-progress::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--gold-light);
+  border: 2px solid #7f5d18;
+  box-shadow: 0 0 12px rgba(212,175,55,.5);
+}
+
+.video-progress::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gold-light);
+  border: 2px solid #7f5d18;
+  box-shadow: 0 0 12px rgba(212,175,55,.5);
+}
+
+.video-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+  color: #8e8369;
+  font-size: .7rem;
+  letter-spacing: .07em;
+  text-align: center;
+}
+
+.video-note::before,
+.video-note::after {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: rgba(212,175,55,.3);
+}
+
+.video-error {
+  display: none;
+  margin-top: 15px;
+  color: var(--gold-light);
+  font-size: .8rem;
+  text-align: center;
+}
+
+.video-error.visible {
+  display: block;
 }
 
 /* Full-screen image viewer */
@@ -1385,6 +1633,37 @@ img { display: block; max-width: 100%; }
 
   .floating-controls { right: 12px; bottom: 12px; }
   .float-btn { width: 42px; height: 42px; }
+
+  .cinematic-frame { padding: 5px; }
+  .cinematic-frame::before { inset: 10px; }
+  .cinematic-frame::after { inset: 5px; }
+
+  .video-controls {
+    grid-template-columns: auto auto minmax(0, 1fr);
+    gap: 8px;
+    padding: 12px 9px;
+  }
+
+  .video-progress-wrap {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .video-control-btn {
+    min-width: 40px;
+    height: 38px;
+    padding: 0 9px;
+    font-size: .65rem;
+  }
+
+  .video-big-play {
+    width: 58px;
+    height: 58px;
+    font-size: 1.25rem;
+  }
+
+  .video-time { font-size: .62rem; }
+  .video-note { font-size: .62rem; }
 }
 
 @media (max-width: 360px) {
@@ -1608,6 +1887,73 @@ img { display: block; max-width: 100%; }
     </div>
   </section>
 
+  <!-- New cinematic video section: immediately after the gallery -->
+
+  <section class="section video-section" id="birthday-video">
+    <div class="container">
+      <div class="video-heading reveal">
+        <div class="section-label">A little movie · Just for you</div>
+        <h2 class="section-title">Some moments deserve<br><span class="gold">to move forever.</span></h2>
+        <p class="section-description">
+          A little video, a few memories, and a moment you can come back to whenever you want.
+        </p>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <div class="cinematic-frame">
+          <div class="video-screen" id="videoScreen">
+            <video
+              id="birthdayVideo"
+              preload="metadata"
+              playsinline
+              webkit-playsinline
+              aria-label="A special birthday video for Nowshin"
+            >
+              <source src="birthday-video.mp4" type="video/mp4">
+              Your browser does not support HTML5 video.
+            </video>
+
+            <div class="video-overlay" id="videoOverlay" aria-hidden="true">
+              <div class="video-big-play">▶</div>
+            </div>
+          </div>
+
+          <div class="video-controls">
+            <button class="video-control-btn" id="videoPlayBtn" type="button" aria-label="Play video">
+              <span id="videoPlayIcon">▶</span>
+              <span id="videoPlayText">Play</span>
+            </button>
+
+            <button class="video-control-btn" id="videoSoundBtn" type="button" aria-label="Turn video sound off">
+              <span id="videoSoundIcon">♫</span>
+              <span id="videoSoundText">Sound On</span>
+            </button>
+
+            <div class="video-progress-wrap">
+              <span class="video-time" id="videoCurrentTime">0:00</span>
+              <input
+                class="video-progress"
+                id="videoProgress"
+                type="range"
+                min="0"
+                max="100"
+                value="0"
+                step="0.1"
+                aria-label="Video progress"
+              >
+              <span class="video-time" id="videoDuration">0:00</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="video-note">A little memory, made to be replayed</p>
+        <p class="video-error" id="videoError" role="status">
+          Video could not load. Please upload birthday-video.mp4 to the same folder as index.html.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <!-- Secret message -->
 
   <section class="section secret-section" id="secret">
@@ -1677,6 +2023,22 @@ img { display: block; max-width: 100%; }
   const lightboxImage = $("#lightboxImage");
   const lightboxCaption = $("#lightboxCaption");
   const lightboxClose = $("#lightboxClose");
+
+  /* New video controls */
+
+  const birthdayVideo = $("#birthdayVideo");
+  const videoScreen = $("#videoScreen");
+  const videoOverlay = $("#videoOverlay");
+  const videoPlayBtn = $("#videoPlayBtn");
+  const videoPlayIcon = $("#videoPlayIcon");
+  const videoPlayText = $("#videoPlayText");
+  const videoSoundBtn = $("#videoSoundBtn");
+  const videoSoundIcon = $("#videoSoundIcon");
+  const videoSoundText = $("#videoSoundText");
+  const videoProgress = $("#videoProgress");
+  const videoCurrentTime = $("#videoCurrentTime");
+  const videoDuration = $("#videoDuration");
+  const videoError = $("#videoError");
 
   let music = null;
   let musicStarted = false;
@@ -1981,6 +2343,138 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
       closeLightbox();
     }
   });
+
+  /* Birthday video controls */
+
+  function formatVideoTime(seconds) {
+    if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
+
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+
+    return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
+  }
+
+  function updateVideoPlayState() {
+    const playing = !birthdayVideo.paused && !birthdayVideo.ended;
+
+    videoPlayIcon.textContent = playing ? "Ⅱ" : "▶";
+    videoPlayText.textContent = playing ? "Pause" : "Play";
+    videoPlayBtn.setAttribute("aria-label", playing ? "Pause video" : "Play video");
+    videoOverlay.classList.toggle("hidden", playing);
+  }
+
+  function updateVideoSoundState() {
+    const muted = birthdayVideo.muted || birthdayVideo.volume === 0;
+
+    videoSoundIcon.textContent = muted ? "♪̸" : "♫";
+    videoSoundText.textContent = muted ? "Sound Off" : "Sound On";
+    videoSoundBtn.setAttribute(
+      "aria-label",
+      muted ? "Turn video sound on" : "Turn video sound off"
+    );
+  }
+
+  function updateVideoProgress() {
+    const duration = birthdayVideo.duration;
+    const current = birthdayVideo.currentTime || 0;
+    const percentage = Number.isFinite(duration) && duration > 0
+      ? (current / duration) * 100
+      : 0;
+
+    videoProgress.value = String(percentage);
+    videoProgress.style.background =
+      `linear-gradient(to right, var(--gold) 0%, var(--gold) ${percentage}%, rgba(212,175,55,.2) ${percentage}%, rgba(212,175,55,.2) 100%)`;
+
+    videoCurrentTime.textContent = formatVideoTime(current);
+
+    if (Number.isFinite(duration)) {
+      videoDuration.textContent = formatVideoTime(duration);
+    }
+  }
+
+  async function toggleVideoPlayback() {
+    if (birthdayVideo.paused || birthdayVideo.ended) {
+      try {
+        await birthdayVideo.play();
+        videoError.classList.remove("visible");
+      } catch (error) {
+        videoError.textContent =
+          "Video could not play. Check that birthday-video.mp4 is uploaded and is a valid MP4 file.";
+        videoError.classList.add("visible");
+      }
+    } else {
+      birthdayVideo.pause();
+    }
+
+    updateVideoPlayState();
+  }
+
+  videoPlayBtn.addEventListener("click", toggleVideoPlayback);
+
+  videoScreen.addEventListener("click", (event) => {
+    if (event.target === birthdayVideo || event.target === videoOverlay) {
+      toggleVideoPlayback();
+    }
+  });
+
+  videoSoundBtn.addEventListener("click", () => {
+    birthdayVideo.muted = !birthdayVideo.muted;
+
+    if (!birthdayVideo.muted && birthdayVideo.volume === 0) {
+      birthdayVideo.volume = 1;
+    }
+
+    updateVideoSoundState();
+  });
+
+  videoProgress.addEventListener("input", () => {
+    const duration = birthdayVideo.duration;
+
+    if (!Number.isFinite(duration) || duration <= 0) return;
+
+    birthdayVideo.currentTime =
+      (Number(videoProgress.value) / 100) * duration;
+
+    updateVideoProgress();
+  });
+
+  birthdayVideo.addEventListener("loadedmetadata", () => {
+    videoDuration.textContent = formatVideoTime(birthdayVideo.duration);
+    videoProgress.disabled = false;
+    videoError.classList.remove("visible");
+    updateVideoProgress();
+  });
+
+  birthdayVideo.addEventListener("timeupdate", updateVideoProgress);
+  birthdayVideo.addEventListener("play", updateVideoPlayState);
+  birthdayVideo.addEventListener("pause", updateVideoPlayState);
+
+  birthdayVideo.addEventListener("ended", () => {
+    updateVideoPlayState();
+    birthdayVideo.currentTime = 0;
+    updateVideoProgress();
+  });
+
+  birthdayVideo.addEventListener("error", () => {
+    videoError.textContent =
+      "Video could not load. Please upload birthday-video.mp4 to the same folder as index.html.";
+    videoError.classList.add("visible");
+    videoPlayBtn.disabled = true;
+    videoSoundBtn.disabled = true;
+    videoProgress.disabled = true;
+  });
+
+  birthdayVideo.addEventListener("canplay", () => {
+    videoPlayBtn.disabled = false;
+    videoSoundBtn.disabled = false;
+    videoError.classList.remove("visible");
+  });
+
+  videoProgress.disabled = true;
+  updateVideoPlayState();
+  updateVideoSoundState();
+  updateVideoProgress();
 
   /* Birthday cake wish */
 
