@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,6 +54,7 @@ body.locked {
 
 button {
   font: inherit;
+  color: inherit;
 }
 
 button, a {
@@ -68,10 +70,6 @@ a:focus-visible {
 a {
   color: inherit;
   text-decoration: none;
-}
-
-button {
-  color: inherit;
 }
 
 img {
@@ -113,7 +111,10 @@ img {
   content: "";
   width: 32px;
   height: 1px;
+  flex-shrink: 0;
   background: var(--gold);
+  box-shadow: 0 0 9px rgba(212,175,55,.3);
+  animation: labelGlow 3s ease-in-out infinite;
 }
 
 .section-title {
@@ -131,6 +132,26 @@ img {
   font-size: .93rem;
 }
 
+/* Golden scroll progress */
+
+#scrollProgress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  z-index: 2000;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    #8b6b20,
+    var(--gold-light),
+    var(--gold),
+    #fff1bd
+  );
+  box-shadow: 0 0 12px rgba(212,175,55,.55);
+}
+
 /* Ambient background */
 
 .ambient {
@@ -139,6 +160,11 @@ img {
   pointer-events: none;
   z-index: -2;
   overflow: hidden;
+  background: radial-gradient(
+    circle at var(--spot-x, 50%) var(--spot-y, 35%),
+    rgba(212,175,55,.035),
+    transparent 38%
+  );
 }
 
 .ambient::before,
@@ -232,6 +258,7 @@ img {
 }
 
 .intro-monogram {
+  position: relative;
   width: 88px;
   height: 88px;
   display: grid;
@@ -244,6 +271,15 @@ img {
   font-size: 2.8rem;
   box-shadow: 0 0 45px rgba(212,175,55,.08), inset 0 0 25px rgba(212,175,55,.05);
   animation: monogramGlow 4s ease-in-out infinite;
+}
+
+.intro-monogram::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border: 1px solid rgba(212,175,55,.13);
+  border-radius: 50%;
+  animation: ringPulse 3.5s ease-out infinite;
 }
 
 .intro-eyebrow {
@@ -331,6 +367,11 @@ img {
   color: var(--black);
 }
 
+.primary-btn:active,
+.outline-btn:active {
+  transform: scale(.975);
+}
+
 .intro-bottom {
   margin-top: 36px;
   color: #746d5c;
@@ -359,6 +400,11 @@ img {
   font-size: 1.45rem;
   letter-spacing: .08em;
   color: var(--gold-light);
+  transition: text-shadow .35s;
+}
+
+.nav-brand:hover {
+  text-shadow: 0 0 18px rgba(212,175,55,.3);
 }
 
 .nav-tag {
@@ -390,6 +436,7 @@ img {
   border-radius: 50%;
   box-shadow: 0 0 0 50px rgba(212,175,55,.018), 0 0 0 100px rgba(212,175,55,.012);
   pointer-events: none;
+  animation: heroOrbit 35s linear infinite;
 }
 
 .hero-content {
@@ -472,7 +519,7 @@ img {
   background: var(--line);
 }
 
-/* General reveal animation */
+/* General scroll reveal */
 
 .reveal {
   opacity: 0;
@@ -491,7 +538,7 @@ img {
 .reveal-delay-2 { transition-delay: .24s; }
 .reveal-delay-3 { transition-delay: .36s; }
 
-/* Cake section */
+/* Cake */
 
 .cake-section {
   background: linear-gradient(180deg, transparent, rgba(212,175,55,.025), transparent);
@@ -511,9 +558,16 @@ img {
   display: grid;
   place-items: center;
   position: relative;
+  isolation: isolate;
   border: 1px solid rgba(212,175,55,.13);
   background: radial-gradient(ellipse at center, rgba(212,175,55,.07), transparent 65%);
   overflow: hidden;
+  transition: border-color .5s, box-shadow .5s;
+}
+
+.cake-stage:hover {
+  border-color: rgba(212,175,55,.32);
+  box-shadow: inset 0 0 50px rgba(212,175,55,.025);
 }
 
 .cake-stage::before,
@@ -525,6 +579,7 @@ img {
   border: 1px solid rgba(212,175,55,.12);
   border-radius: 50%;
   animation: orbit 24s linear infinite;
+  pointer-events: none;
 }
 
 .cake-stage::after {
@@ -542,6 +597,12 @@ img {
   height: 200px;
   animation: cakeBob 4s ease-in-out infinite;
   margin-top: 40px;
+  filter: drop-shadow(0 12px 20px rgba(212,175,55,.08));
+  transition: filter .5s;
+}
+
+.cake-stage:hover .cake {
+  filter: drop-shadow(0 12px 28px rgba(212,175,55,.2));
 }
 
 .cake-plate {
@@ -609,6 +670,21 @@ img {
   box-shadow: 0 0 12px rgba(255,218,119,.15);
 }
 
+.candle::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -38px;
+  width: 58px;
+  height: 58px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(255,184,57,.09);
+  filter: blur(17px);
+  animation: candleAura 1.8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
 .flame {
   position: absolute;
   width: 18px;
@@ -627,6 +703,10 @@ img {
 .flame.out {
   opacity: 0;
   transform: rotate(-45deg) scale(.1);
+}
+
+.flame.out + .candle-aura {
+  opacity: 0;
 }
 
 .cake-wish {
@@ -671,24 +751,31 @@ img {
     linear-gradient(135deg, rgba(212,175,55,.045), transparent 45%),
     rgba(255,255,255,.012);
   box-shadow: 0 20px 70px rgba(0,0,0,.18);
+  overflow: hidden;
+  transition: border-color .5s, box-shadow .5s;
+}
+
+.letter-card:hover {
+  border-color: rgba(212,175,55,.42);
+  box-shadow: 0 25px 80px rgba(0,0,0,.24), 0 0 30px rgba(212,175,55,.045);
 }
 
 .letter-card::before,
 .letter-card::after {
-  content: "";
+  content: "✦";
   position: absolute;
   color: rgba(212,175,55,.7);
   font-size: 1rem;
 }
 
 .letter-card::before {
-  top: 18px;
-  left: 20px;
+  top: 13px;
+  left: 17px;
 }
 
 .letter-card::after {
-  bottom: 18px;
-  right: 20px;
+  bottom: 12px;
+  right: 17px;
 }
 
 .letter-topline {
@@ -775,8 +862,11 @@ img {
 
 .memory-card {
   min-width: 0;
+  position: relative;
   border: 1px solid rgba(212,175,55,.2);
   background: #100f0c;
+  overflow: hidden;
+  isolation: isolate;
   transition: border-color .4s, transform .5s, box-shadow .5s;
 }
 
@@ -784,6 +874,30 @@ img {
   transform: translateY(-8px);
   border-color: rgba(247,231,164,.75);
   box-shadow: 0 18px 45px rgba(0,0,0,.3), 0 0 25px rgba(212,175,55,.07);
+}
+
+.memory-card::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: -130%;
+  width: 70%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 15%,
+    rgba(247,231,164,.07) 45%,
+    rgba(247,231,164,.18) 50%,
+    transparent 85%
+  );
+  transform: skewX(-15deg);
+  transition: left .9s ease;
+}
+
+.memory-card:hover::after {
+  left: 160%;
 }
 
 .memory-image {
@@ -796,6 +910,8 @@ img {
 }
 
 .memory-image img {
+  position: relative;
+  z-index: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -809,6 +925,7 @@ img {
 
 .memory-placeholder {
   position: absolute;
+  z-index: 1;
   inset: 0;
   display: grid;
   place-items: center;
@@ -819,6 +936,7 @@ img {
   font-size: 1.5rem;
   line-height: 1.2;
   background: radial-gradient(ellipse, rgba(212,175,55,.08), transparent 70%);
+  transition: opacity .4s;
 }
 
 .memory-placeholder small {
@@ -854,7 +972,7 @@ img {
   margin-top: 7px;
 }
 
-/* Secret */
+/* Secret message */
 
 .secret-section {
   text-align: center;
@@ -864,6 +982,7 @@ img {
 }
 
 .secret-symbol {
+  position: relative;
   width: 72px;
   height: 72px;
   display: grid;
@@ -874,6 +993,11 @@ img {
   color: var(--gold-light);
   font-size: 1.6rem;
   animation: monogramGlow 4s ease-in-out infinite;
+}
+
+.secret-symbol::before {
+  content: "✦";
+  animation: symbolTwinkle 2.8s ease-in-out infinite;
 }
 
 .secret-section .section-label {
@@ -897,6 +1021,7 @@ img {
 }
 
 .secret-message {
+  position: relative;
   max-width: 650px;
   margin: 30px auto 0;
   padding: 28px;
@@ -910,11 +1035,15 @@ img {
   transform: translateY(18px) scale(.98);
   transition: opacity .7s, transform .7s;
   display: none;
+  overflow: hidden;
+  box-shadow: inset 0 0 35px rgba(212,175,55,.025);
 }
 
 .secret-message.visible {
   display: block;
   animation: secretReveal .8s cubic-bezier(.2,.7,.2,1) both;
+  border-color: rgba(247,231,164,.55);
+  box-shadow: 0 0 35px rgba(212,175,55,.075), inset 0 0 35px rgba(212,175,55,.035);
 }
 
 /* Footer */
@@ -928,6 +1057,7 @@ img {
   font-family: "Cormorant Garamond", serif;
   color: var(--gold-light);
   font-size: 2rem;
+  animation: footerGlow 5s ease-in-out infinite;
 }
 
 .footer-message {
@@ -982,6 +1112,10 @@ img {
   border-color: var(--gold);
 }
 
+.float-btn:active {
+  transform: scale(.92);
+}
+
 #musicBtn.playing {
   animation: musicPulse 2s ease-in-out infinite;
 }
@@ -1019,9 +1153,10 @@ img {
 .toast.show {
   opacity: 1;
   transform: translate(-50%, 0);
+  box-shadow: 0 10px 35px rgba(0,0,0,.28);
 }
 
-/* Confetti */
+/* Gold confetti */
 
 .confetti-piece {
   position: fixed;
@@ -1039,6 +1174,18 @@ img {
   border-radius: 50%;
   width: 5px;
   height: 5px;
+}
+
+/* Sparkles */
+
+.gold-sparkle {
+  position: fixed;
+  z-index: 250;
+  pointer-events: none;
+  border-radius: 50%;
+  background: var(--gold-light);
+  box-shadow: 0 0 8px rgba(247,231,164,.75);
+  animation: sparkleBurst .8s ease-out forwards;
 }
 
 /* Animations */
@@ -1087,6 +1234,10 @@ img {
   to { transform: rotate(360deg); }
 }
 
+@keyframes heroOrbit {
+  to { transform: rotate(360deg); }
+}
+
 @keyframes cursorBlink {
   to { opacity: 0; }
 }
@@ -1106,6 +1257,36 @@ img {
     transform: translate3d(var(--drift, 20px), 110vh, 0) rotate(var(--rotation, 600deg));
     opacity: 0;
   }
+}
+
+@keyframes labelGlow {
+  0%, 100% { opacity: .65; }
+  50% { opacity: 1; }
+}
+
+@keyframes candleAura {
+  from { opacity: .55; transform: translateX(-50%) scale(.85); }
+  to { opacity: 1; transform: translateX(-50%) scale(1.15); }
+}
+
+@keyframes ringPulse {
+  0% { transform: scale(.94); opacity: .65; }
+  100% { transform: scale(1.18); opacity: 0; }
+}
+
+@keyframes symbolTwinkle {
+  0%, 100% { opacity: .65; transform: scale(.94) rotate(-5deg); }
+  50% { opacity: 1; transform: scale(1.08) rotate(5deg); }
+}
+
+@keyframes footerGlow {
+  0%, 100% { text-shadow: 0 0 12px rgba(212,175,55,.06); }
+  50% { text-shadow: 0 0 24px rgba(212,175,55,.2); }
+}
+
+@keyframes sparkleBurst {
+  from { opacity: 1; transform: translate(0,0) scale(1); }
+  to { opacity: 0; transform: translate(var(--spark-x),var(--spark-y)) scale(.15); }
 }
 
 /* Responsive */
@@ -1259,12 +1440,17 @@ img {
     opacity: 1;
     transform: none;
   }
+
+  .gold-sparkle {
+    display: none;
+  }
 }
 </style>
 </head>
 
 <body class="locked">
 
+<div id="scrollProgress" aria-hidden="true"></div>
 <div class="ambient" aria-hidden="true"></div>
 <canvas id="starCanvas" aria-hidden="true"></canvas>
 
@@ -1452,7 +1638,7 @@ img {
   <section class="section secret-section" id="secret">
     <div class="container">
       <div class="reveal">
-        <div class="secret-symbol"></div>
+        <div class="secret-symbol" aria-hidden="true"></div>
         <div class="section-label">Chapter 04 · One last thing</div>
         <h2 class="section-title">There is one more<br><span class="gold">little surprise.</span></h2>
         <p class="secret-description">
@@ -1503,6 +1689,7 @@ img {
   const secretBtn = $("#secretBtn");
   const secretMessage = $("#secretMessage");
   const toast = $("#toast");
+  const scrollProgress = $("#scrollProgress");
 
   let music = null;
   let musicStarted = false;
@@ -1510,6 +1697,9 @@ img {
   let typingTimer = null;
   let confettiCooldown = false;
   let wishMade = false;
+  let letterStarted = false;
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const letter = `Dear Nowshin,
 
@@ -1527,7 +1717,7 @@ Keep smiling, keep growing, and never stop believing in the beautiful things wai
 
 Happy Birthday, Nowshin. May this year be kind to you.`;
 
-  /* Toast message */
+  /* Toast */
   function showToast(message) {
     toast.textContent = message;
     toast.classList.add("show");
@@ -1535,7 +1725,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
     toastTimeout = setTimeout(() => toast.classList.remove("show"), 2600);
   }
 
-  /* Music: starts only after the user taps the opening button */
+  /* Music */
   function setupMusic() {
     if (!music) {
       music = new Audio("music.mp3");
@@ -1559,6 +1749,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
     } catch (error) {
       musicStarted = false;
       musicBtn.classList.remove("playing");
+      musicBtn.setAttribute("aria-label", "Play music");
       showToast("Tap the music button to try playing the song.");
     }
   }
@@ -1587,6 +1778,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
     if (!musicStarted) startMusic(false);
 
     launchConfetti(45);
+    createGoldSparkles(openBtn, 16);
     showToast("This little world is all yours, Nowshin");
 
     setTimeout(() => {
@@ -1594,14 +1786,13 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
     }, 1100);
   });
 
-  /* Ambient gold stars */
+  /* Animated star canvas */
   const canvas = $("#starCanvas");
   const ctx = canvas.getContext("2d", { alpha: true });
   let stars = [];
   let canvasWidth = 0;
   let canvasHeight = 0;
   let animationFrame = 0;
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function resizeCanvas() {
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -1633,7 +1824,10 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     for (const star of stars) {
-      const pulse = reduceMotion ? 1 : (Math.sin(time * star.speed + star.phase) + 1) / 2;
+      const pulse = reduceMotion
+        ? 1
+        : (Math.sin(time * star.speed + star.phase) + 1) / 2;
+
       const alpha = star.alpha * (0.45 + pulse * 0.55);
 
       ctx.beginPath();
@@ -1659,15 +1853,14 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
 
   resizeCanvas();
 
-  if (reduceMotion) {
-    drawStars(0);
-  } else {
-    animationFrame = requestAnimationFrame(drawStars);
-  }
+  if (reduceMotion) drawStars(0);
+  else animationFrame = requestAnimationFrame(drawStars);
 
   let resizeTimer;
+
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
+
     resizeTimer = setTimeout(() => {
       cancelAnimationFrame(animationFrame);
       resizeCanvas();
@@ -1698,17 +1891,22 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
     revealItems.forEach((item) => item.classList.add("visible"));
   }
 
-  /* Gallery placeholder: hide only when image loads successfully */
+  /* Gallery images and placeholders */
   document.querySelectorAll(".memory-image img").forEach((img) => {
     const placeholder = img.parentElement.querySelector(".memory-placeholder");
 
     function imageLoaded() {
-      if (placeholder) placeholder.style.display = "none";
+      if (placeholder) {
+        placeholder.style.display = "none";
+      }
     }
 
     function imageFailed() {
       img.style.display = "none";
-      if (placeholder) placeholder.style.display = "grid";
+
+      if (placeholder) {
+        placeholder.style.display = "grid";
+      }
     }
 
     img.addEventListener("load", imageLoaded);
@@ -1733,6 +1931,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
     wishBtn.textContent = "Wish Made ✓";
 
     launchConfetti(35);
+    createGoldSparkles(wishBtn, 14);
     showToast("May your wish come true, Nowshin!");
 
     setTimeout(() => {
@@ -1745,10 +1944,12 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
     cakeWish.textContent = "Make a wish, Nowshin";
     wishMade = false;
     wishBtn.textContent = "Make a Wish";
+
+    createGoldSparkles(relightBtn, 10);
     showToast("A new wish, a new little beginning");
   });
 
-  /* Letter typing: Read Again replays the animation */
+  /* Letter typing */
   function typeLetter() {
     clearTimeout(typingTimer);
 
@@ -1766,7 +1967,6 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
         letterText.textContent += letter.charAt(index);
         index++;
 
-        /* Keep long letter animations smooth and avoid excessive layout jumps */
         typingTimer = setTimeout(typeNext, speed);
       } else {
         letterText.classList.add("done");
@@ -1781,12 +1981,11 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
 
   readAgainBtn.addEventListener("click", () => {
     typeLetter();
+    createGoldSparkles(readAgainBtn, 8);
     showToast("A little note, from the beginning");
   });
 
-  /* Start letter typing once the section enters view */
-  let letterStarted = false;
-
+  /* Start letter animation when section enters view */
   if ("IntersectionObserver" in window) {
     const letterObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -1820,6 +2019,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
 
     requestAnimationFrame(() => {
       secretMessage.classList.add("visible");
+
       secretMessage.scrollIntoView({
         behavior: reduceMotion ? "auto" : "smooth",
         block: "nearest"
@@ -1828,6 +2028,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
 
     secretBtn.textContent = "Hide the Secret ↑";
     launchConfetti(28);
+    createGoldSparkles(secretBtn, 16);
     showToast("One last little message, just for you");
   });
 
@@ -1836,30 +2037,145 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
     if (reduceMotion || confettiCooldown) return;
 
     confettiCooldown = true;
-    setTimeout(() => { confettiCooldown = false; }, 500);
+    setTimeout(() => {
+      confettiCooldown = false;
+    }, 500);
 
-    const colors = ["#d4af37", "#f7e7a4", "#fff1c5", "#b98c28", "#f5efdf"];
+    const colors = [
+      "#d4af37",
+      "#f7e7a4",
+      "#fff1c5",
+      "#b98c28",
+      "#f5efdf"
+    ];
+
     const fragment = document.createDocumentFragment();
 
     for (let i = 0; i < amount; i++) {
       const piece = document.createElement("span");
-      piece.className = "confetti-piece" + (Math.random() > 0.55 ? " circle" : "");
+
+      piece.className =
+        "confetti-piece" + (Math.random() > 0.55 ? " circle" : "");
 
       piece.style.left = Math.random() * 100 + "vw";
       piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-      piece.style.setProperty("--fall-duration", (2.1 + Math.random() * 2.2) + "s");
-      piece.style.setProperty("--drift", ((Math.random() - 0.5) * 240) + "px");
-      piece.style.setProperty("--rotation", (Math.random() * 1100 - 550) + "deg");
+      piece.style.setProperty(
+        "--fall-duration",
+        (2.1 + Math.random() * 2.2) + "s"
+      );
+      piece.style.setProperty(
+        "--drift",
+        ((Math.random() - 0.5) * 240) + "px"
+      );
+      piece.style.setProperty(
+        "--rotation",
+        (Math.random() * 1100 - 550) + "deg"
+      );
       piece.style.opacity = String(0.65 + Math.random() * 0.35);
 
       fragment.appendChild(piece);
-      piece.addEventListener("animationend", () => piece.remove(), { once: true });
+
+      piece.addEventListener("animationend", () => piece.remove(), {
+        once: true
+      });
     }
 
     document.body.appendChild(fragment);
   }
 
-  /* Back-to-top button */
+  /* Gold sparkle burst */
+  function createGoldSparkles(origin, count = 10) {
+    if (reduceMotion || !origin) return;
+
+    const rect = origin.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    for (let i = 0; i < count; i++) {
+      const sparkle = document.createElement("span");
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 25 + Math.random() * 65;
+
+      sparkle.className = "gold-sparkle";
+      sparkle.style.left = centerX + "px";
+      sparkle.style.top = centerY + "px";
+      sparkle.style.width = (2 + Math.random() * 3) + "px";
+      sparkle.style.height = (2 + Math.random() * 3) + "px";
+      sparkle.style.setProperty(
+        "--spark-x",
+        Math.cos(angle) * distance + "px"
+      );
+      sparkle.style.setProperty(
+        "--spark-y",
+        Math.sin(angle) * distance + "px"
+      );
+
+      document.body.appendChild(sparkle);
+
+      sparkle.addEventListener("animationend", () => sparkle.remove(), {
+        once: true
+      });
+    }
+  }
+
+  /* Button sparkles */
+  [openBtn, wishBtn, relightBtn, secretBtn].forEach((button) => {
+    button.addEventListener("click", () => {
+      createGoldSparkles(button, 10);
+    });
+  });
+
+  /* Gold scroll progress */
+  let progressTicking = false;
+
+  function updateScrollProgress() {
+    const scrollableHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
+
+    const progress = scrollableHeight > 0
+      ? (window.scrollY / scrollableHeight) * 100
+      : 0;
+
+    scrollProgress.style.width =
+      Math.min(100, Math.max(0, progress)) + "%";
+
+    progressTicking = false;
+  }
+
+  window.addEventListener("scroll", () => {
+    if (!progressTicking) {
+      requestAnimationFrame(updateScrollProgress);
+      progressTicking = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener("resize", updateScrollProgress);
+  updateScrollProgress();
+
+  /* Pointer-based ambient gold light on compatible devices */
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    let pointerFrame = 0;
+
+    document.addEventListener("pointermove", (event) => {
+      if (pointerFrame) return;
+
+      pointerFrame = requestAnimationFrame(() => {
+        document.documentElement.style.setProperty(
+          "--spot-x",
+          (event.clientX / window.innerWidth * 100) + "%"
+        );
+
+        document.documentElement.style.setProperty(
+          "--spot-y",
+          (event.clientY / window.innerHeight * 100) + "%"
+        );
+
+        pointerFrame = 0;
+      });
+    }, { passive: true });
+  }
+
+  /* Back to top */
   function updateTopButton() {
     if (window.scrollY > 450) topBtn.classList.add("visible");
     else topBtn.classList.remove("visible");
