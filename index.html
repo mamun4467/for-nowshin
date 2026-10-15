@@ -1997,7 +1997,7 @@ img, video { display: block; max-width: 100%; }
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script>
+ <script>
 (() => {
   "use strict";
 
@@ -2023,7 +2023,7 @@ img, video { display: block; max-width: 100%; }
   const lightboxCaption = $("#lightboxCaption");
   const lightboxClose = $("#lightboxClose");
 
-  /* New video controls */
+  /* Video controls */
 
   const birthdayVideo = $("#birthdayVideo");
   const videoScreen = $("#videoScreen");
@@ -2041,6 +2041,8 @@ img, video { display: block; max-width: 100%; }
 
   let music = null;
   let musicStarted = false;
+  let resumeMusicAfterVideo = false;
+
   let toastTimeout = null;
   let typingTimer = null;
   let confettiCooldown = false;
@@ -2048,7 +2050,8 @@ img, video { display: block; max-width: 100%; }
   let letterStarted = false;
   let introOpened = false;
 
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduceMotion =
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const letter = `Dear Nowshin,
 
@@ -2071,23 +2074,35 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   function showToast(message) {
     toast.textContent = message;
     toast.classList.add("show");
+
     clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => toast.classList.remove("show"), 2800);
+
+    toastTimeout = setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2800);
   }
 
   /* Scroll progress */
 
   function updateProgress() {
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
-    progressBar.style.transform = `scaleX(${Math.min(1, Math.max(0, progress))})`;
+    const maxScroll =
+      document.documentElement.scrollHeight - window.innerHeight;
+
+    const progress =
+      maxScroll > 0 ? window.scrollY / maxScroll : 0;
+
+    progressBar.style.transform =
+      `scaleX(${Math.min(1, Math.max(0, progress))})`;
   }
 
-  window.addEventListener("scroll", updateProgress, { passive: true });
+  window.addEventListener("scroll", updateProgress, {
+    passive: true
+  });
+
   window.addEventListener("resize", updateProgress);
   updateProgress();
 
-  /* Music */
+  /* Background music */
 
   function setupMusic() {
     if (!music) {
@@ -2099,34 +2114,124 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   }
 
   async function startMusic(showMessage = false) {
+    /*
+      Never start background music while the birthday video
+      is playing. The video takes priority.
+    */
+
+    if (!birthdayVideo.paused && !birthdayVideo.ended) {
+      return;
+    }
+
     setupMusic();
 
     try {
       await music.play();
+
+      /*
+        Check again after the asynchronous play request.
+        The video may have started while music.play() was pending.
+      */
+
+      if (!birthdayVideo.paused && !birthdayVideo.ended) {
+        music.pause();
+        musicStarted = false;
+        musicBtn.classList.remove("playing");
+        musicBtn.setAttribute("aria-label", "Play music");
+        return;
+      }
+
       musicStarted = true;
       musicBtn.classList.add("playing");
       musicBtn.textContent = "♫";
       musicBtn.setAttribute("aria-label", "Pause music");
 
-      if (showMessage) showToast("A little music for your special day ♫");
+      if (showMessage) {
+        showToast("A little music for your special day ♫");
+      }
     } catch (error) {
       musicStarted = false;
       musicBtn.classList.remove("playing");
-      showToast("Music could not start. Check that music.mp3 is uploaded.");
+      musicBtn.setAttribute("aria-label", "Play music");
+
+      if (showMessage) {
+        showToast(
+          "Music could not start. Check that music.mp3 is uploaded."
+        );
+      }
     }
   }
 
   function stopMusic() {
-    if (music) music.pause();
+    if (music) {
+      music.pause();
+    }
+
     musicStarted = false;
     musicBtn.classList.remove("playing");
     musicBtn.textContent = "♫";
     musicBtn.setAttribute("aria-label", "Play music");
   }
 
+  /*
+    Called when the video starts.
+
+    Remember whether the background music was actually playing.
+    If it was, pause it temporarily so it can resume later.
+  */
+
+  function pauseMusicForVideo() {
+    resumeMusicAfterVideo =
+      Boolean(music && !music.paused && musicStarted);
+
+    if (music && !music.paused) {
+      music.pause();
+    }
+
+    musicStarted = false;
+    musicBtn.classList.remove("playing");
+    musicBtn.textContent = "♫";
+    musicBtn.setAttribute("aria-label", "Play music");
+  }
+
+  /*
+    Called when the video is paused or finishes.
+
+    Resume music only if it was playing before the video started.
+    Clear the flag before attempting playback to avoid duplicate
+    resume requests.
+  */
+
+  async function resumeMusicAfterVideoPause() {
+    if (!resumeMusicAfterVideo) {
+      return;
+    }
+
+    resumeMusicAfterVideo = false;
+
+    if (!birthdayVideo.paused && !birthdayVideo.ended) {
+      return;
+    }
+
+    await startMusic(false);
+  }
+
   musicBtn.addEventListener("click", () => {
-    if (musicStarted && music && !music.paused) stopMusic();
-    else startMusic(true);
+    /*
+      Keep the background music button from starting music
+      while the video is playing.
+    */
+
+    if (!birthdayVideo.paused && !birthdayVideo.ended) {
+      showToast("Background music is paused while the video plays.");
+      return;
+    }
+
+    if (musicStarted && music && !music.paused) {
+      stopMusic();
+    } else {
+      startMusic(true);
+    }
   });
 
   /* Opening reveal */
@@ -2140,7 +2245,13 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
 
     startMusic(false);
     launchConfetti(95);
-    burstCelebration(window.innerWidth / 2, window.innerHeight / 2, 34);
+
+    burstCelebration(
+      window.innerWidth / 2,
+      window.innerHeight / 2,
+      34
+    );
+
     showToast("This little world is all yours, Nowshin");
 
     setTimeout(() => {
@@ -2151,7 +2262,9 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   /* Animated gold star field */
 
   const canvas = $("#starCanvas");
-  const ctx = canvas ? canvas.getContext("2d", { alpha: true }) : null;
+  const ctx = canvas
+    ? canvas.getContext("2d", { alpha: true })
+    : null;
 
   let stars = [];
   let canvasWidth = 0;
@@ -2168,22 +2281,26 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
 
     canvas.width = Math.floor(canvasWidth * dpr);
     canvas.height = Math.floor(canvasHeight * dpr);
+
     canvas.style.width = canvasWidth + "px";
     canvas.style.height = canvasHeight + "px";
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    const count = Math.min(105, Math.floor((canvasWidth * canvasHeight) / 10500));
+    const count = Math.min(
+      105,
+      Math.floor((canvasWidth * canvasHeight) / 10500)
+    );
 
     stars = Array.from({ length: count }, () => ({
       x: Math.random() * canvasWidth,
       y: Math.random() * canvasHeight,
-      radius: Math.random() * 1.7 + .45,
-      alpha: Math.random() * .65 + .15,
-      speed: Math.random() * .009 + .002,
+      radius: Math.random() * 1.7 + 0.45,
+      alpha: Math.random() * 0.65 + 0.15,
+      speed: Math.random() * 0.009 + 0.002,
       phase: Math.random() * Math.PI * 2,
-      drift: (Math.random() - .5) * .2,
-      glow: Math.random() > .72
+      drift: (Math.random() - 0.5) * 0.2,
+      glow: Math.random() > 0.72
     }));
   }
 
@@ -2197,12 +2314,19 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
         ? 1
         : (Math.sin(time * star.speed + star.phase) + 1) / 2;
 
-      const alpha = star.alpha * (.4 + pulse * .6);
+      const alpha = star.alpha * (0.4 + pulse * 0.6);
 
       if (star.glow) {
         ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius * 4, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(212,175,55,${alpha * .11})`;
+        ctx.arc(
+          star.x,
+          star.y,
+          star.radius * 4,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fillStyle = `rgba(212,175,55,${alpha * 0.11})`;
         ctx.fill();
       }
 
@@ -2212,8 +2336,8 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
       ctx.fill();
 
       if (!reduceMotion) {
-        star.y -= .035;
-        star.x += star.drift * .1;
+        star.y -= 0.035;
+        star.x += star.drift * 0.1;
 
         if (star.y < -4) {
           star.y = canvasHeight + 4;
@@ -2229,8 +2353,11 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
 
   resizeCanvas();
 
-  if (reduceMotion) drawStars(0);
-  else animationFrame = requestAnimationFrame(drawStars);
+  if (reduceMotion) {
+    drawStars(0);
+  } else {
+    animationFrame = requestAnimationFrame(drawStars);
+  }
 
   let resizeTimer;
 
@@ -2241,8 +2368,11 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
       cancelAnimationFrame(animationFrame);
       resizeCanvas();
 
-      if (reduceMotion) drawStars(0);
-      else animationFrame = requestAnimationFrame(drawStars);
+      if (reduceMotion) {
+        drawStars(0);
+      } else {
+        animationFrame = requestAnimationFrame(drawStars);
+      }
     }, 120);
   });
 
@@ -2251,43 +2381,57 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   const revealItems = document.querySelectorAll(".reveal");
 
   if ("IntersectionObserver" in window && !reduceMotion) {
-    const observer = new IntersectionObserver((entries, currentObserver) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          currentObserver.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: .1,
-      rootMargin: "0px 0px -25px 0px"
-    });
+    const observer = new IntersectionObserver(
+      (entries, currentObserver) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            currentObserver.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -25px 0px"
+      }
+    );
 
     revealItems.forEach((item) => observer.observe(item));
   } else {
-    revealItems.forEach((item) => item.classList.add("visible"));
+    revealItems.forEach((item) => {
+      item.classList.add("visible");
+    });
   }
 
   /* Gallery images and placeholders */
 
   document.querySelectorAll(".memory-image img").forEach((img) => {
-    const placeholder = img.parentElement.querySelector(".memory-placeholder");
+    const placeholder =
+      img.parentElement.querySelector(".memory-placeholder");
 
     function imageLoaded() {
-      if (placeholder) placeholder.style.display = "none";
+      if (placeholder) {
+        placeholder.style.display = "none";
+      }
     }
 
     function imageFailed() {
       img.style.display = "none";
-      if (placeholder) placeholder.style.display = "grid";
+
+      if (placeholder) {
+        placeholder.style.display = "grid";
+      }
     }
 
     img.addEventListener("load", imageLoaded);
     img.addEventListener("error", imageFailed);
 
     if (img.complete) {
-      if (img.naturalWidth > 0) imageLoaded();
-      else imageFailed();
+      if (img.naturalWidth > 0) {
+        imageLoaded();
+      } else {
+        imageFailed();
+      }
     }
   });
 
@@ -2296,7 +2440,11 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   function openLightbox(card) {
     const img = card.querySelector(".memory-image img");
 
-    if (!img || img.style.display === "none" || !img.naturalWidth) {
+    if (
+      !img ||
+      img.style.display === "none" ||
+      !img.naturalWidth
+    ) {
       showToast("Add the photo file to your website folder first.");
       return;
     }
@@ -2305,6 +2453,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
 
     lightboxImage.src = img.src;
     lightboxImage.alt = img.alt;
+
     lightboxCaption.textContent = heading
       ? heading.textContent
       : "A memory with Nowshin";
@@ -2334,11 +2483,16 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   lightboxClose.addEventListener("click", closeLightbox);
 
   lightbox.addEventListener("click", (event) => {
-    if (event.target === lightbox) closeLightbox();
+    if (event.target === lightbox) {
+      closeLightbox();
+    }
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && lightbox.classList.contains("open")) {
+    if (
+      event.key === "Escape" &&
+      lightbox.classList.contains("open")
+    ) {
       closeLightbox();
     }
   });
@@ -2346,7 +2500,9 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   /* Birthday video controls */
 
   function formatVideoTime(seconds) {
-    if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
+    if (!Number.isFinite(seconds) || seconds < 0) {
+      return "0:00";
+    }
 
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
@@ -2359,15 +2515,22 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
 
     videoPlayIcon.textContent = playing ? "Ⅱ" : "▶";
     videoPlayText.textContent = playing ? "Pause" : "Play";
-    videoPlayBtn.setAttribute("aria-label", playing ? "Pause video" : "Play video");
+
+    videoPlayBtn.setAttribute(
+      "aria-label",
+      playing ? "Pause video" : "Play video"
+    );
+
     videoOverlay.classList.toggle("hidden", playing);
   }
 
   function updateVideoSoundState() {
-    const muted = birthdayVideo.muted || birthdayVideo.volume === 0;
+    const muted =
+      birthdayVideo.muted || birthdayVideo.volume === 0;
 
     videoSoundIcon.textContent = muted ? "♪̸" : "♫";
     videoSoundText.textContent = muted ? "Sound Off" : "Sound On";
+
     videoSoundBtn.setAttribute(
       "aria-label",
       muted ? "Turn video sound on" : "Turn video sound off"
@@ -2377,11 +2540,14 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   function updateVideoProgress() {
     const duration = birthdayVideo.duration;
     const current = birthdayVideo.currentTime || 0;
-    const percentage = Number.isFinite(duration) && duration > 0
-      ? (current / duration) * 100
-      : 0;
+
+    const percentage =
+      Number.isFinite(duration) && duration > 0
+        ? (current / duration) * 100
+        : 0;
 
     videoProgress.value = String(percentage);
+
     videoProgress.style.background =
       `linear-gradient(to right, var(--gold) 0%, var(--gold) ${percentage}%, rgba(212,175,55,.2) ${percentage}%, rgba(212,175,55,.2) 100%)`;
 
@@ -2400,6 +2566,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
       } catch (error) {
         videoError.textContent =
           "Video could not play. Check that birthday-video.mp4 is uploaded and is a valid MP4 file.";
+
         videoError.classList.add("visible");
       }
     } else {
@@ -2412,7 +2579,10 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   videoPlayBtn.addEventListener("click", toggleVideoPlayback);
 
   videoScreen.addEventListener("click", (event) => {
-    if (event.target === birthdayVideo || event.target === videoOverlay) {
+    if (
+      event.target === birthdayVideo ||
+      event.target === videoOverlay
+    ) {
       toggleVideoPlayback();
     }
   });
@@ -2430,7 +2600,9 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   videoProgress.addEventListener("input", () => {
     const duration = birthdayVideo.duration;
 
-    if (!Number.isFinite(duration) || duration <= 0) return;
+    if (!Number.isFinite(duration) || duration <= 0) {
+      return;
+    }
 
     birthdayVideo.currentTime =
       (Number(videoProgress.value) / 100) * duration;
@@ -2439,25 +2611,55 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   });
 
   birthdayVideo.addEventListener("loadedmetadata", () => {
-    videoDuration.textContent = formatVideoTime(birthdayVideo.duration);
+    videoDuration.textContent =
+      formatVideoTime(birthdayVideo.duration);
+
     videoProgress.disabled = false;
     videoError.classList.remove("visible");
     updateVideoProgress();
   });
 
   birthdayVideo.addEventListener("timeupdate", updateVideoProgress);
-  birthdayVideo.addEventListener("play", updateVideoPlayState);
-  birthdayVideo.addEventListener("pause", updateVideoPlayState);
+
+  /*
+    IMPORTANT MUSIC/VIDEO BEHAVIOR:
+    Video starts  -> pause background music.
+    Video pauses  -> resume background music if it was playing before.
+    Video ends    -> resume background music if it was playing before.
+  */
+
+  birthdayVideo.addEventListener("play", () => {
+    pauseMusicForVideo();
+    updateVideoPlayState();
+  });
+
+  birthdayVideo.addEventListener("pause", () => {
+    updateVideoPlayState();
+
+    /*
+      The ended event can also be followed by a pause event.
+      The resume flag is cleared before music is restarted,
+      so the second event cannot restart it twice.
+    */
+
+    if (!birthdayVideo.ended) {
+      resumeMusicAfterVideoPause();
+    }
+  });
 
   birthdayVideo.addEventListener("ended", () => {
     updateVideoPlayState();
+
     birthdayVideo.currentTime = 0;
     updateVideoProgress();
+
+    resumeMusicAfterVideoPause();
   });
 
   birthdayVideo.addEventListener("error", () => {
     videoError.textContent =
       "Video could not load. Please upload birthday-video.mp4 to the same folder as index.html.";
+
     videoError.classList.add("visible");
     videoPlayBtn.disabled = true;
     videoSoundBtn.disabled = true;
@@ -2471,6 +2673,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   });
 
   videoProgress.disabled = true;
+
   updateVideoPlayState();
   updateVideoSoundState();
   updateVideoProgress();
@@ -2510,6 +2713,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
     cakeWish.textContent = "Make a wish, Nowshin";
     wishMade = false;
     wishBtn.textContent = "Make a Wish";
+
     showToast("A new wish, a new little beginning");
   });
 
@@ -2532,6 +2736,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
       if (index < letter.length) {
         letterText.textContent += letter.charAt(index);
         index++;
+
         typingTimer = setTimeout(typeNext, speed);
       } else {
         letterText.classList.add("done");
@@ -2550,15 +2755,18 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   });
 
   if ("IntersectionObserver" in window) {
-    const letterObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !letterStarted) {
-          letterStarted = true;
-          typeLetter();
-          letterObserver.disconnect();
-        }
-      });
-    }, { threshold: .2 });
+    const letterObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !letterStarted) {
+            letterStarted = true;
+            typeLetter();
+            letterObserver.disconnect();
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
 
     letterObserver.observe($("#letter"));
   } else {
@@ -2575,6 +2783,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
       secretMessage.classList.remove("visible");
       secretMessage.style.display = "none";
       secretBtn.textContent = "Reveal the Secret";
+
       showToast("Your little secret is tucked away again.");
       return;
     }
@@ -2632,11 +2841,17 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
 
       piece.className = "confetti-piece";
 
-      if (random > .72) piece.classList.add("circle");
-      else if (random > .48) piece.classList.add("spark");
+      if (random > 0.72) {
+        piece.classList.add("circle");
+      } else if (random > 0.48) {
+        piece.classList.add("spark");
+      }
 
       piece.style.left = Math.random() * 100 + "vw";
-      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+      piece.style.background =
+        colors[Math.floor(Math.random() * colors.length)];
+
       piece.style.color = piece.style.background;
 
       piece.style.setProperty(
@@ -2646,7 +2861,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
 
       piece.style.setProperty(
         "--drift",
-        ((Math.random() - .5) * 300) + "px"
+        ((Math.random() - 0.5) * 300) + "px"
       );
 
       piece.style.setProperty(
@@ -2654,13 +2869,15 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
         (Math.random() * 1400 - 700) + "deg"
       );
 
-      piece.style.opacity = String(.7 + Math.random() * .3);
+      piece.style.opacity = String(0.7 + Math.random() * 0.3);
 
       fragment.appendChild(piece);
 
-      piece.addEventListener("animationend", () => piece.remove(), {
-        once: true
-      });
+      piece.addEventListener(
+        "animationend",
+        () => piece.remove(),
+        { once: true }
+      );
     }
 
     document.body.appendChild(fragment);
@@ -2684,9 +2901,13 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
       particle.className = "burst-particle";
       particle.style.left = originX + "px";
       particle.style.top = originY + "px";
-      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
 
-      const angle = (Math.PI * 2 * i) / amount + Math.random() * .25;
+      particle.style.background =
+        colors[Math.floor(Math.random() * colors.length)];
+
+      const angle =
+        (Math.PI * 2 * i) / amount + Math.random() * 0.25;
+
       const distance = 65 + Math.random() * 170;
       const x = Math.cos(angle) * distance;
       const y = Math.sin(angle) * distance;
@@ -2696,20 +2917,28 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
 
       document.body.appendChild(particle);
 
-      particle.addEventListener("animationend", () => particle.remove(), {
-        once: true
-      });
+      particle.addEventListener(
+        "animationend",
+        () => particle.remove(),
+        { once: true }
+      );
     }
   }
 
   /* Back to top */
 
   function updateTopButton() {
-    if (window.scrollY > 450) topBtn.classList.add("visible");
-    else topBtn.classList.remove("visible");
+    if (window.scrollY > 450) {
+      topBtn.classList.add("visible");
+    } else {
+      topBtn.classList.remove("visible");
+    }
   }
 
-  window.addEventListener("scroll", updateTopButton, { passive: true });
+  window.addEventListener("scroll", updateTopButton, {
+    passive: true
+  });
+
   updateTopButton();
 
   topBtn.addEventListener("click", () => {
@@ -2720,6 +2949,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   });
 })();
 </script>
+
 
 </body>
 </html>
