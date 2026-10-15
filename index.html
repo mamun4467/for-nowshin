@@ -704,7 +704,7 @@ img, video { display: block; max-width: 100%; }
   margin-top: 28px;
 }
 
-/* Letter */
+/* Letter section */
 
 .letter-card {
   position: relative;
@@ -716,29 +716,42 @@ img, video { display: block; max-width: 100%; }
     rgba(255,255,255,.012);
   box-shadow: 0 20px 70px rgba(0,0,0,.18);
   overflow: hidden;
+  isolation: isolate;
 }
+
+/* Soft golden light behind the letter */
 
 .letter-card::before {
   content: "★";
   position: absolute;
+  z-index: 1;
   top: 13px;
   left: 20px;
   color: rgba(212,175,55,.8);
   font-size: 1rem;
   animation: starTwinkle 2s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .letter-card::after {
   content: "☆";
   position: absolute;
+  z-index: 1;
   bottom: 13px;
   right: 20px;
   color: rgba(212,175,55,.8);
   font-size: 1rem;
   animation: starTwinkle 2.5s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+
+.letter-card.letter-glowing {
+  animation: letterAmbientGlow 5s ease-in-out infinite;
 }
 
 .letter-topline {
+  position: relative;
+  z-index: 2;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -752,6 +765,8 @@ img, video { display: block; max-width: 100%; }
 }
 
 .letter-content {
+  position: relative;
+  z-index: 2;
   min-height: 230px;
   padding-top: 30px;
   color: #d4cbb8;
@@ -759,6 +774,7 @@ img, video { display: block; max-width: 100%; }
   font-size: clamp(1.2rem, 2.5vw, 1.5rem);
   line-height: 1.9;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .letter-content::after {
@@ -769,12 +785,15 @@ img, video { display: block; max-width: 100%; }
   margin-left: 3px;
   vertical-align: -.12em;
   background: var(--gold);
+  box-shadow: 0 0 8px rgba(212,175,55,.5);
   animation: cursorBlink .8s steps(2, start) infinite;
 }
 
 .letter-content.done::after { display: none; }
 
 .letter-signature {
+  position: relative;
+  z-index: 2;
   margin-top: 30px;
   padding-top: 20px;
   border-top: 1px solid rgba(212,175,55,.13);
@@ -783,19 +802,280 @@ img, video { display: block; max-width: 100%; }
   font-size: 1.65rem;
   font-style: italic;
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity .8s, transform .8s;
+  transform: translateY(12px);
+  filter: blur(4px);
+  transition: opacity .9s ease, transform .9s ease, filter .9s ease;
 }
 
 .letter-signature.visible {
   opacity: 1;
   transform: translateY(0);
+  filter: blur(0);
+  animation: signatureGlow 3s ease-in-out infinite;
 }
 
 .letter-controls {
   display: flex;
   justify-content: center;
   margin-top: 28px;
+}
+
+.letter-controls .outline-btn:disabled {
+  opacity: .45;
+  cursor: wait;
+  transform: none;
+}
+
+/* Golden envelope opening */
+
+.letter-envelope-wrap {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  max-width: 820px;
+  min-height: 310px;
+  margin: 45px auto 0;
+  padding: 24px;
+  border: 1px solid rgba(212,175,55,.16);
+  background:
+    radial-gradient(ellipse at 50% 55%, rgba(212,175,55,.09), transparent 65%),
+    rgba(255,255,255,.008);
+  overflow: hidden;
+  transition: opacity .8s ease, transform .8s ease, max-height .8s ease,
+    min-height .8s ease, margin .8s ease, padding .8s ease, border-color .8s ease;
+}
+
+.letter-envelope-wrap::before,
+.letter-envelope-wrap::after {
+  content: "";
+  position: absolute;
+  width: 210px;
+  height: 210px;
+  border: 1px solid rgba(212,175,55,.13);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.letter-envelope-wrap::before {
+  animation: envelopeOrbit 20s linear infinite;
+}
+
+.letter-envelope-wrap::after {
+  width: 270px;
+  height: 270px;
+  border-style: dashed;
+  opacity: .55;
+  animation: envelopeOrbit 30s linear infinite reverse;
+}
+
+.letter-envelope-wrap.opening {
+  opacity: 0;
+  transform: translateY(-15px) scale(.96);
+  pointer-events: none;
+}
+
+.letter-envelope-wrap.dismissed {
+  display: none;
+}
+
+.envelope-open-btn {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: min(360px, 100%);
+  padding: 12px;
+  border: 0;
+  background: transparent;
+  color: var(--gold-light);
+  cursor: pointer;
+  text-align: center;
+}
+
+.envelope-open-btn:disabled {
+  cursor: wait;
+}
+
+.envelope-illustration {
+  position: relative;
+  width: min(250px, 75vw);
+  aspect-ratio: 1.45 / 1;
+  perspective: 900px;
+  filter: drop-shadow(0 15px 25px rgba(0,0,0,.35));
+  transition: filter .5s ease, transform .5s ease;
+}
+
+.envelope-open-btn:hover .envelope-illustration {
+  filter: drop-shadow(0 18px 32px rgba(212,175,55,.17));
+  transform: translateY(-4px);
+}
+
+.envelope-paper {
+  position: absolute;
+  z-index: 1;
+  left: 10%;
+  right: 10%;
+  top: 5%;
+  bottom: 8%;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(212,175,55,.45);
+  background: linear-gradient(145deg, #f5e8c0, #c7a95d);
+  color: #33260c;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  box-shadow: 0 0 20px rgba(212,175,55,.08);
+  transition: transform 1s cubic-bezier(.2,.7,.2,1);
+}
+
+.envelope-body {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  overflow: hidden;
+  border: 1px solid rgba(247,231,164,.75);
+  background: linear-gradient(145deg, #5e4617, #2b210d 55%, #8b681e);
+  box-shadow: inset 0 0 25px rgba(0,0,0,.3);
+}
+
+.envelope-body::before,
+.envelope-body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.envelope-body::before {
+  background: linear-gradient(145deg, rgba(247,231,164,.2), transparent 55%);
+  clip-path: polygon(0 0, 50% 55%, 100% 0);
+}
+
+.envelope-body::after {
+  background: linear-gradient(35deg, #38280c, #a27a25);
+  clip-path: polygon(0 100%, 50% 43%, 100% 100%);
+  border-top: 1px solid rgba(247,231,164,.4);
+}
+
+.envelope-flap {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  background: linear-gradient(145deg, #b38a2c, #5b4211);
+  clip-path: polygon(0 0, 100% 0, 50% 62%);
+  transform-origin: top center;
+  backface-visibility: hidden;
+  transition: transform .85s cubic-bezier(.2,.7,.2,1), z-index 0s .4s;
+}
+
+.envelope-flap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, rgba(247,231,164,.5), transparent 70%);
+  clip-path: polygon(0 0, 50% 62%, 100% 0);
+}
+
+.envelope-seal {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: 54%;
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  border: 1px solid #f7e7a4;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 25%, #f7e7a4, #b58b2d 65%, #684810);
+  color: #33260c;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  box-shadow: 0 0 22px rgba(212,175,55,.3);
+  transition: opacity .35s ease, transform .45s ease;
+}
+
+.envelope-open-btn.opening .envelope-flap {
+  z-index: 0;
+  transform: rotateX(180deg);
+}
+
+.envelope-open-btn.opening .envelope-paper {
+  transform: translateY(-50px);
+}
+
+.envelope-open-btn.opening .envelope-seal {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.2);
+}
+
+.envelope-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.7rem, 5vw, 2.2rem);
+  line-height: 1.1;
+  letter-spacing: .02em;
+}
+
+.envelope-subtitle {
+  color: var(--muted);
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.envelope-open-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 19px;
+  border: 1px solid rgba(212,175,55,.6);
+  color: var(--gold-light);
+  font-size: .65rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  animation: envelopeButtonPulse 2.8s ease-in-out infinite;
+  transition: background .3s, color .3s;
+}
+
+.envelope-open-btn:hover .envelope-open-label {
+  background: var(--gold);
+  color: var(--black);
+}
+
+.letter-particles {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.letter-particle {
+  position: absolute;
+  bottom: -12px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--gold-light);
+  box-shadow: 0 0 9px rgba(247,231,164,.7);
+  opacity: 0;
+  animation: letterParticleFloat var(--particle-duration, 7s) linear infinite;
+  animation-delay: var(--particle-delay, 0s);
+}
+
+.letter-card.letter-complete {
+  border-color: rgba(247,231,164,.7);
+  box-shadow: 0 20px 70px rgba(0,0,0,.18), 0 0 40px rgba(212,175,55,.12);
+}
+
+.letter-card.letter-complete .letter-topline {
+  border-bottom-color: rgba(247,231,164,.45);
 }
 
 /* Premium gallery: original three-photo layout and image ratios preserved */
@@ -1012,7 +1292,7 @@ img, video { display: block; max-width: 100%; }
   position: relative;
   overflow: hidden;
   background: #030302;
- aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 1;
 }
 
 .video-screen video {
@@ -1033,9 +1313,7 @@ img, video { display: block; max-width: 100%; }
   transition: opacity .35s;
 }
 
-.video-overlay.hidden {
-  opacity: 0;
-}
+.video-overlay.hidden { opacity: 0; }
 
 .video-big-play {
   width: 74px;
@@ -1166,9 +1444,7 @@ img, video { display: block; max-width: 100%; }
   text-align: center;
 }
 
-.video-error.visible {
-  display: block;
-}
+.video-error.visible { display: block; }
 
 /* Full-screen image viewer */
 
@@ -1562,6 +1838,56 @@ img, video { display: block; max-width: 100%; }
   100% { transform: translate(var(--x),var(--y)) scale(.1); opacity: 0; }
 }
 
+/* New letter animations */
+
+@keyframes envelopeOrbit {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes envelopeButtonPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(212,175,55,0);
+    border-color: rgba(212,175,55,.45);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(212,175,55,.12);
+    border-color: rgba(247,231,164,.8);
+  }
+}
+
+@keyframes letterAmbientGlow {
+  0%, 100% {
+    box-shadow: 0 20px 70px rgba(0,0,0,.18), 0 0 12px rgba(212,175,55,.035);
+  }
+  50% {
+    box-shadow: 0 20px 70px rgba(0,0,0,.18), 0 0 35px rgba(212,175,55,.11);
+  }
+}
+
+@keyframes letterParticleFloat {
+  0% {
+    transform: translate3d(0, 0, 0) scale(.5);
+    opacity: 0;
+  }
+  15% { opacity: .7; }
+  80% { opacity: .45; }
+  100% {
+    transform: translate3d(var(--particle-drift, 20px), -340px, 0) scale(1.1);
+    opacity: 0;
+  }
+}
+
+@keyframes signatureGlow {
+  0%, 100% { text-shadow: 0 0 4px rgba(212,175,55,.08); }
+  50% { text-shadow: 0 0 18px rgba(212,175,55,.28); }
+}
+
+@keyframes letterEndingFlash {
+  0% { box-shadow: 0 20px 70px rgba(0,0,0,.18), 0 0 0 rgba(212,175,55,0); }
+  40% { box-shadow: 0 20px 70px rgba(0,0,0,.18), 0 0 55px rgba(212,175,55,.2); }
+  100% { box-shadow: 0 20px 70px rgba(0,0,0,.18), 0 0 20px rgba(212,175,55,.07); }
+}
+
 /* Responsive */
 
 @media (max-width: 800px) {
@@ -1626,9 +1952,19 @@ img, video { display: block; max-width: 100%; }
   }
 
   .memory-image { aspect-ratio: 5 / 4; }
+
   .letter-card { padding: 27px 22px; }
   .letter-topline { font-size: .55rem; }
   .letter-content { min-height: 270px; font-size: 1.25rem; }
+
+  .letter-envelope-wrap {
+    min-height: 285px;
+    padding: 18px 12px;
+  }
+
+  .envelope-illustration {
+    width: min(225px, 72vw);
+  }
 
   .floating-controls { right: 12px; bottom: 12px; }
   .float-btn { width: 42px; height: 42px; }
@@ -1804,7 +2140,34 @@ img, video { display: block; max-width: 100%; }
         </p>
       </div>
 
-      <div class="letter-card reveal reveal-delay-1">
+      <!-- New animated envelope -->
+
+      <div class="letter-envelope-wrap reveal reveal-delay-1" id="letterEnvelopeWrap">
+        <button
+          class="envelope-open-btn"
+          id="openLetterBtn"
+          type="button"
+          aria-label="Open your birthday letter"
+        >
+          <div class="envelope-illustration" aria-hidden="true">
+            <div class="envelope-paper">A little note for you</div>
+            <div class="envelope-body"></div>
+            <div class="envelope-flap"></div>
+            <div class="envelope-seal">N</div>
+          </div>
+
+          <span class="envelope-title">A letter, just for you.</span>
+          <span class="envelope-subtitle">Something from the heart</span>
+
+          <span class="envelope-open-label">
+            Open Your Letter <span aria-hidden="true">↗</span>
+          </span>
+        </button>
+      </div>
+
+      <div class="letter-card" id="letterCard" hidden>
+        <div class="letter-particles" id="letterParticles" aria-hidden="true"></div>
+
         <div class="letter-topline">
           <span>A note for Nowshin</span>
           <span>With love · Always</span>
@@ -1817,7 +2180,7 @@ img, video { display: block; max-width: 100%; }
         </div>
       </div>
 
-      <div class="letter-controls reveal">
+      <div class="letter-controls" id="letterControls" hidden>
         <button class="outline-btn" id="readAgainBtn" type="button">Read Again ↻</button>
       </div>
     </div>
@@ -1886,7 +2249,7 @@ img, video { display: block; max-width: 100%; }
     </div>
   </section>
 
-  <!-- New cinematic video section: immediately after the gallery -->
+  <!-- Cinematic video section -->
 
   <section class="section video-section" id="birthday-video">
     <div class="container">
@@ -1966,7 +2329,7 @@ img, video { display: block; max-width: 100%; }
         </p>
         <button class="primary-btn" id="secretBtn" type="button">Reveal the Secret</button>
         <div class="secret-message" id="secretMessage" aria-live="polite">
-        No matter how much life changes, I hope you always find reasons to smile, courage to chase your dreams, and happiness in every little moment. ❤️✨
+          No matter how much life changes, I hope you always find reasons to smile, courage to chase your dreams, and happiness in every little moment. ❤️✨
           May Allah bless you with endless happiness, and may your story keep getting more beautiful. No matter where life takes us, I hope our memories always remain special. 🥹💫❤️
         </div>
       </div>
@@ -1998,7 +2361,7 @@ img, video { display: block; max-width: 100%; }
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
- <script>
+<script>
 (() => {
   "use strict";
 
@@ -2012,9 +2375,16 @@ img, video { display: block; max-width: 100%; }
   const cakeWish = $("#cakeWish");
   const wishBtn = $("#wishBtn");
   const relightBtn = $("#relightBtn");
+
   const letterText = $("#letterText");
   const letterSignature = $("#letterSignature");
+  const letterCard = $("#letterCard");
+  const letterControls = $("#letterControls");
+  const letterEnvelopeWrap = $("#letterEnvelopeWrap");
+  const openLetterBtn = $("#openLetterBtn");
+  const letterParticles = $("#letterParticles");
   const readAgainBtn = $("#readAgainBtn");
+
   const secretBtn = $("#secretBtn");
   const secretMessage = $("#secretMessage");
   const toast = $("#toast");
@@ -2050,6 +2420,9 @@ img, video { display: block; max-width: 100%; }
   let wishMade = false;
   let letterStarted = false;
   let introOpened = false;
+  let envelopeOpened = false;
+  let letterParticlesStarted = false;
+  let letterEndingPlayed = false;
 
   const reduceMotion =
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -2070,6 +2443,7 @@ Happy Birthday once again, bestie! 🎂❤️
 
 Always stay happy and keep smiling, Nowshin. My best wishes aren't just for today, but for every day ahead of you. Maybe some things change with time, and life doesn't always stay the way we imagined, but the beautiful moments we share will always mean something. Some memories become even more precious as time goes by. 🥀💫❤️
 `;
+
   /* Toast */
 
   function showToast(message) {
@@ -2115,11 +2489,6 @@ Always stay happy and keep smiling, Nowshin. My best wishes aren't just for toda
   }
 
   async function startMusic(showMessage = false) {
-    /*
-      Never start background music while the birthday video
-      is playing. The video takes priority.
-    */
-
     if (!birthdayVideo.paused && !birthdayVideo.ended) {
       return;
     }
@@ -2128,11 +2497,6 @@ Always stay happy and keep smiling, Nowshin. My best wishes aren't just for toda
 
     try {
       await music.play();
-
-      /*
-        Check again after the asynchronous play request.
-        The video may have started while music.play() was pending.
-      */
 
       if (!birthdayVideo.paused && !birthdayVideo.ended) {
         music.pause();
@@ -2174,13 +2538,6 @@ Always stay happy and keep smiling, Nowshin. My best wishes aren't just for toda
     musicBtn.setAttribute("aria-label", "Play music");
   }
 
-  /*
-    Called when the video starts.
-
-    Remember whether the background music was actually playing.
-    If it was, pause it temporarily so it can resume later.
-  */
-
   function pauseMusicForVideo() {
     resumeMusicAfterVideo =
       Boolean(music && !music.paused && musicStarted);
@@ -2194,14 +2551,6 @@ Always stay happy and keep smiling, Nowshin. My best wishes aren't just for toda
     musicBtn.textContent = "♫";
     musicBtn.setAttribute("aria-label", "Play music");
   }
-
-  /*
-    Called when the video is paused or finishes.
-
-    Resume music only if it was playing before the video started.
-    Clear the flag before attempting playback to avoid duplicate
-    resume requests.
-  */
 
   async function resumeMusicAfterVideoPause() {
     if (!resumeMusicAfterVideo) {
@@ -2218,11 +2567,6 @@ Always stay happy and keep smiling, Nowshin. My best wishes aren't just for toda
   }
 
   musicBtn.addEventListener("click", () => {
-    /*
-      Keep the background music button from starting music
-      while the video is playing.
-    */
-
     if (!birthdayVideo.paused && !birthdayVideo.ended) {
       showToast("Background music is paused while the video plays.");
       return;
@@ -2622,13 +2966,6 @@ Always stay happy and keep smiling, Nowshin. My best wishes aren't just for toda
 
   birthdayVideo.addEventListener("timeupdate", updateVideoProgress);
 
-  /*
-    IMPORTANT MUSIC/VIDEO BEHAVIOR:
-    Video starts  -> pause background music.
-    Video pauses  -> resume background music if it was playing before.
-    Video ends    -> resume background music if it was playing before.
-  */
-
   birthdayVideo.addEventListener("play", () => {
     pauseMusicForVideo();
     updateVideoPlayState();
@@ -2636,12 +2973,6 @@ Always stay happy and keep smiling, Nowshin. My best wishes aren't just for toda
 
   birthdayVideo.addEventListener("pause", () => {
     updateVideoPlayState();
-
-    /*
-      The ended event can also be followed by a pause event.
-      The resume flag is cleared before music is restarted,
-      so the second event cannot restart it twice.
-    */
 
     if (!birthdayVideo.ended) {
       resumeMusicAfterVideoPause();
@@ -2718,7 +3049,70 @@ Always stay happy and keep smiling, Nowshin. My best wishes aren't just for toda
     showToast("A new wish, a new little beginning");
   });
 
-  /* Letter typewriter */
+  /* Create lightweight floating golden particles */
+
+  function createLetterParticles() {
+    if (letterParticlesStarted || reduceMotion) return;
+
+    letterParticlesStarted = true;
+
+    const fragment = document.createDocumentFragment();
+    const particleCount = 12;
+
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement("span");
+
+      particle.className = "letter-particle";
+
+      particle.style.left = (4 + Math.random() * 92) + "%";
+      particle.style.setProperty(
+        "--particle-duration",
+        (6 + Math.random() * 5) + "s"
+      );
+      particle.style.setProperty(
+        "--particle-delay",
+        (-Math.random() * 9) + "s"
+      );
+      particle.style.setProperty(
+        "--particle-drift",
+        ((Math.random() - 0.5) * 65) + "px"
+      );
+
+      fragment.appendChild(particle);
+    }
+
+    letterParticles.appendChild(fragment);
+  }
+
+  /* Letter ending effect */
+
+  function playLetterEnding() {
+    if (letterEndingPlayed) return;
+
+    letterEndingPlayed = true;
+    letterCard.classList.add("letter-complete");
+
+    if (!reduceMotion) {
+      letterCard.style.animation =
+        "letterEndingFlash 2.2s ease-out both";
+
+      const rect = letterCard.getBoundingClientRect();
+
+      burstCelebration(
+        rect.left + rect.width / 2,
+        rect.top + Math.min(rect.height - 35, window.innerHeight * .65),
+        22
+      );
+
+      setTimeout(() => {
+        letterCard.style.animation = "";
+      }, 2300);
+    }
+
+    showToast("A little note, written from the heart ✨");
+  }
+
+  /* Typewriter letter */
 
   function typeLetter() {
     clearTimeout(typingTimer);
@@ -2726,12 +3120,15 @@ Always stay happy and keep smiling, Nowshin. My best wishes aren't just for toda
     letterText.textContent = "";
     letterText.classList.remove("done");
     letterSignature.classList.remove("visible");
+    letterCard.classList.remove("letter-complete");
+
+    letterEndingPlayed = false;
 
     readAgainBtn.disabled = true;
     readAgainBtn.style.opacity = ".55";
 
-    let index = 0;
     const speed = reduceMotion ? 1 : 23;
+    let index = 0;
 
     function typeNext() {
       if (index < letter.length) {
@@ -2741,39 +3138,84 @@ Always stay happy and keep smiling, Nowshin. My best wishes aren't just for toda
         typingTimer = setTimeout(typeNext, speed);
       } else {
         letterText.classList.add("done");
-        letterSignature.classList.add("visible");
-        readAgainBtn.disabled = false;
-        readAgainBtn.style.opacity = "1";
+
+        /* Signature appears only after the complete letter */
+
+        setTimeout(() => {
+          letterSignature.classList.add("visible");
+
+          setTimeout(() => {
+            readAgainBtn.disabled = false;
+            readAgainBtn.style.opacity = "1";
+            playLetterEnding();
+          }, reduceMotion ? 20 : 1000);
+        }, reduceMotion ? 0 : 350);
       }
     }
 
     typeNext();
   }
 
+  /* Envelope reveal sequence */
+
+  function openLetter() {
+    if (envelopeOpened) return;
+
+    envelopeOpened = true;
+    openLetterBtn.disabled = true;
+    openLetterBtn.classList.add("opening");
+
+    showToast("A little something, just for you ✨");
+
+    const revealDelay = reduceMotion ? 50 : 950;
+
+    setTimeout(() => {
+      letterEnvelopeWrap.classList.add("opening");
+
+      setTimeout(() => {
+        letterEnvelopeWrap.classList.add("dismissed");
+
+        letterCard.hidden = false;
+        letterControls.hidden = false;
+
+        letterCard.classList.add("letter-glowing");
+
+        /*
+          Start the typewriter after the envelope has opened.
+          The rest of the website stays unchanged.
+        */
+
+        createLetterParticles();
+        typeLetter();
+
+        /*
+          Bring the revealed letter into view on small screens.
+        */
+
+        setTimeout(() => {
+          const rect = letterCard.getBoundingClientRect();
+
+          if (rect.top > window.innerHeight || rect.bottom < 0) {
+            letterCard.scrollIntoView({
+              behavior: reduceMotion ? "auto" : "smooth",
+              block: "start"
+            });
+          }
+        }, 100);
+      }, reduceMotion ? 0 : 550);
+    }, revealDelay);
+  }
+
+  openLetterBtn.addEventListener("click", openLetter);
+
   readAgainBtn.addEventListener("click", () => {
+    if (!envelopeOpened) return;
+
+    letterEndingPlayed = false;
     typeLetter();
+
     showToast("A little note, from the beginning");
   });
-
-  if ("IntersectionObserver" in window) {
-    const letterObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !letterStarted) {
-            letterStarted = true;
-            typeLetter();
-            letterObserver.disconnect();
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    letterObserver.observe($("#letter"));
-  } else {
-    letterStarted = true;
-    typeLetter();
-  }
 
   /* Secret message */
 
@@ -2950,7 +3392,6 @@ Always stay happy and keep smiling, Nowshin. My best wishes aren't just for toda
   });
 })();
 </script>
-
 
 </body>
 </html>
