@@ -799,7 +799,7 @@ img, video { display: block; max-width: 100%; }
   margin-top: 28px;
 }
 
-/* Premium gallery: original three-photo layout and image ratios preserved */
+/* Premium gallery */
 
 .gallery-section {
   background: linear-gradient(180deg, transparent, rgba(212,175,55,.025), transparent);
@@ -968,18 +968,14 @@ img, video { display: block; max-width: 100%; }
   justify-content: center;
 }
 
-.video-heading .section-label::before {
-  display: none;
-}
+.video-heading .section-label::before { display: none; }
 
 .video-heading .section-title {
   max-width: 760px;
   margin: 0 auto;
 }
 
-.video-heading .section-description {
-  margin-inline: auto;
-}
+.video-heading .section-description { margin-inline: auto; }
 
 .cinematic-frame {
   position: relative;
@@ -1013,7 +1009,7 @@ img, video { display: block; max-width: 100%; }
   position: relative;
   overflow: hidden;
   background: #030302;
- aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 1;
 }
 
 .video-screen video {
@@ -1034,9 +1030,7 @@ img, video { display: block; max-width: 100%; }
   transition: opacity .35s;
 }
 
-.video-overlay.hidden {
-  opacity: 0;
-}
+.video-overlay.hidden { opacity: 0; }
 
 .video-big-play {
   width: 74px;
@@ -1167,9 +1161,7 @@ img, video { display: block; max-width: 100%; }
   text-align: center;
 }
 
-.video-error.visible {
-  display: block;
-}
+.video-error.visible { display: block; }
 
 /* Full-screen image viewer */
 
@@ -1887,7 +1879,7 @@ img, video { display: block; max-width: 100%; }
     </div>
   </section>
 
-  <!-- New cinematic video section: immediately after the gallery -->
+  <!-- Cinematic video -->
 
   <section class="section video-section" id="birthday-video">
     <div class="container">
@@ -2024,7 +2016,7 @@ img, video { display: block; max-width: 100%; }
   const lightboxCaption = $("#lightboxCaption");
   const lightboxClose = $("#lightboxClose");
 
-  /* New video controls */
+  /* Video controls */
 
   const birthdayVideo = $("#birthdayVideo");
   const videoScreen = $("#videoScreen");
@@ -2042,6 +2034,17 @@ img, video { display: block; max-width: 100%; }
 
   let music = null;
   let musicStarted = false;
+
+  /*
+    musicWanted:
+    The user's preference for background music.
+
+    musicResumeAfterVideo:
+    Whether music should resume when the video pauses or ends.
+  */
+  let musicWanted = false;
+  let musicResumeAfterVideo = false;
+
   let toastTimeout = null;
   let typingTimer = null;
   let confettiCooldown = false;
@@ -2088,7 +2091,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   window.addEventListener("resize", updateProgress);
   updateProgress();
 
-  /* Music */
+  /* Background music */
 
   function setupMusic() {
     if (!music) {
@@ -2099,35 +2102,123 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
     }
   }
 
+  function updateMusicButton() {
+    musicBtn.classList.toggle("playing", musicStarted && music && !music.paused);
+    musicBtn.textContent = "♫";
+    musicBtn.setAttribute(
+      "aria-label",
+      musicWanted ? "Pause music" : "Play music"
+    );
+  }
+
   async function startMusic(showMessage = false) {
     setupMusic();
 
+    /*
+      If the video is playing, never start the background track over it.
+      Remember the user's request so music can resume after the video pauses.
+    */
+    if (birthdayVideo && !birthdayVideo.paused && !birthdayVideo.ended) {
+      musicWanted = true;
+      musicResumeAfterVideo = true;
+      musicStarted = false;
+      updateMusicButton();
+
+      if (showMessage) {
+        showToast("Background music will resume when the video pauses.");
+      }
+
+      return;
+    }
+
+    musicWanted = true;
+
     try {
       await music.play();
-      musicStarted = true;
-      musicBtn.classList.add("playing");
-      musicBtn.textContent = "♫";
-      musicBtn.setAttribute("aria-label", "Pause music");
 
-      if (showMessage) showToast("A little music for your special day ♫");
+      /*
+        Check again after awaiting play(): the video might have started
+        while the browser was resolving the music playback request.
+      */
+      if (birthdayVideo && !birthdayVideo.paused && !birthdayVideo.ended) {
+        music.pause();
+        musicStarted = false;
+        musicResumeAfterVideo = true;
+        updateMusicButton();
+        return;
+      }
+
+      musicStarted = true;
+      musicResumeAfterVideo = false;
+      updateMusicButton();
+
+      if (showMessage) {
+        showToast("A little music for your special day ♫");
+      }
     } catch (error) {
       musicStarted = false;
-      musicBtn.classList.remove("playing");
-      showToast("Music could not start. Check that music.mp3 is uploaded.");
+      updateMusicButton();
+
+      if (showMessage) {
+        showToast("Music could not start. Check that music.mp3 is uploaded.");
+      }
     }
   }
 
   function stopMusic() {
-    if (music) music.pause();
+    musicWanted = false;
+    musicResumeAfterVideo = false;
+
+    if (music) {
+      music.pause();
+    }
+
     musicStarted = false;
-    musicBtn.classList.remove("playing");
-    musicBtn.textContent = "♫";
-    musicBtn.setAttribute("aria-label", "Play music");
+    updateMusicButton();
+  }
+
+  /*
+    Called when video playback starts.
+    Only resume music later if it was actually playing before the video.
+  */
+  function pauseMusicForVideo() {
+    const wasPlaying = Boolean(music && !music.paused);
+
+    musicResumeAfterVideo = musicWanted && wasPlaying;
+
+    if (wasPlaying) {
+      music.pause();
+    }
+
+    musicStarted = false;
+    updateMusicButton();
+  }
+
+  /*
+    Called when video playback pauses or ends.
+    Do not resume if the user switched music off while the video was playing.
+  */
+  async function resumeMusicAfterVideo() {
+    if (!musicResumeAfterVideo || !musicWanted) {
+      musicResumeAfterVideo = false;
+      updateMusicButton();
+      return;
+    }
+
+    if (birthdayVideo && !birthdayVideo.paused && !birthdayVideo.ended) {
+      return;
+    }
+
+    musicResumeAfterVideo = false;
+    await startMusic(false);
   }
 
   musicBtn.addEventListener("click", () => {
-    if (musicStarted && music && !music.paused) stopMusic();
-    else startMusic(true);
+    if (musicWanted) {
+      stopMusic();
+    } else {
+      startMusic(true);
+    }
   });
 
   /* Opening reveal */
@@ -2396,9 +2487,22 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   async function toggleVideoPlayback() {
     if (birthdayVideo.paused || birthdayVideo.ended) {
       try {
+        /*
+          The "play" event below pauses background music immediately.
+          Calling pauseMusicForVideo here as well handles the transition
+          as early as possible when the user presses Play.
+        */
+        pauseMusicForVideo();
+
         await birthdayVideo.play();
         videoError.classList.remove("visible");
       } catch (error) {
+        /*
+          If playback failed, the video did not take over audio.
+          Restore music only if it had been playing before the attempt.
+        */
+        await resumeMusicAfterVideo();
+
         videoError.textContent =
           "Video could not play. Check that birthday-video.mp4 is uploaded and is a valid MP4 file.";
         videoError.classList.add("visible");
@@ -2446,14 +2550,51 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
     updateVideoProgress();
   });
 
-  birthdayVideo.addEventListener("timeupdate", updateVideoProgress);
-  birthdayVideo.addEventListener("play", updateVideoPlayState);
-  birthdayVideo.addEventListener("pause", updateVideoPlayState);
+  birthdayVideo.addEventListener("play", () => {
+    pauseMusicForVideo();
+    updateVideoPlayState();
+  });
+
+  birthdayVideo.addEventListener("playing", () => {
+    /*
+      Safety check: if music was requested while the video was starting,
+      make sure the two audio tracks never overlap.
+    */
+    if (music && !music.paused) {
+      music.pause();
+      musicStarted = false;
+      updateMusicButton();
+    }
+
+    updateVideoPlayState();
+  });
+
+  birthdayVideo.addEventListener("pause", () => {
+    updateVideoPlayState();
+
+    /*
+      Do not resume at the pause event if the video is actually at its end;
+      the ended event handles that case.
+    */
+    if (!birthdayVideo.ended) {
+      resumeMusicAfterVideo();
+    }
+  });
 
   birthdayVideo.addEventListener("ended", () => {
     updateVideoPlayState();
+
+    /*
+      Reset the video to the beginning, then resume the background track
+      if it was playing before the video started and the user still wants it.
+    */
     birthdayVideo.currentTime = 0;
     updateVideoProgress();
+    resumeMusicAfterVideo();
+  });
+
+  birthdayVideo.addEventListener("loadeddata", () => {
+    videoError.classList.remove("visible");
   });
 
   birthdayVideo.addEventListener("error", () => {
@@ -2463,6 +2604,12 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
     videoPlayBtn.disabled = true;
     videoSoundBtn.disabled = true;
     videoProgress.disabled = true;
+
+    /*
+      If the video fails to load, let previously playing background music
+      resume instead of leaving it paused.
+    */
+    resumeMusicAfterVideo();
   });
 
   birthdayVideo.addEventListener("canplay", () => {
@@ -2475,6 +2622,7 @@ Happy Birthday, Nowshin. May this year be kind to you.`;
   updateVideoPlayState();
   updateVideoSoundState();
   updateVideoProgress();
+  updateMusicButton();
 
   /* Birthday cake wish */
 
