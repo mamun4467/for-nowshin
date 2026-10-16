@@ -9,7 +9,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -704,39 +704,46 @@ img, video { display: block; max-width: 100%; }
   margin-top: 28px;
 }
 
-/* Friendship letter - ULTRA PREMIUM LUXURY ENHANCEMENTS */
+/* ==========================================
+   ULTRA ROYAL & LUXURY NOTE LETTER SECTION
+   ========================================== */
 
 .letter-section {
   position: relative;
   padding: 120px 0;
-  background: radial-gradient(ellipse at 50% 30%, rgba(212,175,55,.06), transparent 70%);
+  background: radial-gradient(ellipse at 50% 35%, rgba(212,175,55,.08), transparent 70%);
+  transition: background .8s ease;
 }
 
-/* ENVELOPE CONTAINER */
+.letter-section.spotlight-active {
+  background: radial-gradient(circle at 50% 45%, rgba(212,175,55,.15), rgba(4,4,3,0.96) 80%);
+}
+
+/* ROYAL ENVELOPE CONTAINER */
 .letter-envelope-wrap {
   position: relative;
   z-index: 3;
   display: grid;
   place-items: center;
   max-width: 820px;
-  min-height: 380px;
+  min-height: 400px;
   margin: 50px auto 0;
-  padding: 35px 24px;
-  border: 1px solid rgba(212,175,55,.35);
+  padding: 40px 24px;
+  border: 1px solid rgba(212,175,55,.4);
   background: 
-    radial-gradient(ellipse at 50% 50%, rgba(212,175,55,.12), transparent 75%),
-    linear-gradient(145deg, rgba(20,18,14,0.9), rgba(8,8,7,0.98));
-  box-shadow: 0 25px 70px rgba(0,0,0,.6), 0 0 30px rgba(212,175,55,.08);
-  backdrop-filter: blur(8px);
+    radial-gradient(ellipse at 50% 50%, rgba(212,175,55,.14), transparent 75%),
+    linear-gradient(145deg, rgba(22,20,15,0.95), rgba(8,8,7,0.99));
+  box-shadow: 0 30px 80px rgba(0,0,0,.7), 0 0 35px rgba(212,175,55,.1);
+  backdrop-filter: blur(10px);
   overflow: hidden;
-  transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1), border-color .8s;
+  transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);
 }
 
 .letter-envelope-wrap::before {
   content: "";
   position: absolute;
-  inset: 8px;
-  border: 1px solid rgba(212,175,55,.18);
+  inset: 10px;
+  border: 1px solid rgba(212,175,55,.2);
   pointer-events: none;
 }
 
@@ -747,7 +754,7 @@ img, video { display: block; max-width: 100%; }
   flex-direction: column;
   align-items: center;
   gap: 22px;
-  width: min(400px, 100%);
+  width: min(420px, 100%);
   padding: 15px;
   border: 0;
   background: transparent;
@@ -756,22 +763,45 @@ img, video { display: block; max-width: 100%; }
   text-align: center;
 }
 
-.envelope-open-btn:disabled {
-  cursor: wait;
-}
-
 .envelope-illustration {
   position: relative;
-  width: min(280px, 78vw);
+  width: min(300px, 80vw);
   aspect-ratio: 1.48 / 1;
-  perspective: 1000px;
-  filter: drop-shadow(0 20px 35px rgba(0,0,0,.6));
+  perspective: 1100px;
+  filter: drop-shadow(0 20px 35px rgba(0,0,0,.65));
   transition: filter .5s ease, transform .5s cubic-bezier(.2,.7,.2,1);
 }
 
 .envelope-open-btn:hover .envelope-illustration {
-  filter: drop-shadow(0 25px 45px rgba(212,175,55,.3));
+  filter: drop-shadow(0 25px 45px rgba(212,175,55,.35));
   transform: translateY(-8px) scale(1.02);
+}
+
+/* Royal Postmark Stamp */
+.royal-postmark {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  z-index: 4;
+  width: 58px;
+  height: 58px;
+  border: 1px dashed rgba(212,175,55,.7);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--gold-light);
+  font-size: .52rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transform: rotate(-12deg);
+  opacity: .85;
+  pointer-events: none;
+}
+
+.royal-postmark::before {
+  content: "ROYAL MAIL";
+  font-size: .45rem;
+  letter-spacing: .1em;
 }
 
 .envelope-paper {
@@ -783,15 +813,15 @@ img, video { display: block; max-width: 100%; }
   bottom: 8%;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(212,175,55,.5);
-  background: linear-gradient(135deg, #f7e9c8, #d4af37 80%, #a38128);
-  color: #2b1f07;
+  border: 1px solid rgba(212,175,55,.6);
+  background: linear-gradient(135deg, #f8ebd0, #d4af37 80%, #9e7b25);
+  color: #261b05;
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 600;
   font-style: italic;
   letter-spacing: .05em;
-  box-shadow: 0 0 25px rgba(212,175,55,.15);
+  box-shadow: 0 0 25px rgba(212,175,55,.18);
   transition: transform .9s cubic-bezier(.2,.7,.2,1);
 }
 
@@ -801,8 +831,8 @@ img, video { display: block; max-width: 100%; }
   inset: 0;
   overflow: hidden;
   border: 1px solid rgba(247,231,164,.6);
-  background: linear-gradient(145deg, #423211, #171208 60%, #634b1a);
-  box-shadow: inset 0 0 30px rgba(0,0,0,.5);
+  background: linear-gradient(145deg, #3d2e10, #140f07 60%, #5e4618);
+  box-shadow: inset 0 0 35px rgba(0,0,0,.6);
 }
 
 .envelope-body::before {
@@ -817,7 +847,7 @@ img, video { display: block; max-width: 100%; }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(35deg, #241a08, #8c671e);
+  background: linear-gradient(35deg, #211707, #805c19);
   clip-path: polygon(0 100%, 50% 45%, 100% 100%);
   border-top: 1px solid rgba(247,231,164,.4);
 }
@@ -826,38 +856,39 @@ img, video { display: block; max-width: 100%; }
   position: absolute;
   z-index: 5;
   inset: 0;
-  background: linear-gradient(145deg, #9e7926, #42310c);
+  background: linear-gradient(145deg, #967222, #3b2b0a);
   clip-path: polygon(0 0, 100% 0, 50% 60%);
   transform-origin: top center;
   backface-visibility: hidden;
   transition: transform .85s cubic-bezier(.2,.7,.2,1), z-index 0s .4s;
 }
 
+/* Crimson Red & Gold Wax Seal */
 .envelope-seal {
   position: absolute;
   z-index: 6;
   left: 50%;
   top: 52%;
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   display: grid;
   place-items: center;
   transform: translate(-50%, -50%);
-  border: 1px solid #fff1b4;
+  border: 1px solid #ffd875;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 25%, #fcebb1, #b88d2a 65%, #4a3207);
-  color: #2b1f07;
+  background: radial-gradient(circle at 35% 25%, #800a0a, #4a0202 70%, #240000);
+  color: #f7e7a4;
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.45rem;
+  font-size: 1.55rem;
   font-weight: 700;
-  box-shadow: 0 0 30px rgba(212,175,55,.6), inset 0 0 8px rgba(255,255,255,.5);
+  box-shadow: 0 0 30px rgba(180,20,20,.6), 0 0 15px rgba(212,175,55,.4), inset 0 0 8px rgba(255,255,255,.4);
   animation: sealGlow 3s infinite ease-in-out;
   transition: opacity .35s ease, transform .45s ease;
 }
 
 @keyframes sealGlow {
-  0%, 100% { box-shadow: 0 0 20px rgba(212,175,55,.4); }
-  50% { box-shadow: 0 0 35px rgba(247,231,164,.8), 0 0 10px rgba(255,255,255,.9); }
+  0%, 100% { box-shadow: 0 0 20px rgba(180,20,20,.4), 0 0 10px rgba(212,175,55,.3); }
+  50% { box-shadow: 0 0 38px rgba(220,30,30,.8), 0 0 20px rgba(247,231,164,.7); }
 }
 
 .envelope-open-btn.opening .envelope-flap {
@@ -871,40 +902,7 @@ img, video { display: block; max-width: 100%; }
 
 .envelope-open-btn.opening .envelope-seal {
   opacity: 0;
-  transform: translate(-50%, -50%) scale(.2);
-}
-
-.envelope-title {
-  font-family: "Cormorant Garamond", serif;
-  font-size: clamp(1.75rem, 5vw, 2.3rem);
-  line-height: 1.1;
-  letter-spacing: .02em;
-}
-
-.envelope-subtitle {
-  color: var(--muted);
-  font-size: .72rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-
-.envelope-open-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 22px;
-  border: 1px solid rgba(212,175,55,.6);
-  color: var(--gold-light);
-  font-size: .65rem;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  animation: envelopeButtonPulse 2.8s ease-in-out infinite;
-  transition: background .3s, color .3s;
-}
-
-.envelope-open-btn:hover .envelope-open-label {
-  background: var(--gold);
-  color: var(--black);
+  transform: translate(-50%, -50%) scale(.1) rotate(45deg);
 }
 
 .letter-envelope-wrap.opening {
@@ -917,27 +915,27 @@ img, video { display: block; max-width: 100%; }
   display: none;
 }
 
-/* ULTRA LUXURY LETTER CARD */
+/* ULTRA PARCHMENT LETTER CARD */
 .letter-card {
   position: relative;
   max-width: 850px;
   margin: 50px auto 0;
   padding: clamp(35px, 6vw, 75px);
-  border: 1px solid rgba(212,175,55,.4);
+  border: 1px solid rgba(212,175,55,.45);
   background: 
-    radial-gradient(ellipse at 50% 0%, rgba(212,175,55,.15), transparent 65%),
-    linear-gradient(135deg, rgba(25,22,16,.98) 0%, rgba(12,11,9,1) 100%);
-  box-shadow: 0 30px 90px rgba(0,0,0,.7), 0 0 50px rgba(212,175,55,.12);
+    radial-gradient(ellipse at 50% 0%, rgba(212,175,55,.16), transparent 65%),
+    linear-gradient(135deg, rgba(22,19,14,.99) 0%, rgba(10,9,7,1) 100%);
+  box-shadow: 0 35px 100px rgba(0,0,0,.8), 0 0 50px rgba(212,175,55,.14);
   isolation: isolate;
   overflow: hidden;
   transition: border-color .8s ease, box-shadow .8s ease;
 }
 
-/* CORNER ART DECO ACCENTS */
+/* ORNATE GOLD CORNERS */
 .letter-corner {
   position: absolute;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border: 2px solid var(--gold);
   pointer-events: none;
   z-index: 3;
@@ -955,9 +953,9 @@ img, video { display: block; max-width: 100%; }
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(15rem, 30vw, 26rem);
+  font-size: clamp(16rem, 32vw, 28rem);
   font-style: italic;
-  color: rgba(212,175,55,0.03);
+  color: rgba(212,175,55,0.035);
   pointer-events: none;
   z-index: 1;
 }
@@ -1021,15 +1019,14 @@ img, video { display: block; max-width: 100%; }
   filter: drop-shadow(0 3px 12px rgba(212,175,55,.4));
 }
 
+/* Shimmering Golden Pen Nib Cursor */
 .letter-content::after {
-  content: "";
+  content: "✒";
   display: inline-block;
-  width: 3px;
-  height: 1.1em;
-  margin-left: 5px;
-  vertical-align: -.15em;
-  background: var(--gold-light);
-  box-shadow: 0 0 12px rgba(247,231,164,1);
+  margin-left: 6px;
+  color: var(--gold-light);
+  font-size: 1.1em;
+  text-shadow: 0 0 12px rgba(247,231,164,1);
   animation: cursorBlink .75s steps(2, start) infinite;
 }
 
@@ -1109,7 +1106,7 @@ img, video { display: block; max-width: 100%; }
   100% { transform: translate(100%, 100%) rotate(25deg); }
 }
 
-/* Premium gallery: original three-photo layout and image ratios preserved */
+/* Gallery Section */
 
 .gallery-section {
   background: linear-gradient(180deg, transparent, rgba(212,175,55,.025), transparent);
@@ -2160,7 +2157,7 @@ img, video { display: block; max-width: 100%; }
     </div>
   </section>
 
-  <!-- Friendship letter - ULTRA PREMIUM LUXURY EDITION -->
+  <!-- Friendship letter - ULTRA ROYAL & LUXURY EDITION -->
 
   <section class="section letter-section" id="letter">
     <div class="container">
@@ -2172,7 +2169,7 @@ img, video { display: block; max-width: 100%; }
         </p>
       </div>
 
-      <!-- Animated Luxury Envelope -->
+      <!-- Animated Royal Envelope -->
       <div class="letter-envelope-wrap reveal reveal-delay-1" id="letterEnvelopeWrap">
         <button
           class="envelope-open-btn"
@@ -2181,6 +2178,7 @@ img, video { display: block; max-width: 100%; }
           aria-label="Open your birthday letter"
         >
           <div class="envelope-illustration" aria-hidden="true">
+            <div class="royal-postmark">WITH LOVE</div>
             <div class="envelope-paper">For Nowshin ✦</div>
             <div class="envelope-body"></div>
             <div class="envelope-flap"></div>
@@ -2188,7 +2186,7 @@ img, video { display: block; max-width: 100%; }
           </div>
 
           <span class="envelope-title">A letter, written for you.</span>
-          <span class="envelope-subtitle">Click to break the golden seal</span>
+          <span class="envelope-subtitle">Break the crimson wax seal</span>
 
           <span class="envelope-open-label">
             Open Your Letter <span aria-hidden="true">↗</span>
@@ -2196,9 +2194,9 @@ img, video { display: block; max-width: 100%; }
         </button>
       </div>
 
-      <!-- Ultra Luxury Letter Card -->
+      <!-- Ultra Parchment Letter Card -->
       <div class="letter-card" id="letterCard" hidden>
-        <!-- Art Deco Frame Corners -->
+        <!-- Ornate Frame Corners -->
         <div class="letter-corner letter-corner-tl"></div>
         <div class="letter-corner letter-corner-tr"></div>
         <div class="letter-corner letter-corner-bl"></div>
@@ -2426,6 +2424,7 @@ img, video { display: block; max-width: 100%; }
   const openLetterBtn = $("#openLetterBtn");
   const letterParticles = $("#letterParticles");
   const readAgainBtn = $("#readAgainBtn");
+  const letterSection = $("#letter");
 
   const secretBtn = $("#secretBtn");
   const secretMessage = $("#secretMessage");
@@ -3223,15 +3222,17 @@ Always stay happy and keep smiling, Nowshin. My best wishes aren't just for toda
     envelopeOpened = true;
     openLetterBtn.disabled = true;
     openLetterBtn.classList.add("opening");
+    
+    letterSection.classList.add("spotlight-active");
 
     const rect = openLetterBtn.getBoundingClientRect();
     burstCelebration(
       rect.left + rect.width / 2,
       rect.top + rect.height / 2,
-      25
+      28
     );
 
-    showToast("A little something, just for you ✨");
+    showToast("Unfolding your letter ✨");
 
     const revealDelay = reduceMotion ? 50 : 950;
 
