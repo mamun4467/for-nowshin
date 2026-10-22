@@ -786,7 +786,7 @@
     }
     .vault-close:hover { background: rgba(215,160,162,0.2); }
 
-    /* NOWSHIN AI ASSISTANT WIDGET STYLES (ULTRA-SMART & PREMIUM) */
+    /* NOWSHIN AI ASSISTANT WIDGET STYLES (ULTRA-SMART, MULTI-LINGUAL & DETAILED) */
     .ai-chatbot-widget {
       position: fixed;
       right: 20px;
@@ -794,7 +794,7 @@
       z-index: 99;
       width: 380px;
       max-width: calc(100vw - 40px);
-      height: 520px;
+      height: 530px;
       max-height: calc(100vh - 120px);
       display: flex;
       flex-direction: column;
@@ -904,7 +904,7 @@
       gap: 6px;
       border-top: 1px solid rgba(215,160,162,0.15);
       background: rgba(11,9,13,0.5);
-      max-height: 100px;
+      max-height: 105px;
       overflow-y: auto;
     }
     .ai-suggestion-chip {
@@ -1941,7 +1941,7 @@
     </div>
   </div>
 
-  <!-- NOWSHIN AI ASSISTANT WIDGET (ULTRA-SMART & PREMIUM) -->
+  <!-- NOWSHIN AI ASSISTANT WIDGET (ULTRA-SMART & MULTILINGUAL) -->
   <div class="ai-chatbot-widget" id="aiChatWidget">
     <div class="ai-chat-header">
       <div class="ai-chat-title-wrap">
@@ -1950,7 +1950,7 @@
           <h4 class="ai-chat-title">Nowshin AI Assistant</h4>
           <div class="ai-chat-subtitle-wrap">
             <span class="ai-status-pulse"></span>
-            <span class="ai-chat-subtitle">Active Portfolio Expert</span>
+            <span class="ai-chat-subtitle">Smart Multilingual AI</span>
           </div>
         </div>
       </div>
@@ -1959,7 +1959,7 @@
     
     <div class="ai-chat-body" id="aiChatBody">
       <div class="ai-msg bot">
-        Hello! ✨ I am Nowshin's intelligent portfolio concierge. You can ask me anything about her graphic design projects, NYDA training, SEO marketing expertise, education, or how to get in touch!
+        Hello! ✨ I am Nowshin's personal AI Assistant. Bangla, Banglish, or English — ask me anything about her skills, experience, projects, or education!
       </div>
       <!-- Typing animation box -->
       <div class="ai-typing-indicator" id="aiTypingIndicator">
@@ -1970,15 +1970,14 @@
     </div>
 
     <div class="ai-chat-suggestions">
-      <span class="ai-suggestion-chip" data-question="What are Nowshin's core skills?">⚡ Core Skills</span>
-      <span class="ai-suggestion-chip" data-question="Tell me about her NYDA experience">👩‍🏫 NYDA Teaching</span>
-      <span class="ai-suggestion-chip" data-question="Show graphic design work">🎨 Graphic Design</span>
-      <span class="ai-suggestion-chip" data-question="What about her education?">🎓 Education</span>
-      <span class="ai-suggestion-chip" data-question="How can I contact Nowshin?">📩 Contact Info</span>
+      <span class="ai-suggestion-chip" data-question="About Nowshin">📌 About Nowshin</span>
+      <span class="ai-suggestion-chip" data-question="Skills & Expertise">⚡ Skills</span>
+      <span class="ai-suggestion-chip" data-question="NYDA Experience">👩‍🏫 NYDA Experience</span>
+      <span class="ai-suggestion-chip" data-question="Contact Info">📩 Contact Details</span>
     </div>
 
     <div class="ai-chat-footer">
-      <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Ask about Nowshin's work, skills...">
+      <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Ask anything / যেকোনো প্রশ্ন করুন...">
       <button class="ai-chat-send" id="aiChatSend" aria-label="Send Message"><i class="fa-solid fa-paper-plane"></i></button>
     </div>
   </div>
@@ -3184,7 +3183,7 @@
       });
     }
 
-    // ULTRA-SMART, DETAILED & PREMIUM NOWSHIN AI ASSISTANT CHATBOT LOGIC
+    // ULTRA-SMART, MULTILINGUAL & HIGH-INTELLIGENCE NOWSHIN AI ASSISTANT CHATBOT
     const aiChatWidget = document.getElementById("aiChatWidget");
     const aiChatToggle = document.getElementById("aiChatToggle");
     const aiChatClose = document.getElementById("aiChatClose");
@@ -3208,7 +3207,6 @@
       const msgDiv = document.createElement("div");
       msgDiv.className = `ai-msg ${sender}`;
       msgDiv.innerHTML = text;
-      // Insert before typing indicator so typing indicator stays at bottom
       aiChatBody.insertBefore(msgDiv, aiTypingIndicator);
       aiChatBody.scrollTop = aiChatBody.scrollHeight;
     }
@@ -3222,66 +3220,143 @@
       aiTypingIndicator.style.display = "none";
     }
 
+    // ADVANCED MULTI-LANGUAGE & MULTI-INTENT RESPONSE ENGINE
     function generateSmartResponse(query) {
-      const q = query.toLowerCase();
+      const q = query.toLowerCase().trim();
 
-      // Greetings & Welcome
-      if (q.includes("hi") || q.includes("hello") || q.includes("hey") || q.includes("assalamu") || q.includes("salam")) {
-        return "Hello! ✨ Welcome to Nur Jannat Nowshin's official portfolio. I am her advanced AI concierge. Feel free to ask me about her graphic design masterpieces, teaching roles at NYDA, SEO strategies, or how to collaborate with her!";
-      }
-      
-      // NYDA & Teaching Experience
-      if (q.includes("nyda") || q.includes("instructor") || q.includes("teach") || q.includes("trainee") || q.includes("mentorship") || q.includes("job") || q.includes("experience")) {
-        return "👩‍🏫 <b>Teaching & Professional Instruction:</b><br>Nowshin works as an IT & Design Instructor at the <b>National Youth Development Academy (NYDA)</b>. Key highlights include:<br>• Mentored <b>100+ trainees</b> through hands-on coursework.<br>• Achieved a <b>95%+ module completion rate</b>.<br>• Specializes in building workforce-ready skills in computer applications and design.";
-      }
+      // Detection flags for Language
+      const isBangla = /[\u0980-\u09FF]/.test(q);
+      const isBanglish = (q.includes("kemon") || q.includes("nam") || q.includes("ki") || q.includes("kore") || q.includes("khobor") || q.includes("bhalo") || q.includes("janate") || q.includes("koi") || q.includes("somporke") || q.includes("kaj") || q.includes("shiksha"));
 
-      // Graphic Design & Branding
-      if (q.includes("graphic") || q.includes("design") || q.includes("illustrator") || q.includes("photoshop") || q.includes("canva") || q.includes("logo") || q.includes("brand") || q.includes("art")) {
-        return "🎨 <b>Graphic Design & Branding Suite:</b><br>Nowshin has delivered <b>30+ identity packages</b>. Her expertise spans:<br>• <b>Adobe Illustrator CC</b> (92% proficiency)<br>• <b>Adobe Photoshop</b> (88% proficiency)<br>• <b>Canva Pro</b> (95% proficiency)<br>She designs stunning custom monograms, luxury brand identities, social media campaigns, and high-end flyers.";
-      }
-
-      // Marketing & SEO
-      if (q.includes("seo") || q.includes("marketing") || q.includes("ads") || q.includes("meta") || q.includes("content") || q.includes("semrush") || q.includes("ahrefs")) {
-        return "📈 <b>Digital Marketing & SEO Expertise:</b><br>Certified via the Government Freelancing Training Program (DYD) in 2025, Nowshin specializes in:<br>• Meta Ads & social media campaigns.<br>• On-page SEO fundamentals & keyword optimization using SEMrush / Ahrefs.<br>• Content strategy designed to boost organic traffic and brand visibility.";
+      // 1. GREETINGS & INTRO
+      if (q.includes("hi") || q.includes("hello") || q.includes("hey") || q.includes("assalamu") || q.includes("salam") || q.includes("kemon") || q.includes("কেমন") || q.includes("হাই") || q.includes("হ্যালো") || q.includes("সালাম")) {
+        if (isBangla) {
+          return "হ্যালো! ✨ নূর জান্নাত নওশিনের পোর্টফোলিওতে আপনাকে স্বাগতম। আমি নওশিনের এআই অ্যাসিস্ট্যান্ট। আপনি নওশিনের স্কিল, কাজের অভিজ্ঞতা, পড়াশোনা বা যোগাযোগ করার মাধ্যম সম্পর্কে যেকোনো প্রশ্ন করতে পারেন!";
+        } else if (isBanglish) {
+          return "Hello! ✨ Nur Jannat Nowshin er portfolio te apnake swagotom. Ami Nowshin er AI Assistant. Apni Nowshin er skills, experience, porashona ba jogajog er bishoye jekono proshno korte paren!";
+        } else {
+          return "Hello! ✨ Welcome to Nur Jannat Nowshin's official portfolio. I am her AI Concierge. How can I assist you today? Feel free to ask about her graphic design, teaching at NYDA, SEO expertise, or education!";
+        }
       }
 
-      // Web Development & CMS
-      if (q.includes("web") || q.includes("wordpress") || q.includes("elementor") || q.includes("site") || q.includes("e-commerce")) {
-        return "💻 <b>Web Design & CMS Suites:</b><br>Nowshin builds responsive WordPress e-commerce websites utilizing <b>Elementor</b>. She handles end-to-end custom page layouts, UI/UX structure, and local hosting configurations.";
+      // 2. WHO IS NOWSHIN / ABOUT ME
+      if (q.includes("who") || q.includes("nowshin") || q.includes("about") || q.includes("identity") || q.includes("ke") || q.includes("কার") || q.includes("নওশিন কে") || q.includes("পরিচয়")) {
+        if (isBangla) {
+          return "📌 <b>নূর জান্নাত নওশিন সম্পর্কে:</b><br>নওশিন একজন অত্যন্ত সৃজনশীল ডিজিটাল প্রফেশনাল এবং ন্যাশনাল ইয়ুথ ডেভেলপমেন্ট একাডেমি (NYDA) এর ইনস্ট্রাক্টর। তিনি ইংরেজি সাহিত্যে অনার্স করছেন এবং পেশাদার গ্রাফিক ডিজাইন, ডিজিটাল মার্কেটিং ও এসইও (SEO) নিয়ে কাজ করছেন।";
+        } else if (isBanglish) {
+          return "📌 <b>Nowshin Somporke:</b><br>Nowshin ekjon srijonshil digital professional ebong National Youth Development Academy (NYDA) er Instructor. Tini English Literature e Honours korchhen ebong Graphic Design, Digital Marketing & SEO niye kaaj korchhen.";
+        } else {
+          return "📌 <b>About Nur Jannat Nowshin:</b><br>Nowshin is a dedicated Creative Digital Professional and IT Instructor at NYDA. She is pursuing her B.A. in English Literature while delivering high-end Graphic Design, Digital Marketing (SEO), and professional mentorship.";
+        }
       }
 
-      // Skills / Competencies Summary
-      if (q.includes("skill") || q.includes("expert") || q.includes("know") || q.includes("core")) {
-        return "⚡ <b>Core Competencies Summary:</b><br>1. <b>Design:</b> Illustrator, Photoshop, Canva Pro<br>2. <b>Marketing:</b> Meta Ads, SEMrush, Content Strategy<br>3. <b>Web:</b> WordPress, Elementor UI/UX<br>4. <b>Instruction:</b> Mentoring, Curriculum Design, MS Office";
+      // 3. TEACHING & NYDA EXPERIENCE
+      if (q.includes("nyda") || q.includes("instructor") || q.includes("teach") || q.includes("trainee") || q.includes("mentorship") || q.includes("job") || q.includes("experience") || q.includes("পড়ান") || q.includes("চাকরি") || q.includes("অভিজ্ঞতা") || q.includes("ইনস্ট্রাক্টর")) {
+        if (isBangla) {
+          return "👩‍🏫 <b>NYDA ইনস্ট্রাক্টর অভিজ্ঞতা:</b><br>নওশিন <b>National Youth Development Academy (NYDA)</b>-এ আইটি ও কম্পিউটার অ্যাপ্লিকেশনের প্রফেশনাল ইনস্ট্রাক্টর হিসেবে নিয়োজিত আছেন।<br>• <b>১০০+ এর বেশি ট্রেইনিকে</b> প্রশিক্ষণ দিয়েছেন।<br>• কোর্স সমাপনী হার <b>৯৫%+</b>।<br>• শিক্ষার্থীদের ব্যবহারিক কাজের মাধ্যমে দক্ষ করে তুলছেন।";
+        } else if (isBanglish) {
+          return "👩‍🏫 <b>NYDA Instructor Experience:</b><br>Nowshin NYDA te IT & Computer Application Instructor hisebe kaaj korchhen.<br>• 100+ trainees ke training diyechen.<br>• Course completion rate 95%+.<br>• Practical coursework ebong real-world scenarios er maddhome students der guide koren.";
+        } else {
+          return "👩‍🏫 <b>Teaching & NYDA Experience:</b><br>Nowshin works as an IT Instructor at the <b>National Youth Development Academy (NYDA)</b>.<br>• Mentored <b>100+ trainees</b>.<br>• Maintains a <b>95%+ module completion rate</b>.<br>• Teaches practical computer applications, office suites, and career readiness.";
+        }
       }
 
-      // Education & Qualifications
-      if (q.includes("education") || q.includes("study") || q.includes("college") || q.includes("english") || q.includes("university") || q.includes("gpa") || q.includes("ssc") || q.includes("hsc")) {
-        return "🎓 <b>Academic Background:</b><br>• <b>B.A. (Honours) in English Literature:</b> National University (Expected 2028).<br>• <b>HSC:</b> Chittagong Govt. Women's College (GPA 4.83 / 5.00).<br>• <b>SSC:</b> Lohagara Shahpir High School (GPA 4.83 / 5.00).";
+      // 4. GRAPHIC DESIGN & BRANDING
+      if (q.includes("graphic") || q.includes("design") || q.includes("illustrator") || q.includes("photoshop") || q.includes("canva") || q.includes("logo") || q.includes("brand") || q.includes("গ্রাফিক") || q.includes("ডিজাইন") || q.includes("লোগো")) {
+        if (isBangla) {
+          return "🎨 <b>গ্রাফিক ডিজাইন ও ব্র্যান্ডিং স্কিল:</b><br>নওশিন ৩০টিরও বেশি ব্র্যান্ডিং প্যাকেজ সফলভাবে ডেলিভারি করেছেন।<br>• <b>Adobe Illustrator CC:</b> ৯২% দক্ষতা<br>• <b>Adobe Photoshop:</b> ৮৮% দক্ষতা<br>• <b>Canva Pro:</b> ৯৫% দক্ষতা<br>তিনি লাক্সারি মনোগ্রাম লোগো, সোশ্যাল মিডিয়া ব্যানার, ফ্লাইয়ার ও ব্র্যান্ড আইডেন্টিটি তৈরিতে পারদর্শী।";
+        } else if (isBanglish) {
+          return "🎨 <b>Graphic Design Skills:</b><br>Nowshin 30+ branding packages deliver korchhen.<br>• <b>Adobe Illustrator CC:</b> 92%<br>• <b>Adobe Photoshop:</b> 88%<br>• <b>Canva Pro:</b> 95%<br>Tini Luxury Monogram Logo, Banner, Flyer ebong Branding Design e highly skilled.";
+        } else {
+          return "🎨 <b>Graphic Design & Branding Suite:</b><br>Nowshin has completed over 30+ brand identity packages. Her core tool proficiency:<br>• <b>Adobe Illustrator CC</b> (92%)<br>• <b>Adobe Photoshop</b> (88%)<br>• <b>Canva Pro</b> (95%)<br>Specializing in monograms, corporate branding, social media ads, and print collateral.";
+        }
       }
 
-      // Certifications
-      if (q.includes("certif") || q.includes("dyd") || q.includes("course") || q.includes("degree") || q.includes("qualification")) {
-        return "📜 <b>Professional Certifications (2025):</b><br>• <b>Digital Marketing & Freelancing</b> – Dept. of Youth Development (DYD).<br>• <b>Advanced Computer Certificate Course</b> – NYDA.<br>• <b>Employability Skills (79 Hours)</b> – Wadhwani Foundation.";
+      // 5. DIGITAL MARKETING & SEO
+      if (q.includes("seo") || q.includes("marketing") || q.includes("ads") || q.includes("meta") || q.includes("content") || q.includes("semrush") || q.includes("ahrefs") || q.includes("মার্কেটিং") || q.includes("এসইও")) {
+        if (isBangla) {
+          return "📈 <b>ডিজিটাল মার্কেটিং ও এসইও:</b><br>নওশিন সরকারি যুব উন্নয়ন অধিদপ্তর (DYD) থেকে ডিজিটাল মার্কেটিং ও ফ্রিল্যান্সিংয়ে সার্টিফাইড (২০২৫)।<br>• মেটা অ্যাডস (Meta Ads) ও সোশ্যাল মিডিয়া ক্যাম্পেইন<br>• SEMrush ও Ahrefs দিয়ে কীওয়ার্ড রিসার্চ ও অন-পেজ এসইও<br>• কন্টেন্ট স্ট্র্যাটেজি ও অর্গানিক ট্রাফিক গ্রোথ।";
+        } else if (isBanglish) {
+          return "📈 <b>Digital Marketing & SEO:</b><br>Government DYD Program (2025) theke Certified. Tini Meta Ads, SEMrush/Ahrefs Keyword Research, On-page SEO ebong Content Strategy te highly expert.";
+        } else {
+          return "📈 <b>Digital Marketing & SEO Expertise:</b><br>Certified under the Government Freelancing Training Program (DYD - 2025). Specializes in Meta Ads, keyword research via SEMrush/Ahrefs, on-page SEO, and organic traffic expansion.";
+        }
       }
 
-      // Location / Base
-      if (q.includes("location") || q.includes("where") || q.includes("based") || q.includes("chattogram") || q.includes("bangladesh")) {
-        return "📍 Nowshin is based in <b>Chattogram, Bangladesh</b>. She works locally as an IT instructor and serves international and local clients remotely for freelance design & digital marketing projects.";
+      // 6. WEB DESIGN & CMS
+      if (q.includes("web") || q.includes("wordpress") || q.includes("elementor") || q.includes("site") || q.includes("e-commerce") || q.includes("ওয়েবসাইট") || q.includes("ওয়ার্ডপ্রেস")) {
+        if (isBangla) {
+          return "💻 <b>ওয়েব ডিজাইন ও ওয়ার্ডপ্রেস:</b><br>নওশিন ওয়ার্ডপ্রেস (WordPress) এবং এলিমেন্টর (Elementor) ব্যবহার করে রেসপন্সিভ ই-কমার্স ওয়েবসাইট ও পোর্টফোলিও লেআউট তৈরি করেন।";
+        } else if (isBanglish) {
+          return "💻 <b>Web Design & WordPress:</b><br>Nowshin WordPress & Elementor diye responsive e-commerce site ebong custom web layout toiri koren.";
+        } else {
+          return "💻 <b>Web & CMS Suites:</b><br>Nowshin designs clean, responsive WordPress websites using Elementor, managing layout architectures, e-commerce setups, and UI/UX hierarchy.";
+        }
       }
 
-      // Contact & Hire
-      if (q.includes("contact") || q.includes("email") || q.includes("phone") || q.includes("hire") || q.includes("reach") || q.includes("whatsapp") || q.includes("linkedin")) {
-        return "📩 <b>Get in Touch with Nowshin:</b><br>• <b>Email:</b> nurjannatnowshin810@gmail.com<br>• <b>Phone / WhatsApp:</b> +880 1751074091<br>• <b>LinkedIn:</b> Nur Jannat Nowshin<br>You can also use the quick contact form at the bottom of the page!";
+      // 7. ALL SKILLS OVERVIEW
+      if (q.includes("skill") || q.includes("expert") || q.includes("know") || q.includes("দক্ষতা") || q.includes("স্কিল") || q.includes("কী পারো")) {
+        if (isBangla) {
+          return "⚡ <b>নওশিনের মূল দক্ষতাসমূহ:</b><br>১. <b>গ্রাফিক ডিজাইন:</b> Illustrator, Photoshop, Canva Pro<br>২. <b>মার্কেটিং ও এসইও:</b> Meta Ads, SEMrush, Content Strategy<br>৩. <b>ওয়েব ডেভেলপমেন্ট:</b> WordPress & Elementor<br>৪. <b>ট্রেনিং ও অন্যান্য:</b> MS Office, Public Speaking & Mentorship";
+        } else if (isBanglish) {
+          return "⚡ <b>Core Skills:</b><br>1. Graphic Design (Illustrator, Photoshop, Canva Pro)<br>2. SEO & Digital Marketing (Meta Ads, SEMrush)<br>3. Web Building (WordPress, Elementor)<br>4. Professional Instruction & MS Office";
+        } else {
+          return "⚡ <b>Core Competencies:</b><br>1. <b>Graphic Design:</b> Illustrator, Photoshop, Canva Pro<br>2. <b>Digital Marketing:</b> Meta Ads, SEMrush, SEO<br>3. <b>Web Building:</b> WordPress & Elementor<br>4. <b>Teaching:</b> NYDA Instructor, MS Office, Mentorship";
+        }
       }
 
-      // Work Process
-      if (q.includes("process") || q.includes("work") || q.includes("workflow") || q.includes("step")) {
-        return "🔄 <b>The Creative Process Lab:</b><br>1. <b>Conceptualize:</b> Deep discovery & ideation.<br>2. <b>Draft & Outline:</b> Wireframing and lesson structuring.<br>3. <b>Refine & Style:</b> Polishing aesthetics with pro design suites.<br>4. <b>Deliver & Mentor:</b> Seamless launch and long-term strategy.";
+      // 8. EDUCATION & QUALIFICATIONS
+      if (q.includes("education") || q.includes("study") || q.includes("college") || q.includes("english") || q.includes("university") || q.includes("gpa") || q.includes("ssc") || q.includes("hsc") || q.includes("পড়াশোনা") || q.includes("শিক্ষা") || q.includes("জিপিএ") || q.includes("কলেজ")) {
+        if (isBangla) {
+          return "🎓 <b>শিক্ষাগত যোগ্যতা:</b><br>• <b>বি.এ (অনার্স) ইংরেজি সাহিত্য:</b> ন্যাশনাল ইউনিভার্সিটি (চলমান, ২০২৮)।<br>• <b>এইচএসসি (HSC):</b> চট্টগ্রাম সরকারি মহিলা কলেজ (GPA: 4.83/5.00, ২০২৩)।<br>• <b>এসএসসি (SSC):</b> লোহাগাড়া শাহপীর পাইলট হাই স্কুল (GPA: 4.83/5.00, ২০২১)।";
+        } else if (isBanglish) {
+          return "🎓 <b>Educational Qualifications:</b><br>• B.A. (Honours) in English Literature: National University (Expected 2028).<br>• HSC: Chittagong Govt. Women's College (GPA 4.83).<br>• SSC: Lohagara Shahpir High School (GPA 4.83).";
+        } else {
+          return "🎓 <b>Academic Background:</b><br>• <b>B.A. (Honours) in English:</b> National University (Expected 2028).<br>• <b>HSC:</b> Chittagong Govt. Women's College (GPA: 4.83/5.00, 2023).<br>• <b>SSC:</b> Lohagara Shahpir Pilot High School (GPA: 4.83/5.00, 2021).";
+        }
       }
 
-      // Default Intelligent Response
-      return "Nur Jannat Nowshin is an undergraduate English literature scholar, creative graphic designer, digital marketer, and IT instructor at NYDA based in Chattogram. Let me know if you'd like to explore her portfolio gallery, view her certifications, or get her contact details!";
+      // 9. CERTIFICATIONS
+      if (q.includes("certif") || q.includes("dyd") || q.includes("course") || q.includes("degree") || q.includes("qualification") || q.includes("সার্টিফিকেট") || q.includes("কোর্স")) {
+        if (isBangla) {
+          return "📜 <b>পেশাদার সার্টিফিকেটসমূহ (২০২৫):</b><br>• <b>ডিজিটাল মার্কেটিং ও ফ্রিল্যান্সিং:</b> যুব উন্নয়ন অধিদপ্তর (DYD)।<br>• <b>অ্যাডভান্সড কম্পিউটার সার্টিফিকেট কোর্স:</b> NYDA।<br>• <b>এমপ্লয়েবিলিটি স্কিলস (৭৯ ঘন্টা):</b> ওয়াধওয়ানি ফাউন্ডেশন।";
+        } else if (isBanglish) {
+          return "📜 <b>Professional Certifications (2025):</b><br>• Digital Marketing & Freelancing (Govt. DYD)<br>• Advanced Computer Certificate Course (NYDA)<br>• Employability Skills 79 Hours (Wadhwani Foundation)";
+        } else {
+          return "📜 <b>Certifications (2025):</b><br>• <b>Digital Marketing & Freelancing:</b> Dept. of Youth Development (DYD).<br>• <b>Advanced Computer Certificate:</b> NYDA.<br>• <b>Employability Skills (79 Hours):</b> Wadhwani Foundation.";
+        }
+      }
+
+      // 10. LOCATION
+      if (q.includes("location") || q.includes("where") || q.includes("based") || q.includes("chattogram") || q.includes("bangladesh") || q.includes("কোথায়") || q.includes("বাসা") || q.includes("লোকেশন")) {
+        if (isBangla) {
+          return "📍 নওশিন বর্তমানে <b>চট্টগ্রাম, বাংলাদেশে</b> বসবাস করছেন। তিনি স্থানীয়ভাবে ইনস্ট্রাক্টর হিসেবে কাজ করছেন এবং দূরশিক্ষণ/রিমোট ফ্রিল্যান্স প্রজেক্ট গ্রহণ করছেন।";
+        } else if (isBanglish) {
+          return "📍 Nowshin er location hocche <b>Chattogram, Bangladesh</b>.";
+        } else {
+          return "📍 Nowshin is currently based in <b>Chattogram, Bangladesh</b>. She is open to local instructional roles and global remote projects.";
+        }
+      }
+
+      // 11. CONTACT & HIRE
+      if (q.includes("contact") || q.includes("email") || q.includes("phone") || q.includes("hire") || q.includes("reach") || q.includes("whatsapp") || q.includes("linkedin") || q.includes("যোগাযোগ") || q.includes("ইমেইল") || q.includes("ফোন") || q.includes("নাম্বার")) {
+        if (isBangla) {
+          return "📩 <b>নওশিনের সাথে যোগাযোগের মাধ্যম:</b><br>• <b>ইমেইল:</b> nurjannatnowshin810@gmail.com<br>• <b>ফোন/হোয়াটসঅ্যাপ:</b> +880 1751074091<br>• <b>লিঙ্কডইন:</b> Nur Jannat Nowshin<br>অথবা ওয়েবসাইটের নিচের ফর্মটি ব্যবহার করে সরাসরি মেসেজ পাঠাতে পারেন!";
+        } else if (isBanglish) {
+          return "📩 <b>Contact Information:</b><br>• <b>Email:</b> nurjannatnowshin810@gmail.com<br>• <b>Phone / WhatsApp:</b> +880 1751074091<br>• <b>LinkedIn:</b> Nur Jannat Nowshin";
+        } else {
+          return "📩 <b>How to Reach Nowshin:</b><br>• <b>Email:</b> nurjannatnowshin810@gmail.com<br>• <b>Phone/WhatsApp:</b> +880 1751074091<br>• <b>LinkedIn:</b> Nur Jannat Nowshin<br>Or fill out the direct contact form at the bottom of this page!";
+        }
+      }
+
+      // 12. GENERAL / OUT OF CONTEXT / FALLBACK
+      if (isBangla) {
+        return "আমি নওশিনের এআই অ্যাসিস্ট্যান্ট। নওশিনের গ্রাফিক ডিজাইন, NYDA-তে শিক্ষকতা, ডিজিটাল মার্কেটিং, এসইও বা শিক্ষাগত যোগ্যতা নিয়ে জানতে আমাকে প্রশ্ন করতে পারেন! ✨";
+      } else if (isBanglish) {
+        return "Ami Nowshin er AI Assistant. Nowshin er Graphic Design, NYDA Teaching, Marketing ba Education niye jekono proshno korte paren! ✨";
+      } else {
+        return "I am Nowshin's personal AI Assistant. Feel free to ask me anything about her design portfolio, teaching career at NYDA, SEO skills, education, or how to contact her! ✨";
+      }
     }
 
     function handleAiQuery(query) {
@@ -3290,7 +3365,7 @@
       setTimeout(() => {
         hideTypingIndicator();
         addAiMessage(reply, "bot");
-      }, 700);
+      }, 550);
     }
 
     aiChatSend.addEventListener("click", () => {
