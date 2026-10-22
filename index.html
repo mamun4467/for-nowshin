@@ -9,7 +9,7 @@
   <meta property="og:title" content="Nur Jannat Nowshin | Luxury CV">
   <meta property="og:description" content="Discover Nur Jannat Nowshin's professional journey, skills, education, and experience.">
   <meta property="og:type" content="profile">
-  <title>Nur Jannat Nowshin | Professional CV</title>
+  <title>Nur Jannat Nowshin | Professional CV &amp; Portfolio</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -423,7 +423,7 @@
       text-transform: uppercase;
     }
 
-    .desktop-nav { display: flex; align-items: center; gap: 27px; }
+    .desktop-nav { display: flex; align-items: center; gap: 24px; }
 
     .nav-link {
       position: relative;
@@ -473,6 +473,8 @@
       padding: 8px 20px 20px;
       border-top: 1px solid var(--line);
       background: rgba(12,9,14,.98);
+      max-height: 75vh;
+      overflow-y: auto;
     }
 
     .mobile-menu.open {
@@ -487,7 +489,7 @@
 
     .mobile-menu a {
       display: block;
-      padding: 13px 8px;
+      padding: 12px 8px;
       color: #ded1dc;
       font-size: 13px;
       border-bottom: 1px solid rgba(215,160,162,.08);
@@ -798,6 +800,126 @@
       background: radial-gradient(circle at center, rgba(215,160,162,0.1), rgba(11,9,13,0.8));
       display: flex; align-items: center; justify-content: center; font-size: 48px; color: var(--rose);
       box-shadow: inset 0 0 30px rgba(215,160,162,0.05);
+    }
+
+    /* PORTFOLIO FILTER GALLERY STYLES */
+    .portfolio-filters {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 35px;
+    }
+    .portfolio-filter-btn {
+      padding: 11px 22px;
+      border-radius: 50px;
+      border: 1px solid rgba(215,160,162,0.25);
+      background: rgba(23,18,26,0.6);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s var(--ease);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    .portfolio-filter-btn.active, .portfolio-filter-btn:hover {
+      background: linear-gradient(115deg, #e8b9ba, #fff0e5 48%, #d7a0a2);
+      border-color: rgba(255,245,237,0.5);
+      color: #241720;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(183,124,131,0.3);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .portfolio-item {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.4s var(--ease), opacity 0.4s ease;
+    }
+
+    .portfolio-img-wrap {
+      position: relative;
+      height: 180px;
+      overflow: hidden;
+      background: #110d13;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .portfolio-badge-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 2;
+      padding: 5px 10px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ivory);
+      background: rgba(11, 9, 13, 0.85);
+      border: 1px solid rgba(215, 160, 162, 0.3);
+      border-radius: 6px;
+      backdrop-filter: blur(10px);
+    }
+
+    .portfolio-placeholder-img {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      font-size: 42px;
+      color: var(--rose-light);
+      background: radial-gradient(circle at center, rgba(215,160,162,0.15), rgba(11,9,13,0.95));
+      transition: transform 0.6s var(--ease);
+    }
+
+    .portfolio-item:hover .portfolio-placeholder-img {
+      transform: scale(1.08);
+    }
+
+    .portfolio-content {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .portfolio-content h3 {
+      margin: 0 0 10px;
+      color: var(--ivory);
+      font-family: "Playfair Display", serif;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .portfolio-content p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .portfolio-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .portfolio-tags span {
+      padding: 4px 9px;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--rose-light);
+      background: rgba(215, 160, 162, 0.08);
+      border: 1px solid rgba(215, 160, 162, 0.2);
+      border-radius: 5px;
     }
 
     .vault-modal {
@@ -1686,7 +1808,7 @@
       .desktop-nav { gap: 16px; }
       .hero-grid { gap: 38px; }
       .hero h1 { font-size: clamp(38px,5.6vw,56px); }
-      .skills-grid, .reviews-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .skills-grid, .reviews-grid, .portfolio-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
       .about-card { grid-template-columns: 1fr 190px; gap: 25px; }
       .about-seal { width: 175px; height: 175px; }
       .contact-grid { grid-template-columns: 1fr 1.1fr; gap: 20px; }
@@ -1716,7 +1838,7 @@
       .contact-grid { grid-template-columns: 1fr; }
       .contact-shell { border-radius: 23px; }
       .floating-contact { right: 13px; bottom: 13px; width: 44px; height: 44px; }
-      .reviews-grid { grid-template-columns: 1fr; }
+      .reviews-grid, .portfolio-grid { grid-template-columns: 1fr; }
       .cursor-glow { display: none; }
       .process-panel.active { grid-template-columns: 1fr; }
     }
@@ -1839,6 +1961,7 @@
           <a href="#manifesto" class="nav-link">Philosophy</a>
           <a href="#skills" class="nav-link">Skills</a>
           <a href="#process" class="nav-link">Process Lab</a>
+          <a href="#portfolio" class="nav-link">Portfolio</a>
           <a href="#experience" class="nav-link">Experience</a>
           <a href="#education" class="nav-link">Education</a>
           <a href="#contact" class="nav-link">Contact</a>
@@ -1859,6 +1982,7 @@
         <a href="#manifesto">Philosophy &amp; Manifesto</a>
         <a href="#skills">Skills &amp; Competencies</a>
         <a href="#process">Creative Process Lab</a>
+        <a href="#portfolio">Portfolio Gallery</a>
         <a href="#experience">Work Experience</a>
         <a href="#education">Education &amp; Certifications</a>
         <a href="#testimonials">Recommendations</a>
@@ -1901,7 +2025,7 @@
 
             <div class="hero-actions">
               <a href="#contact" class="premium-button">Get In Touch <i class="fa-solid fa-arrow-right"></i></a>
-              <a href="#skills" class="outline-button"><i class="fa-solid fa-eye"></i> View Portfolio Grid</a>
+              <a href="#portfolio" class="outline-button"><i class="fa-solid fa-eye"></i> View Portfolio Grid</a>
               <a href="nowshincv.png" download class="outline-button"><i class="fa-solid fa-file-arrow-down"></i> Download CV</a>
             </div>
 
@@ -2100,6 +2224,129 @@
                 <p>Deploying the final output with precision and guiding learners or clients through effective execution and long-term maintenance strategies.</p>
               </div>
               <div class="process-visual-box"><i class="fa-solid fa-award"></i></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PORTFOLIO / CREATIVE WORKS GALLERY -->
+      <section id="portfolio" class="section container">
+        <div class="section-head">
+          <span class="eyebrow">Showcase &amp; Projects</span>
+          <h2 class="section-title">Creative Works Gallery</h2>
+          <p class="section-description">Explore selected design assets, marketing strategies, and instructional training modules.</p>
+          <div class="ornament"><i class="fa-solid fa-sparkles"></i></div>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="portfolio-filters">
+          <button class="portfolio-filter-btn active" data-filter="all">All Works</button>
+          <button class="portfolio-filter-btn" data-filter="design">Graphic Design</button>
+          <button class="portfolio-filter-btn" data-filter="marketing">Digital Marketing &amp; SEO</button>
+          <button class="portfolio-filter-btn" data-filter="web">Web &amp; Training</button>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="portfolio-grid">
+          <!-- Item 1 -->
+          <div class="glass-card portfolio-item" data-category="design">
+            <div class="portfolio-img-wrap">
+              <div class="portfolio-badge-tag">Graphic Design</div>
+              <div class="portfolio-placeholder-img">
+                <i class="fa-solid fa-palette"></i>
+              </div>
+            </div>
+            <div class="portfolio-content">
+              <h3>Luxury Brand Identity Suite</h3>
+              <p>Complete logo monogram, luxury color palette, and high-end visual collateral design for professional clients.</p>
+              <div class="portfolio-tags">
+                <span>Illustrator</span><span>Photoshop</span><span>Branding</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="glass-card portfolio-item" data-category="design">
+            <div class="portfolio-img-wrap">
+              <div class="portfolio-badge-tag">Graphic Design</div>
+              <div class="portfolio-placeholder-img" style="background: radial-gradient(circle, rgba(152,96,120,0.2), rgba(11,9,13,0.9));">
+                <i class="fa-solid fa-image"></i>
+              </div>
+            </div>
+            <div class="portfolio-content">
+              <h3>Social Media Campaign Banners</h3>
+              <p>Eye-catching promotional graphics, social media engagement posts, and visual marketing assets.</p>
+              <div class="portfolio-tags">
+                <span>Canva Pro</span><span>Social Media</span><span>Banners</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="glass-card portfolio-item" data-category="marketing">
+            <div class="portfolio-img-wrap">
+              <div class="portfolio-badge-tag">Marketing &amp; SEO</div>
+              <div class="portfolio-placeholder-img" style="background: radial-gradient(circle, rgba(229,199,160,0.15), rgba(11,9,13,0.9));">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+            </div>
+            <div class="portfolio-content">
+              <h3>SEO &amp; Traffic Growth Strategy</h3>
+              <p>Keyword research, on-page optimization, and organic ranking growth reports for digital visibility.</p>
+              <div class="portfolio-tags">
+                <span>SEMrush</span><span>Ahrefs</span><span>Analytics</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="glass-card portfolio-item" data-category="web">
+            <div class="portfolio-img-wrap">
+              <div class="portfolio-badge-tag">Web &amp; CMS</div>
+              <div class="portfolio-placeholder-img" style="background: radial-gradient(circle, rgba(215,160,162,0.18), rgba(11,9,13,0.9));">
+                <i class="fa-solid fa-code"></i>
+              </div>
+            </div>
+            <div class="portfolio-content">
+              <h3>WordPress E-Commerce Layout</h3>
+              <p>Customized responsive online store architecture built with Elementor and WordPress CMS.</p>
+              <div class="portfolio-tags">
+                <span>WordPress</span><span>Elementor</span><span>UI/UX</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 5 -->
+          <div class="glass-card portfolio-item" data-category="web">
+            <div class="portfolio-img-wrap">
+              <div class="portfolio-badge-tag">Instruction &amp; Training</div>
+              <div class="portfolio-placeholder-img" style="background: radial-gradient(circle, rgba(183,124,131,0.2), rgba(11,9,13,0.9));">
+                <i class="fa-solid fa-graduation-cap"></i>
+              </div>
+            </div>
+            <div class="portfolio-content">
+              <h3>NYDA Professional Training Modules</h3>
+              <p>Structured curriculum, assignment decks, and mentoring guides for computer application learners.</p>
+              <div class="portfolio-tags">
+                <span>Curriculum</span><span>Mentoring</span><span>NYDA</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 6 -->
+          <div class="glass-card portfolio-item" data-category="design">
+            <div class="portfolio-img-wrap">
+              <div class="portfolio-badge-tag">Graphic Design</div>
+              <div class="portfolio-placeholder-img" style="background: radial-gradient(circle, rgba(240,200,200,0.15), rgba(11,9,13,0.9));">
+                <i class="fa-solid fa-pen-nib"></i>
+              </div>
+            </div>
+            <div class="portfolio-content">
+              <h3>Flyer &amp; Promotional Collateral</h3>
+              <p>Professional print and digital flyers designed with pristine typographic hierarchy and appeal.</p>
+              <div class="portfolio-tags">
+                <span>Print Design</span><span>Typography</span><span>Layout</span>
+              </div>
             </div>
           </div>
         </div>
@@ -2463,6 +2710,29 @@
       });
     });
 
+    // PORTFOLIO FILTERING
+    const filterBtns = document.querySelectorAll(".portfolio-filter-btn");
+    const portfolioItems = document.querySelectorAll(".portfolio-item");
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        filterBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const filterValue = btn.getAttribute("data-filter");
+
+        portfolioItems.forEach(item => {
+          const category = item.getAttribute("data-category");
+          if (filterValue === "all" || category === filterValue) {
+            item.style.display = "flex";
+            setTimeout(() => { item.style.opacity = "1"; }, 50);
+          } else {
+            item.style.opacity = "0";
+            setTimeout(() => { item.style.display = "none"; }, 300);
+          }
+        });
+      });
+    });
+
     // SECRET MONOGRAM VAULT (TRIPLE CLICK EASTER EGG)
     const vaultModal = document.getElementById("vaultModal");
     const vaultClose = document.getElementById("vaultClose");
@@ -2511,7 +2781,8 @@
       "footer .footer-copy",
       "footer .back-top",
       ".manifesto-card",
-      ".signature-monogram-container"
+      ".signature-monogram-container",
+      ".portfolio-item"
     ];
 
     const revealElements = document.querySelectorAll(revealTargets.join(","));
@@ -2519,7 +2790,7 @@
     revealElements.forEach((element, index) => {
       element.classList.add("reveal");
 
-      if (element.matches(".skill-card, .review-card, .education-card, .timeline-item")) {
+      if (element.matches(".skill-card, .review-card, .education-card, .timeline-item, .portfolio-item")) {
         element.classList.add("scale-in");
       }
 
@@ -2531,7 +2802,7 @@
         element.classList.add("from-right");
       }
 
-      if (element.matches(".skill-card, .review-card, .education-card, .timeline-item")) {
+      if (element.matches(".skill-card, .review-card, .education-card, .timeline-item, .portfolio-item")) {
         element.style.setProperty("--delay", (index % 4) * 90 + "ms");
       }
     });
@@ -2611,7 +2882,7 @@
     updateScrollUI();
 
     // ACTIVE NAVIGATION
-    const observedSections = document.querySelectorAll("#about, #skills, #experience, #education, #contact");
+    const observedSections = document.querySelectorAll("#about, #skills, #portfolio, #experience, #education, #contact");
     const navLinks = document.querySelectorAll(".desktop-nav .nav-link");
 
     if ("IntersectionObserver" in window) {
