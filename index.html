@@ -2491,243 +2491,312 @@
       </section>
 
       <!-- TESTIMONIALS -->
-<section id="testimonials" class="section container premium-testimonials">
+<section id="testimonials" class="section container nowshin-reviews">
   <style>
-    .premium-testimonials {
-      --gold: #b68b56;
-      --gold-light: #e3c99f;
-      --ink: #302529;
-      --muted: #827579;
-      padding: 90px 20px;
+    .nowshin-reviews {
+      --nr-bg: #171316;
+      --nr-card: #201a1e;
+      --nr-gold: #d2ad82;
+      --nr-rose: #b98e91;
+      --nr-white: #f8f0eb;
+      --nr-muted: #b3a2a5;
       position: relative;
+      isolation: isolate;
       overflow: hidden;
+      padding: 88px 20px;
+      color: var(--nr-white);
     }
 
-    .premium-testimonials .section-head {
+    .nowshin-reviews::before {
+      content: "";
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      top: -190px;
+      right: -140px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(185,142,145,.12),
+        transparent 70%
+      );
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .nowshin-reviews .section-head {
+      max-width: 690px;
+      margin: 0 auto 50px;
       text-align: center;
-      max-width: 650px;
-      margin: 0 auto 52px;
     }
 
-    .premium-testimonials .eyebrow {
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 4px;
+    .nowshin-reviews .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--nr-rose);
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 600;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
     }
 
-    .premium-testimonials .section-title {
+    .nowshin-reviews .eyebrow::before,
+    .nowshin-reviews .eyebrow::after {
+      content: "";
+      width: 25px;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--nr-rose)
+      );
+    }
+
+    .nowshin-reviews .eyebrow::after {
+      transform: rotate(180deg);
+    }
+
+    .nowshin-reviews .section-title {
+      margin: 17px 0 14px;
+      color: var(--nr-white);
       font-family: "Cormorant Garamond", Georgia, serif;
-      font-size: clamp(42px, 6vw, 66px);
-      font-weight: 500;
+      font-size: clamp(39px, 6vw, 62px);
       line-height: 1.05;
-      letter-spacing: -1px;
-      color: var(--ink);
-      margin: 16px 0;
+      font-weight: 500;
+      letter-spacing: -.7px;
     }
 
-    .premium-testimonials .section-description {
+    .nowshin-reviews .section-description {
+      max-width: 470px;
+      margin: 0 auto;
+      color: var(--nr-muted);
       font-size: 13px;
       line-height: 1.9;
-      color: var(--muted);
-      max-width: 440px;
-      margin: 0 auto;
     }
 
-    .premium-testimonials .ornament {
-      margin-top: 23px;
-      color: var(--gold);
-      font-size: 14px;
+    .nowshin-reviews .ornament {
+      margin-top: 22px;
+      color: var(--nr-gold);
+      font-size: 13px;
     }
 
-    .premium-testimonials .reviews-grid {
+    .nowshin-reviews .reviews-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 22px;
+      gap: 20px;
       align-items: stretch;
     }
 
-    .premium-testimonials .review-card {
+    .nowshin-reviews .review-card {
       position: relative;
-      padding: 32px 27px 26px;
-      background: linear-gradient(145deg, #fffdfb, #fcf5f1);
-      border: 1px solid #eadbd4;
-      border-radius: 3px;
       display: flex;
       flex-direction: column;
       min-width: 0;
-      box-shadow: 0 12px 36px rgba(67, 43, 44, .045);
-      transition: transform .35s ease, box-shadow .35s ease,
-                  border-color .35s ease;
+      padding: 29px 25px 25px;
+      overflow: hidden;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.025),
+          transparent 55%
+        ),
+        var(--nr-card);
+      border: 1px solid rgba(210,173,130,.17);
+      border-radius: 4px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.12);
+      transition:
+        transform .35s ease,
+        border-color .35s ease,
+        box-shadow .35s ease;
     }
 
-    .premium-testimonials .review-card::before {
+    .nowshin-reviews .review-card::before {
       content: "";
       position: absolute;
-      left: 27px;
-      right: 27px;
       top: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      left: 24px;
+      right: 24px;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--nr-gold),
+        transparent
+      );
+      opacity: .8;
     }
 
-    .premium-testimonials .review-card:hover {
+    .nowshin-reviews .review-card:hover {
       transform: translateY(-6px);
-      border-color: #d8b89e;
-      box-shadow: 0 22px 48px rgba(67, 43, 44, .10);
+      border-color: rgba(210,173,130,.42);
+      box-shadow: 0 23px 48px rgba(0,0,0,.25);
     }
 
-    .premium-testimonials .review-top {
+    .nowshin-reviews .review-top {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       gap: 10px;
       margin-bottom: 23px;
     }
 
-    .premium-testimonials .platform {
-      display: flex;
+    .nowshin-reviews .platform {
+      display: inline-flex;
       align-items: center;
       gap: 8px;
-      color: #8c6a60;
-      font-size: 10px;
+      color: #d6b9b8;
+      font-size: 9px;
+      font-weight: 600;
       letter-spacing: 1.7px;
-      font-weight: 700;
       text-transform: uppercase;
     }
 
-    .premium-testimonials .platform i {
-      font-size: 13px;
-      color: var(--gold);
+    .nowshin-reviews .platform i {
+      color: var(--nr-gold);
+      font-size: 12px;
     }
 
-    .premium-testimonials .quote-mark {
+    .nowshin-reviews .quote-mark {
+      color: rgba(210,173,130,.45);
       font-family: Georgia, serif;
-      font-size: 48px;
+      font-size: 45px;
       line-height: .7;
-      color: #dfc7b8;
     }
 
-    .premium-testimonials .stars {
+    .nowshin-reviews .stars {
       display: flex;
+      align-items: center;
       gap: 5px;
       margin-bottom: 17px;
-      color: #c79b43;
-      font-size: 17px;
+      color: #e4bc70;
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1;
+      letter-spacing: 0;
+      text-shadow: 0 0 12px rgba(228,188,112,.12);
     }
 
-    .premium-testimonials .review-text {
+    .nowshin-reviews .review-text {
       flex: 1;
-      margin: 0 0 28px;
+      margin: 0 0 27px;
+      color: #e3d7d5;
       font-family: "Cormorant Garamond", Georgia, serif;
       font-size: 21px;
       font-weight: 500;
-      line-height: 1.65;
-      color: #55464a;
+      line-height: 1.62;
     }
 
-    .premium-testimonials .review-divider {
+    .nowshin-reviews .review-divider {
       height: 1px;
-      background: linear-gradient(90deg, #dfc2b4, #f5e9e2, transparent);
-      margin-bottom: 21px;
+      margin-bottom: 20px;
+      background: linear-gradient(
+        90deg,
+        rgba(185,142,145,.38),
+        rgba(185,142,145,.05),
+        transparent
+      );
     }
 
-    .premium-testimonials .review-author {
+    .nowshin-reviews .review-author {
       display: flex;
       align-items: center;
       gap: 13px;
     }
 
-    .premium-testimonials .author-photo {
-      width: 52px;
-      height: 52px;
-      flex: 0 0 52px;
-      border-radius: 50%;
+    .nowshin-reviews .author-photo {
+      width: 49px;
+      height: 49px;
+      flex: 0 0 49px;
       object-fit: cover;
-      border: 2px solid #fff;
-      outline: 1px solid #d7b99f;
-      background: #f0e2dc;
+      border-radius: 50%;
+      background: #33282d;
+      border: 2px solid var(--nr-card);
+      outline: 1px solid rgba(210,173,130,.65);
     }
 
-    .premium-testimonials .author-info {
-      min-width: 0;
+    .nowshin-reviews .author-info {
       flex: 1;
+      min-width: 0;
     }
 
-    .premium-testimonials .author-name {
+    .nowshin-reviews .author-name {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
       gap: 6px;
       margin: 0 0 5px;
-      color: #302529;
+      color: var(--nr-white);
       font-family: "Cormorant Garamond", Georgia, serif;
       font-size: 19px;
       font-weight: 700;
-      line-height: 1.2;
+      line-height: 1.25;
     }
 
-    .premium-testimonials .verified-badge {
+    .nowshin-reviews .verified-badge {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      white-space: nowrap;
+      color: #77b8f5;
       font-family: Arial, sans-serif;
       font-size: 9px;
       font-weight: 600;
-      letter-spacing: .15px;
-      color: #3478bd;
+      letter-spacing: .1px;
+      white-space: nowrap;
     }
 
-    .premium-testimonials .verified-badge i {
+    .nowshin-reviews .verified-badge i {
       font-size: 13px;
-      color: #3478bd;
+      color: #77b8f5;
     }
 
-    .premium-testimonials .author-role {
+    .nowshin-reviews .author-role {
       margin: 0;
-      color: #938488;
+      color: #b5a2a6;
       font-size: 10px;
       line-height: 1.6;
-      letter-spacing: .4px;
+      letter-spacing: .45px;
     }
 
-    .premium-testimonials .demo-label {
-      text-align: center;
-      margin: 27px 0 0;
-      color: #a08d8d;
+    .nowshin-reviews .demo-note {
+      margin: 27px auto 0;
+      color: #88777c;
       font-size: 10px;
-      letter-spacing: .5px;
+      line-height: 1.7;
+      text-align: center;
     }
 
     @media (max-width: 900px) {
-      .premium-testimonials .reviews-grid {
+      .nowshin-reviews .reviews-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
     @media (max-width: 600px) {
-      .premium-testimonials {
+      .nowshin-reviews {
         padding: 65px 15px;
       }
 
-      .premium-testimonials .reviews-grid {
+      .nowshin-reviews .section-head {
+        margin-bottom: 36px;
+      }
+
+      .nowshin-reviews .reviews-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 17px;
       }
 
-      .premium-testimonials .review-card {
-        padding: 29px 24px 25px;
+      .nowshin-reviews .review-card {
+        padding: 27px 23px 24px;
       }
 
-      .premium-testimonials .section-head {
-        margin-bottom: 38px;
+      .nowshin-reviews .review-text {
+        font-size: 22px;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .premium-testimonials .review-card {
+      .nowshin-reviews .review-card {
         transition: none;
       }
     }
@@ -2757,7 +2826,7 @@
       </div>
 
       <div class="stars" aria-label="5 out of 5 stars">
-        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        ★★★★★
       </div>
 
       <p class="review-text">
@@ -2771,13 +2840,14 @@
       <div class="review-author">
         <img class="author-photo"
           src="https://i.pravatar.cc/120?img=12"
-          alt="Client profile photo" loading="lazy">
+          alt="Sample client portrait" loading="lazy">
 
         <div class="author-info">
           <h3 class="author-name">
             Daniel Mitchell
             <span class="verified-badge">
-              <i class="fa-solid fa-circle-check"></i> Verified
+              <i class="fa-solid fa-circle-check"></i>
+              Verified
             </span>
           </h3>
           <p class="author-role">Graphic Design · Fiverr</p>
@@ -2795,7 +2865,7 @@
       </div>
 
       <div class="stars" aria-label="5 out of 5 stars">
-        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        ★★★★★
       </div>
 
       <p class="review-text">
@@ -2809,13 +2879,14 @@
       <div class="review-author">
         <img class="author-photo"
           src="https://i.pravatar.cc/120?img=47"
-          alt="Client profile photo" loading="lazy">
+          alt="Sample client portrait" loading="lazy">
 
         <div class="author-info">
           <h3 class="author-name">
             Olivia Bennett
             <span class="verified-badge">
-              <i class="fa-solid fa-circle-check"></i> Verified
+              <i class="fa-solid fa-circle-check"></i>
+              Verified
             </span>
           </h3>
           <p class="author-role">Digital Creative · Upwork</p>
@@ -2833,7 +2904,7 @@
       </div>
 
       <div class="stars" aria-label="5 out of 5 stars">
-        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        ★★★★★
       </div>
 
       <p class="review-text">
@@ -2847,13 +2918,14 @@
       <div class="review-author">
         <img class="author-photo"
           src="https://i.pravatar.cc/120?img=11"
-          alt="Client profile photo" loading="lazy">
+          alt="Sample client portrait" loading="lazy">
 
         <div class="author-info">
           <h3 class="author-name">
             James Anderson
             <span class="verified-badge">
-              <i class="fa-solid fa-circle-check"></i> Verified
+              <i class="fa-solid fa-circle-check"></i>
+              Verified
             </span>
           </h3>
           <p class="author-role">Branding &amp; Design · Direct</p>
