@@ -791,10 +791,10 @@
       position: fixed;
       right: 20px;
       bottom: 84px;
-      z-index: 95;
-      width: 340px;
+      z-index: 99;
+      width: 350px;
       max-width: calc(100vw - 40px);
-      height: 460px;
+      height: 480px;
       max-height: calc(100vh - 120px);
       display: flex;
       flex-direction: column;
@@ -912,7 +912,7 @@
       position: fixed;
       right: 20px;
       bottom: 20px;
-      z-index: 96;
+      z-index: 100;
       width: 52px;
       height: 52px;
       display: grid;
@@ -1769,29 +1769,6 @@
 
     .back-top:hover { color: var(--rose-light); transform: translateY(-2px); text-shadow: 0 0 8px var(--rose-light); }
 
-    .floating-contact {
-      position: fixed;
-      right: 19px;
-      bottom: 20px;
-      z-index: 90;
-      width: 48px;
-      height: 48px;
-      display: grid;
-      place-items: center;
-      color: #251720;
-      font-size: 19px;
-      border: 1px solid rgba(255,245,237,.45);
-      border-radius: 16px;
-      background: linear-gradient(145deg, #f0c8c8, #d7a0a2);
-      box-shadow: 0 10px 28px rgba(0,0,0,.35), 0 0 20px rgba(240,200,200,.3);
-      transition: transform .3s var(--ease), box-shadow .3s;
-    }
-
-    .floating-contact:hover {
-      transform: translateY(-4px) scale(1.08);
-      box-shadow: 0 15px 35px rgba(0,0,0,.35), 0 0 30px rgba(240,200,200,.6);
-    }
-
     /* RESPONSIVE */
     @media (max-width: 1000px) {
       .hero-grid { gap: 38px; }
@@ -1822,7 +1799,8 @@
       .two-columns { grid-template-columns: 1fr; gap: 38px; }
       .contact-grid { grid-template-columns: 1fr; }
       .contact-shell { border-radius: 23px; }
-      .floating-contact { right: 13px; bottom: 13px; width: 44px; height: 44px; }
+      .ai-chat-toggle-btn { right: 15px; bottom: 15px; width: 48px; height: 48px; }
+      .ai-chatbot-widget { right: 15px; bottom: 75px; }
       .reviews-grid, .portfolio-grid { grid-template-columns: 1fr; }
       .cursor-glow { display: none; }
       .process-panel.active { grid-template-columns: 1fr; }
@@ -1928,23 +1906,24 @@
         <div class="ai-chat-avatar"><i class="fa-solid fa-sparkles"></i></div>
         <div>
           <h4 class="ai-chat-title">Nowshin AI Assistant</h4>
-          <span class="ai-chat-subtitle">Online &amp; Ready</span>
+          <span class="ai-chat-subtitle">Smart Portfolio AI</span>
         </div>
       </div>
       <button class="ai-chat-close" id="aiChatClose" aria-label="Close Chat"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="ai-chat-body" id="aiChatBody">
       <div class="ai-msg bot">
-        Hi there! ✨ I'm Nowshin's virtual assistant. Ask me anything about her skills, experience as an NYDA instructor, or graphic design portfolio!
+        Hello! ✨ I am Nowshin's personal Smart Assistant. I can tell you about her professional teaching at NYDA, graphic design skills, SEO marketing, educational background, or help you start a project!
       </div>
     </div>
     <div class="ai-chat-suggestions">
-      <span class="ai-suggestion-chip" data-question="What are Nowshin's core skills?">Core Skills?</span>
-      <span class="ai-suggestion-chip" data-question="Tell me about her NYDA experience">NYDA Instructor</span>
+      <span class="ai-suggestion-chip" data-question="What are Nowshin's core skills?">Core Skills</span>
+      <span class="ai-suggestion-chip" data-question="Tell me about her NYDA experience">NYDA Experience</span>
+      <span class="ai-suggestion-chip" data-question="What about her education?">Education</span>
       <span class="ai-suggestion-chip" data-question="How can I contact Nowshin?">Contact Info</span>
     </div>
     <div class="ai-chat-footer">
-      <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Type a question...">
+      <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Ask anything about Nowshin...">
       <button class="ai-chat-send" id="aiChatSend" aria-label="Send Message"><i class="fa-solid fa-paper-plane"></i></button>
     </div>
   </div>
@@ -3024,11 +3003,6 @@
     </footer>
   </div>
 
-  <a href="https://wa.me/8801751074091" target="_blank" rel="noopener noreferrer"
-    class="floating-contact" aria-label="Contact Nowshin on WhatsApp" title="Chat on WhatsApp">
-    <i class="fa-brands fa-whatsapp"></i>
-  </a>
-
   <script>
     "use strict";
 
@@ -3154,7 +3128,7 @@
       });
     }
 
-    // NOWSHIN AI ASSISTANT CHATBOT LOGIC
+    // HIGH-INTELLIGENCE NOWSHIN AI ASSISTANT CHATBOT LOGIC
     const aiChatWidget = document.getElementById("aiChatWidget");
     const aiChatToggle = document.getElementById("aiChatToggle");
     const aiChatClose = document.getElementById("aiChatClose");
@@ -3176,28 +3150,78 @@
     function addAiMessage(text, sender) {
       const msgDiv = document.createElement("div");
       msgDiv.className = `ai-msg ${sender}`;
-      msgDiv.textContent = text;
+      msgDiv.innerHTML = text;
       aiChatBody.appendChild(msgDiv);
       aiChatBody.scrollTop = aiChatBody.scrollHeight;
     }
 
-    function handleAiQuery(query) {
+    function generateSmartResponse(query) {
       const q = query.toLowerCase();
-      let reply = "I'm here to help! You can reach Nowshin directly via the contact form or email at nurjannatnowshin810@gmail.com.";
 
-      if (q.includes("skill") || q.includes("tools") || q.includes("design") || q.includes("seo")) {
-        reply = "Nowshin specializes in Adobe Illustrator, Photoshop, Canva Pro branding, WordPress & Elementor, SEO strategies, and professional IT instruction!";
-      } else if (q.includes("nyda") || q.includes("instructor") || q.includes("teach") || q.includes("trainee")) {
-        reply = "Nowshin works as a Professional Instructor at the National Youth Development Academy (NYDA), where she has mentored over 100+ students with a 95%+ completion rate.";
-      } else if (q.includes("contact") || q.includes("email") || q.includes("phone") || q.includes("reach")) {
-        reply = "You can contact Nowshin at nurjannatnowshin810@gmail.com, call +880 1751074091, or connect via WhatsApp and LinkedIn!";
-      } else if (q.includes("education") || q.includes("study") || q.includes("english")) {
-        reply = "Nowshin is an English Literature undergraduate at National University and completed her HSC & SSC from Chattogram with a GPA of 4.83.";
+      // Greetings
+      if (q.includes("hi") || q.includes("hello") || q.includes("hey") || q.includes("assalamu") || q.includes("salam")) {
+        return "Hello! 👋 Welcome to Nur Jannat Nowshin's portfolio. How can I assist you today? You can ask about her skills, experience, education, or services!";
+      }
+      
+      // NYDA & Teaching Experience
+      if (q.includes("nyda") || q.includes("instructor") || q.includes("teach") || q.includes("trainee") || q.includes("mentorship") || q.includes("job") || q.includes("experience")) {
+        return "Nowshin serves as an IT & Design Instructor at National Youth Development Academy (NYDA). She has mentored over <b>100+ trainees</b> with a <b>95%+ module completion rate</b>, guiding students in computer applications, design tools, and career readiness.";
       }
 
+      // Graphic Design & Branding
+      if (q.includes("graphic") || q.includes("design") || q.includes("illustrator") || q.includes("photoshop") || q.includes("canva") || q.includes("logo") || q.includes("brand")) {
+        return "Nowshin has completed 30+ freelance branding packages! Her main tools include: <br>• <b>Adobe Illustrator CC</b> (92%)<br>• <b>Adobe Photoshop</b> (88%)<br>• <b>Canva Pro</b> (95%)<br>She crafts logo monograms, luxury brand identities, social media banners, and print flyers.";
+      }
+
+      // Marketing & SEO
+      if (q.includes("seo") || q.includes("marketing") || q.includes("ads") || q.includes("meta") || q.includes("content") || q.includes("semrush") || q.includes("ahrefs")) {
+        return "In digital marketing, Nowshin is certified through the Government Freelancing Training Program (DYD). She specializes in Meta Ads, SEO fundamentals, keyword research (SEMrush/Ahrefs), and content marketing strategies.";
+      }
+
+      // Web Development & CMS
+      if (q.includes("web") || q.includes("wordpress") || q.includes("elementor") || q.includes("site") || q.includes("e-commerce")) {
+        return "Nowshin designs responsive WordPress e-commerce layouts using Elementor. She handles custom page building, UI/UX structure, and local site hosting configurations.";
+      }
+
+      // Skills / Competencies Summary
+      if (q.includes("skill") || q.includes("expert") || q.includes("know") || q.includes("core")) {
+        return "Nowshin's multidisciplinary skill set includes:<br>1. <b>Graphic Design:</b> Adobe Illustrator, Photoshop, Canva Pro<br>2. <b>SEO & Marketing:</b> Meta Ads, SEMrush, Content Strategy<br>3. <b>Web Building:</b> WordPress & Elementor<br>4. <b>Professional Training:</b> NYDA Instruction & Mentorship";
+      }
+
+      // Education & Qualifications
+      if (q.includes("education") || q.includes("study") || q.includes("college") || q.includes("english") || q.includes("university") || q.includes("gpa") || q.includes("ssc") || q.includes("hsc")) {
+        return "Nowshin is currently pursuing a <b>B.A. (Honours) in English Literature</b> at National University (Expected 2028). She completed HSC at Govt. Women's College (GPA 4.83) and SSC at Lohagara Shahpir High School (GPA 4.83).";
+      }
+
+      // Certifications
+      if (q.includes("certif") || q.includes("dyd") || q.includes("course") || q.includes("degree") || q.includes("qualification")) {
+        return "Nowshin holds multiple key qualifications:<br>• <b>Digital Marketing & Freelancing</b> – Govt. DYD Program (2025)<br>• <b>Advanced Computer Certificate</b> – NYDA (2025)<br>• <b>Employability Skills</b> – Wadhwani Foundation (2025)";
+      }
+
+      // Location / Base
+      if (q.includes("location") || q.includes("where") || q.includes("based") || q.includes("chattogram") || q.includes("bangladesh")) {
+        return "Nowshin is currently based in <b>Chattogram, Bangladesh</b>. She works locally as an instructor and accepts remote freelance design/marketing projects globally.";
+      }
+
+      // Contact & Hire
+      if (q.includes("contact") || q.includes("email") || q.includes("phone") || q.includes("hire") || q.includes("reach") || q.includes("whatsapp") || q.includes("linkedin")) {
+        return "You can easily reach Nowshin via:<br>• <b>Email:</b> nurjannatnowshin810@gmail.com<br>• <b>Phone / WhatsApp:</b> +880 1751074091<br>• <b>LinkedIn:</b> Nur Jannat Nowshin<br>Or submit a message directly using the form on this website!";
+      }
+
+      // Work Process
+      if (q.includes("process") || q.includes("work") || q.includes("workflow") || q.includes("step")) {
+        return "Her creative process lab follows 4 steps:<br>1. <b>Conceptualize</b> (Discovery & Ideation)<br>2. <b>Draft & Outline</b> (Wireframing)<br>3. <b>Refine & Style</b> (Aesthetics & Design)<br>4. <b>Deliver & Mentor</b> (Final Launch)";
+      }
+
+      // Default Intelligent Response
+      return "Nowshin is a Creative Graphic Designer, Digital Marketer, English Scholar, and NYDA Instructor based in Chattogram, Bangladesh. Feel free to ask about her design portfolio, teaching experience, or how to collaborate!";
+    }
+
+    function handleAiQuery(query) {
+      const reply = generateSmartResponse(query);
       setTimeout(() => {
         addAiMessage(reply, "bot");
-      }, 400);
+      }, 350);
     }
 
     aiChatSend.addEventListener("click", () => {
