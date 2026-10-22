@@ -786,6 +786,151 @@
     }
     .vault-close:hover { background: rgba(215,160,162,0.2); }
 
+    /* NOWSHIN AI ASSISTANT WIDGET STYLES */
+    .ai-chatbot-widget {
+      position: fixed;
+      right: 20px;
+      bottom: 84px;
+      z-index: 95;
+      width: 340px;
+      max-width: calc(100vw - 40px);
+      height: 460px;
+      max-height: calc(100vh - 120px);
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(145deg, #1c1520, #0f0a12);
+      border: 1px solid rgba(215, 160, 162, 0.35);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 25px rgba(215, 160, 162, 0.15);
+      overflow: hidden;
+      transform: translateY(20px) scale(0.95);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.35s var(--ease);
+    }
+    .ai-chatbot-widget.open {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      visibility: visible;
+    }
+    .ai-chat-header {
+      padding: 16px 18px;
+      background: linear-gradient(135deg, rgba(215,160,162,0.2), rgba(152,96,120,0.15));
+      border-bottom: 1px solid rgba(215, 160, 162, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ai-chat-title-wrap { display: flex; align-items: center; gap: 10px; }
+    .ai-chat-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--rose-light), var(--rose-deep));
+      color: #241720; display: grid; place-items: center; font-size: 13px; font-weight: bold;
+    }
+    .ai-chat-title { margin: 0; color: var(--ivory); font-size: 13px; font-weight: 700; }
+    .ai-chat-subtitle { margin: 2px 0 0; color: var(--rose); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; }
+    .ai-chat-close { background: transparent; border: 0; color: var(--muted); cursor: pointer; font-size: 15px; }
+    .ai-chat-close:hover { color: var(--ivory); }
+
+    .ai-chat-body {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .ai-msg {
+      max-width: 85%;
+      padding: 11px 14px;
+      border-radius: 12px;
+      word-break: break-word;
+    }
+    .ai-msg.bot {
+      background: rgba(215, 160, 162, 0.1);
+      border: 1px solid rgba(215, 160, 162, 0.2);
+      color: var(--ivory);
+      align-self: flex-start;
+      border-top-left-radius: 2px;
+    }
+    .ai-msg.user {
+      background: linear-gradient(115deg, #e8b9ba, #d7a0a2);
+      color: #241720;
+      align-self: flex-end;
+      font-weight: 600;
+      border-top-right-radius: 2px;
+    }
+    .ai-chat-suggestions {
+      padding: 8px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      border-top: 1px solid rgba(215,160,162,0.15);
+      background: rgba(11,9,13,0.4);
+    }
+    .ai-suggestion-chip {
+      padding: 5px 10px;
+      border-radius: 50px;
+      border: 1px solid rgba(215, 160, 162, 0.3);
+      background: rgba(215, 160, 162, 0.05);
+      color: var(--rose-light);
+      font-size: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .ai-suggestion-chip:hover {
+      background: rgba(215, 160, 162, 0.2);
+      color: var(--ivory);
+      border-color: var(--rose);
+    }
+    .ai-chat-footer {
+      padding: 12px;
+      border-top: 1px solid rgba(215,160,162,0.2);
+      background: rgba(15,11,17,0.8);
+      display: flex;
+      gap: 8px;
+    }
+    .ai-chat-input {
+      flex: 1;
+      padding: 9px 12px;
+      background: rgba(8,6,10,0.8);
+      border: 1px solid rgba(215,160,162,0.25);
+      border-radius: 10px;
+      color: var(--ivory);
+      font-size: 11px;
+      outline: none;
+    }
+    .ai-chat-input:focus { border-color: var(--rose); }
+    .ai-chat-send {
+      width: 36px; height: 36px; border-radius: 10px; border: 0;
+      background: linear-gradient(135deg, var(--rose-light), var(--rose-deep));
+      color: #241720; cursor: pointer; display: grid; place-items: center; font-size: 12px;
+    }
+    .ai-chat-toggle-btn {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 96;
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      color: #251720;
+      font-size: 20px;
+      border: 1px solid rgba(255,245,237,.5);
+      border-radius: 18px;
+      background: linear-gradient(145deg, #f0c8c8, #d7a0a2, #e5c7a0);
+      box-shadow: 0 10px 30px rgba(0,0,0,.4), 0 0 25px rgba(240,200,200,.4);
+      cursor: pointer;
+      transition: transform .3s var(--ease), box-shadow .3s;
+    }
+    .ai-chat-toggle-btn:hover {
+      transform: translateY(-4px) scale(1.08);
+      box-shadow: 0 15px 35px rgba(0,0,0,.4), 0 0 35px rgba(240,200,200,.7);
+    }
+
     /* SCROLL REVEAL */
     .js-ready .reveal {
       opacity: 0;
@@ -1775,6 +1920,37 @@
       <h3 id="modalTitle" style="color: var(--ivory); font-family: 'Playfair Display', serif; margin: 0; font-size: 20px;"></h3>
     </div>
   </div>
+
+  <!-- NOWSHIN AI ASSISTANT WIDGET -->
+  <div class="ai-chatbot-widget" id="aiChatWidget">
+    <div class="ai-chat-header">
+      <div class="ai-chat-title-wrap">
+        <div class="ai-chat-avatar"><i class="fa-solid fa-sparkles"></i></div>
+        <div>
+          <h4 class="ai-chat-title">Nowshin AI Assistant</h4>
+          <span class="ai-chat-subtitle">Online &amp; Ready</span>
+        </div>
+      </div>
+      <button class="ai-chat-close" id="aiChatClose" aria-label="Close Chat"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="ai-chat-body" id="aiChatBody">
+      <div class="ai-msg bot">
+        Hi there! ✨ I'm Nowshin's virtual assistant. Ask me anything about her skills, experience as an NYDA instructor, or graphic design portfolio!
+      </div>
+    </div>
+    <div class="ai-chat-suggestions">
+      <span class="ai-suggestion-chip" data-question="What are Nowshin's core skills?">Core Skills?</span>
+      <span class="ai-suggestion-chip" data-question="Tell me about her NYDA experience">NYDA Instructor</span>
+      <span class="ai-suggestion-chip" data-question="How can I contact Nowshin?">Contact Info</span>
+    </div>
+    <div class="ai-chat-footer">
+      <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Type a question...">
+      <button class="ai-chat-send" id="aiChatSend" aria-label="Send Message"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+  </div>
+  <button class="ai-chat-toggle-btn" id="aiChatToggle" aria-label="Open Nowshin AI Assistant" title="Chat with Nowshin AI">
+    <i class="fa-solid fa-comment-dots"></i>
+  </button>
 
   <div class="ambient-light a" aria-hidden="true"></div>
   <div class="ambient-light b" aria-hidden="true"></div>
@@ -2978,6 +3154,74 @@
       });
     }
 
+    // NOWSHIN AI ASSISTANT CHATBOT LOGIC
+    const aiChatWidget = document.getElementById("aiChatWidget");
+    const aiChatToggle = document.getElementById("aiChatToggle");
+    const aiChatClose = document.getElementById("aiChatClose");
+    const aiChatBody = document.getElementById("aiChatBody");
+    const aiChatInput = document.getElementById("aiChatInput");
+    const aiChatSend = document.getElementById("aiChatSend");
+
+    aiChatToggle.addEventListener("click", () => {
+      aiChatWidget.classList.toggle("open");
+      if (aiChatWidget.classList.contains("open")) {
+        aiChatInput.focus();
+      }
+    });
+
+    aiChatClose.addEventListener("click", () => {
+      aiChatWidget.classList.remove("open");
+    });
+
+    function addAiMessage(text, sender) {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = `ai-msg ${sender}`;
+      msgDiv.textContent = text;
+      aiChatBody.appendChild(msgDiv);
+      aiChatBody.scrollTop = aiChatBody.scrollHeight;
+    }
+
+    function handleAiQuery(query) {
+      const q = query.toLowerCase();
+      let reply = "I'm here to help! You can reach Nowshin directly via the contact form or email at nurjannatnowshin810@gmail.com.";
+
+      if (q.includes("skill") || q.includes("tools") || q.includes("design") || q.includes("seo")) {
+        reply = "Nowshin specializes in Adobe Illustrator, Photoshop, Canva Pro branding, WordPress & Elementor, SEO strategies, and professional IT instruction!";
+      } else if (q.includes("nyda") || q.includes("instructor") || q.includes("teach") || q.includes("trainee")) {
+        reply = "Nowshin works as a Professional Instructor at the National Youth Development Academy (NYDA), where she has mentored over 100+ students with a 95%+ completion rate.";
+      } else if (q.includes("contact") || q.includes("email") || q.includes("phone") || q.includes("reach")) {
+        reply = "You can contact Nowshin at nurjannatnowshin810@gmail.com, call +880 1751074091, or connect via WhatsApp and LinkedIn!";
+      } else if (q.includes("education") || q.includes("study") || q.includes("english")) {
+        reply = "Nowshin is an English Literature undergraduate at National University and completed her HSC & SSC from Chattogram with a GPA of 4.83.";
+      }
+
+      setTimeout(() => {
+        addAiMessage(reply, "bot");
+      }, 400);
+    }
+
+    aiChatSend.addEventListener("click", () => {
+      const text = aiChatInput.value.trim();
+      if (!text) return;
+      addAiMessage(text, "user");
+      aiChatInput.value = "";
+      handleAiQuery(text);
+    });
+
+    aiChatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        aiChatSend.click();
+      }
+    });
+
+    document.querySelectorAll(".ai-suggestion-chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        const question = chip.getAttribute("data-question");
+        addAiMessage(question, "user");
+        handleAiQuery(question);
+      });
+    });
+
     // SECRET MONOGRAM VAULT (TRIPLE CLICK EASTER EGG)
     const vaultModal = document.getElementById("vaultModal");
     const vaultClose = document.getElementById("vaultClose");
@@ -3074,6 +3318,7 @@
         dismissIntro();
         closeVault();
         if (imageModal) imageModal.classList.remove('open');
+        if (aiChatWidget) aiChatWidget.classList.remove('open');
       }
     });
 
