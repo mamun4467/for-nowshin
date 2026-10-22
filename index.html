@@ -786,22 +786,22 @@
     }
     .vault-close:hover { background: rgba(215,160,162,0.2); }
 
-    /* NOWSHIN AI ASSISTANT WIDGET STYLES */
+    /* NOWSHIN AI ASSISTANT WIDGET STYLES (ULTRA-SMART & PREMIUM) */
     .ai-chatbot-widget {
       position: fixed;
       right: 20px;
       bottom: 84px;
       z-index: 99;
-      width: 350px;
+      width: 380px;
       max-width: calc(100vw - 40px);
-      height: 480px;
+      height: 520px;
       max-height: calc(100vh - 120px);
       display: flex;
       flex-direction: column;
       background: linear-gradient(145deg, #1c1520, #0f0a12);
-      border: 1px solid rgba(215, 160, 162, 0.35);
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 25px rgba(215, 160, 162, 0.15);
+      border: 1px solid rgba(215, 160, 162, 0.4);
+      border-radius: 22px;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.7), 0 0 30px rgba(215, 160, 162, 0.2);
       overflow: hidden;
       transform: translateY(20px) scale(0.95);
       opacity: 0;
@@ -815,22 +815,25 @@
     }
     .ai-chat-header {
       padding: 16px 18px;
-      background: linear-gradient(135deg, rgba(215,160,162,0.2), rgba(152,96,120,0.15));
-      border-bottom: 1px solid rgba(215, 160, 162, 0.2);
+      background: linear-gradient(135deg, rgba(215,160,162,0.25), rgba(152,96,120,0.18));
+      border-bottom: 1px solid rgba(215, 160, 162, 0.25);
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .ai-chat-title-wrap { display: flex; align-items: center; gap: 10px; }
+    .ai-chat-title-wrap { display: flex; align-items: center; gap: 12px; }
     .ai-chat-avatar {
-      width: 32px; height: 32px; border-radius: 50%;
+      width: 36px; height: 36px; border-radius: 50%;
       background: linear-gradient(135deg, var(--rose-light), var(--rose-deep));
-      color: #241720; display: grid; place-items: center; font-size: 13px; font-weight: bold;
+      color: #241720; display: grid; place-items: center; font-size: 14px; font-weight: bold;
+      box-shadow: 0 0 15px rgba(240,200,200,0.4);
     }
-    .ai-chat-title { margin: 0; color: var(--ivory); font-size: 13px; font-weight: 700; }
-    .ai-chat-subtitle { margin: 2px 0 0; color: var(--rose); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; }
-    .ai-chat-close { background: transparent; border: 0; color: var(--muted); cursor: pointer; font-size: 15px; }
-    .ai-chat-close:hover { color: var(--ivory); }
+    .ai-chat-title { margin: 0; color: var(--ivory); font-size: 14px; font-weight: 700; }
+    .ai-chat-subtitle-wrap { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+    .ai-status-pulse { width: 6px; height: 6px; background: #51cf66; border-radius: 50%; box-shadow: 0 0 8px #51cf66; animation: statusPulse 2s infinite; }
+    .ai-chat-subtitle { color: var(--rose); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; }
+    .ai-chat-close { background: transparent; border: 0; color: var(--muted); cursor: pointer; font-size: 16px; padding: 4px; border-radius: 50%; transition: background 0.2s; }
+    .ai-chat-close:hover { color: var(--ivory); background: rgba(215,160,162,0.15); }
 
     .ai-chat-body {
       flex: 1;
@@ -840,85 +843,124 @@
       flex-direction: column;
       gap: 12px;
       font-size: 12px;
-      line-height: 1.6;
+      line-height: 1.65;
+      scroll-behavior: smooth;
     }
     .ai-msg {
-      max-width: 85%;
-      padding: 11px 14px;
-      border-radius: 12px;
+      max-width: 88%;
+      padding: 12px 15px;
+      border-radius: 14px;
       word-break: break-word;
+      animation: msgPopIn 0.3s var(--ease) forwards;
+    }
+    @keyframes msgPopIn {
+      from { opacity: 0; transform: translateY(8px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
     .ai-msg.bot {
-      background: rgba(215, 160, 162, 0.1);
-      border: 1px solid rgba(215, 160, 162, 0.2);
+      background: rgba(215, 160, 162, 0.12);
+      border: 1px solid rgba(215, 160, 162, 0.25);
       color: var(--ivory);
       align-self: flex-start;
-      border-top-left-radius: 2px;
+      border-top-left-radius: 3px;
     }
     .ai-msg.user {
       background: linear-gradient(115deg, #e8b9ba, #d7a0a2);
       color: #241720;
       align-self: flex-end;
       font-weight: 600;
-      border-top-right-radius: 2px;
+      border-top-right-radius: 3px;
+      box-shadow: 0 4px 15px rgba(183,124,131,0.25);
     }
+    .ai-typing-indicator {
+      display: none;
+      align-self: flex-start;
+      padding: 10px 14px;
+      background: rgba(215, 160, 162, 0.08);
+      border: 1px solid rgba(215, 160, 162, 0.2);
+      border-radius: 12px;
+      border-top-left-radius: 3px;
+      gap: 5px;
+      align-items: center;
+    }
+    .ai-typing-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--rose-light);
+      border-radius: 50%;
+      animation: typingBounce 1.4s infinite ease-in-out both;
+    }
+    .ai-typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .ai-typing-dot:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes typingBounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1.0); }
+    }
+
     .ai-chat-suggestions {
-      padding: 8px 12px;
+      padding: 10px 12px;
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
       border-top: 1px solid rgba(215,160,162,0.15);
-      background: rgba(11,9,13,0.4);
+      background: rgba(11,9,13,0.5);
+      max-height: 100px;
+      overflow-y: auto;
     }
     .ai-suggestion-chip {
-      padding: 5px 10px;
+      padding: 5px 11px;
       border-radius: 50px;
-      border: 1px solid rgba(215, 160, 162, 0.3);
-      background: rgba(215, 160, 162, 0.05);
+      border: 1px solid rgba(215, 160, 162, 0.35);
+      background: rgba(215, 160, 162, 0.06);
       color: var(--rose-light);
       font-size: 10px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.25s var(--ease);
     }
     .ai-suggestion-chip:hover {
-      background: rgba(215, 160, 162, 0.2);
+      background: rgba(215, 160, 162, 0.22);
       color: var(--ivory);
       border-color: var(--rose);
+      transform: translateY(-1px);
     }
     .ai-chat-footer {
       padding: 12px;
       border-top: 1px solid rgba(215,160,162,0.2);
-      background: rgba(15,11,17,0.8);
+      background: rgba(15,11,17,0.9);
       display: flex;
       gap: 8px;
     }
     .ai-chat-input {
       flex: 1;
-      padding: 9px 12px;
-      background: rgba(8,6,10,0.8);
-      border: 1px solid rgba(215,160,162,0.25);
-      border-radius: 10px;
+      padding: 10px 14px;
+      background: rgba(8,6,10,0.85);
+      border: 1px solid rgba(215,160,162,0.3);
+      border-radius: 12px;
       color: var(--ivory);
       font-size: 11px;
       outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
     }
-    .ai-chat-input:focus { border-color: var(--rose); }
+    .ai-chat-input:focus { border-color: var(--rose); box-shadow: 0 0 10px rgba(215,160,162,0.2); }
     .ai-chat-send {
-      width: 36px; height: 36px; border-radius: 10px; border: 0;
+      width: 38px; height: 38px; border-radius: 12px; border: 0;
       background: linear-gradient(135deg, var(--rose-light), var(--rose-deep));
-      color: #241720; cursor: pointer; display: grid; place-items: center; font-size: 12px;
+      color: #241720; cursor: pointer; display: grid; place-items: center; font-size: 13px;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
+    .ai-chat-send:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(240,200,200,0.5); }
+
     .ai-chat-toggle-btn {
       position: fixed;
       right: 20px;
       bottom: 20px;
       z-index: 100;
-      width: 52px;
-      height: 52px;
+      width: 54px;
+      height: 54px;
       display: grid;
       place-items: center;
       color: #251720;
-      font-size: 20px;
+      font-size: 21px;
       border: 1px solid rgba(255,245,237,.5);
       border-radius: 18px;
       background: linear-gradient(145deg, #f0c8c8, #d7a0a2, #e5c7a0);
@@ -1899,34 +1941,48 @@
     </div>
   </div>
 
-  <!-- NOWSHIN AI ASSISTANT WIDGET -->
+  <!-- NOWSHIN AI ASSISTANT WIDGET (ULTRA-SMART & PREMIUM) -->
   <div class="ai-chatbot-widget" id="aiChatWidget">
     <div class="ai-chat-header">
       <div class="ai-chat-title-wrap">
         <div class="ai-chat-avatar"><i class="fa-solid fa-sparkles"></i></div>
         <div>
           <h4 class="ai-chat-title">Nowshin AI Assistant</h4>
-          <span class="ai-chat-subtitle">Smart Portfolio AI</span>
+          <div class="ai-chat-subtitle-wrap">
+            <span class="ai-status-pulse"></span>
+            <span class="ai-chat-subtitle">Active Portfolio Expert</span>
+          </div>
         </div>
       </div>
       <button class="ai-chat-close" id="aiChatClose" aria-label="Close Chat"><i class="fa-solid fa-xmark"></i></button>
     </div>
+    
     <div class="ai-chat-body" id="aiChatBody">
       <div class="ai-msg bot">
-        Hello! ✨ I am Nowshin's personal Smart Assistant. I can tell you about her professional teaching at NYDA, graphic design skills, SEO marketing, educational background, or help you start a project!
+        Hello! ✨ I am Nowshin's intelligent portfolio concierge. You can ask me anything about her graphic design projects, NYDA training, SEO marketing expertise, education, or how to get in touch!
+      </div>
+      <!-- Typing animation box -->
+      <div class="ai-typing-indicator" id="aiTypingIndicator">
+        <div class="ai-typing-dot"></div>
+        <div class="ai-typing-dot"></div>
+        <div class="ai-typing-dot"></div>
       </div>
     </div>
+
     <div class="ai-chat-suggestions">
-      <span class="ai-suggestion-chip" data-question="What are Nowshin's core skills?">Core Skills</span>
-      <span class="ai-suggestion-chip" data-question="Tell me about her NYDA experience">NYDA Experience</span>
-      <span class="ai-suggestion-chip" data-question="What about her education?">Education</span>
-      <span class="ai-suggestion-chip" data-question="How can I contact Nowshin?">Contact Info</span>
+      <span class="ai-suggestion-chip" data-question="What are Nowshin's core skills?">⚡ Core Skills</span>
+      <span class="ai-suggestion-chip" data-question="Tell me about her NYDA experience">👩‍🏫 NYDA Teaching</span>
+      <span class="ai-suggestion-chip" data-question="Show graphic design work">🎨 Graphic Design</span>
+      <span class="ai-suggestion-chip" data-question="What about her education?">🎓 Education</span>
+      <span class="ai-suggestion-chip" data-question="How can I contact Nowshin?">📩 Contact Info</span>
     </div>
+
     <div class="ai-chat-footer">
-      <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Ask anything about Nowshin...">
+      <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Ask about Nowshin's work, skills...">
       <button class="ai-chat-send" id="aiChatSend" aria-label="Send Message"><i class="fa-solid fa-paper-plane"></i></button>
     </div>
   </div>
+
   <button class="ai-chat-toggle-btn" id="aiChatToggle" aria-label="Open Nowshin AI Assistant" title="Chat with Nowshin AI">
     <i class="fa-solid fa-comment-dots"></i>
   </button>
@@ -3128,13 +3184,14 @@
       });
     }
 
-    // HIGH-INTELLIGENCE NOWSHIN AI ASSISTANT CHATBOT LOGIC
+    // ULTRA-SMART, DETAILED & PREMIUM NOWSHIN AI ASSISTANT CHATBOT LOGIC
     const aiChatWidget = document.getElementById("aiChatWidget");
     const aiChatToggle = document.getElementById("aiChatToggle");
     const aiChatClose = document.getElementById("aiChatClose");
     const aiChatBody = document.getElementById("aiChatBody");
     const aiChatInput = document.getElementById("aiChatInput");
     const aiChatSend = document.getElementById("aiChatSend");
+    const aiTypingIndicator = document.getElementById("aiTypingIndicator");
 
     aiChatToggle.addEventListener("click", () => {
       aiChatWidget.classList.toggle("open");
@@ -3151,77 +3208,89 @@
       const msgDiv = document.createElement("div");
       msgDiv.className = `ai-msg ${sender}`;
       msgDiv.innerHTML = text;
-      aiChatBody.appendChild(msgDiv);
+      // Insert before typing indicator so typing indicator stays at bottom
+      aiChatBody.insertBefore(msgDiv, aiTypingIndicator);
       aiChatBody.scrollTop = aiChatBody.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+      aiTypingIndicator.style.display = "flex";
+      aiChatBody.scrollTop = aiChatBody.scrollHeight;
+    }
+
+    function hideTypingIndicator() {
+      aiTypingIndicator.style.display = "none";
     }
 
     function generateSmartResponse(query) {
       const q = query.toLowerCase();
 
-      // Greetings
+      // Greetings & Welcome
       if (q.includes("hi") || q.includes("hello") || q.includes("hey") || q.includes("assalamu") || q.includes("salam")) {
-        return "Hello! 👋 Welcome to Nur Jannat Nowshin's portfolio. How can I assist you today? You can ask about her skills, experience, education, or services!";
+        return "Hello! ✨ Welcome to Nur Jannat Nowshin's official portfolio. I am her advanced AI concierge. Feel free to ask me about her graphic design masterpieces, teaching roles at NYDA, SEO strategies, or how to collaborate with her!";
       }
       
       // NYDA & Teaching Experience
       if (q.includes("nyda") || q.includes("instructor") || q.includes("teach") || q.includes("trainee") || q.includes("mentorship") || q.includes("job") || q.includes("experience")) {
-        return "Nowshin serves as an IT & Design Instructor at National Youth Development Academy (NYDA). She has mentored over <b>100+ trainees</b> with a <b>95%+ module completion rate</b>, guiding students in computer applications, design tools, and career readiness.";
+        return "👩‍🏫 <b>Teaching & Professional Instruction:</b><br>Nowshin works as an IT & Design Instructor at the <b>National Youth Development Academy (NYDA)</b>. Key highlights include:<br>• Mentored <b>100+ trainees</b> through hands-on coursework.<br>• Achieved a <b>95%+ module completion rate</b>.<br>• Specializes in building workforce-ready skills in computer applications and design.";
       }
 
       // Graphic Design & Branding
-      if (q.includes("graphic") || q.includes("design") || q.includes("illustrator") || q.includes("photoshop") || q.includes("canva") || q.includes("logo") || q.includes("brand")) {
-        return "Nowshin has completed 30+ freelance branding packages! Her main tools include: <br>• <b>Adobe Illustrator CC</b> (92%)<br>• <b>Adobe Photoshop</b> (88%)<br>• <b>Canva Pro</b> (95%)<br>She crafts logo monograms, luxury brand identities, social media banners, and print flyers.";
+      if (q.includes("graphic") || q.includes("design") || q.includes("illustrator") || q.includes("photoshop") || q.includes("canva") || q.includes("logo") || q.includes("brand") || q.includes("art")) {
+        return "🎨 <b>Graphic Design & Branding Suite:</b><br>Nowshin has delivered <b>30+ identity packages</b>. Her expertise spans:<br>• <b>Adobe Illustrator CC</b> (92% proficiency)<br>• <b>Adobe Photoshop</b> (88% proficiency)<br>• <b>Canva Pro</b> (95% proficiency)<br>She designs stunning custom monograms, luxury brand identities, social media campaigns, and high-end flyers.";
       }
 
       // Marketing & SEO
       if (q.includes("seo") || q.includes("marketing") || q.includes("ads") || q.includes("meta") || q.includes("content") || q.includes("semrush") || q.includes("ahrefs")) {
-        return "In digital marketing, Nowshin is certified through the Government Freelancing Training Program (DYD). She specializes in Meta Ads, SEO fundamentals, keyword research (SEMrush/Ahrefs), and content marketing strategies.";
+        return "📈 <b>Digital Marketing & SEO Expertise:</b><br>Certified via the Government Freelancing Training Program (DYD) in 2025, Nowshin specializes in:<br>• Meta Ads & social media campaigns.<br>• On-page SEO fundamentals & keyword optimization using SEMrush / Ahrefs.<br>• Content strategy designed to boost organic traffic and brand visibility.";
       }
 
       // Web Development & CMS
       if (q.includes("web") || q.includes("wordpress") || q.includes("elementor") || q.includes("site") || q.includes("e-commerce")) {
-        return "Nowshin designs responsive WordPress e-commerce layouts using Elementor. She handles custom page building, UI/UX structure, and local site hosting configurations.";
+        return "💻 <b>Web Design & CMS Suites:</b><br>Nowshin builds responsive WordPress e-commerce websites utilizing <b>Elementor</b>. She handles end-to-end custom page layouts, UI/UX structure, and local hosting configurations.";
       }
 
       // Skills / Competencies Summary
       if (q.includes("skill") || q.includes("expert") || q.includes("know") || q.includes("core")) {
-        return "Nowshin's multidisciplinary skill set includes:<br>1. <b>Graphic Design:</b> Adobe Illustrator, Photoshop, Canva Pro<br>2. <b>SEO & Marketing:</b> Meta Ads, SEMrush, Content Strategy<br>3. <b>Web Building:</b> WordPress & Elementor<br>4. <b>Professional Training:</b> NYDA Instruction & Mentorship";
+        return "⚡ <b>Core Competencies Summary:</b><br>1. <b>Design:</b> Illustrator, Photoshop, Canva Pro<br>2. <b>Marketing:</b> Meta Ads, SEMrush, Content Strategy<br>3. <b>Web:</b> WordPress, Elementor UI/UX<br>4. <b>Instruction:</b> Mentoring, Curriculum Design, MS Office";
       }
 
       // Education & Qualifications
       if (q.includes("education") || q.includes("study") || q.includes("college") || q.includes("english") || q.includes("university") || q.includes("gpa") || q.includes("ssc") || q.includes("hsc")) {
-        return "Nowshin is currently pursuing a <b>B.A. (Honours) in English Literature</b> at National University (Expected 2028). She completed HSC at Govt. Women's College (GPA 4.83) and SSC at Lohagara Shahpir High School (GPA 4.83).";
+        return "🎓 <b>Academic Background:</b><br>• <b>B.A. (Honours) in English Literature:</b> National University (Expected 2028).<br>• <b>HSC:</b> Chittagong Govt. Women's College (GPA 4.83 / 5.00).<br>• <b>SSC:</b> Lohagara Shahpir High School (GPA 4.83 / 5.00).";
       }
 
       // Certifications
       if (q.includes("certif") || q.includes("dyd") || q.includes("course") || q.includes("degree") || q.includes("qualification")) {
-        return "Nowshin holds multiple key qualifications:<br>• <b>Digital Marketing & Freelancing</b> – Govt. DYD Program (2025)<br>• <b>Advanced Computer Certificate</b> – NYDA (2025)<br>• <b>Employability Skills</b> – Wadhwani Foundation (2025)";
+        return "📜 <b>Professional Certifications (2025):</b><br>• <b>Digital Marketing & Freelancing</b> – Dept. of Youth Development (DYD).<br>• <b>Advanced Computer Certificate Course</b> – NYDA.<br>• <b>Employability Skills (79 Hours)</b> – Wadhwani Foundation.";
       }
 
       // Location / Base
       if (q.includes("location") || q.includes("where") || q.includes("based") || q.includes("chattogram") || q.includes("bangladesh")) {
-        return "Nowshin is currently based in <b>Chattogram, Bangladesh</b>. She works locally as an instructor and accepts remote freelance design/marketing projects globally.";
+        return "📍 Nowshin is based in <b>Chattogram, Bangladesh</b>. She works locally as an IT instructor and serves international and local clients remotely for freelance design & digital marketing projects.";
       }
 
       // Contact & Hire
       if (q.includes("contact") || q.includes("email") || q.includes("phone") || q.includes("hire") || q.includes("reach") || q.includes("whatsapp") || q.includes("linkedin")) {
-        return "You can easily reach Nowshin via:<br>• <b>Email:</b> nurjannatnowshin810@gmail.com<br>• <b>Phone / WhatsApp:</b> +880 1751074091<br>• <b>LinkedIn:</b> Nur Jannat Nowshin<br>Or submit a message directly using the form on this website!";
+        return "📩 <b>Get in Touch with Nowshin:</b><br>• <b>Email:</b> nurjannatnowshin810@gmail.com<br>• <b>Phone / WhatsApp:</b> +880 1751074091<br>• <b>LinkedIn:</b> Nur Jannat Nowshin<br>You can also use the quick contact form at the bottom of the page!";
       }
 
       // Work Process
       if (q.includes("process") || q.includes("work") || q.includes("workflow") || q.includes("step")) {
-        return "Her creative process lab follows 4 steps:<br>1. <b>Conceptualize</b> (Discovery & Ideation)<br>2. <b>Draft & Outline</b> (Wireframing)<br>3. <b>Refine & Style</b> (Aesthetics & Design)<br>4. <b>Deliver & Mentor</b> (Final Launch)";
+        return "🔄 <b>The Creative Process Lab:</b><br>1. <b>Conceptualize:</b> Deep discovery & ideation.<br>2. <b>Draft & Outline:</b> Wireframing and lesson structuring.<br>3. <b>Refine & Style:</b> Polishing aesthetics with pro design suites.<br>4. <b>Deliver & Mentor:</b> Seamless launch and long-term strategy.";
       }
 
       // Default Intelligent Response
-      return "Nowshin is a Creative Graphic Designer, Digital Marketer, English Scholar, and NYDA Instructor based in Chattogram, Bangladesh. Feel free to ask about her design portfolio, teaching experience, or how to collaborate!";
+      return "Nur Jannat Nowshin is an undergraduate English literature scholar, creative graphic designer, digital marketer, and IT instructor at NYDA based in Chattogram. Let me know if you'd like to explore her portfolio gallery, view her certifications, or get her contact details!";
     }
 
     function handleAiQuery(query) {
+      showTypingIndicator();
       const reply = generateSmartResponse(query);
       setTimeout(() => {
+        hideTypingIndicator();
         addAiMessage(reply, "bot");
-      }, 350);
+      }, 700);
     }
 
     aiChatSend.addEventListener("click", () => {
