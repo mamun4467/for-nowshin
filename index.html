@@ -535,6 +535,45 @@
 
     .glass-card:hover::before { opacity: 1; }
 
+    /* PREMIUM BIO INFO BOX IN HERO SECTION */
+    .premium-bio-box {
+      background: rgba(23, 18, 26, 0.55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(215, 160, 162, 0.35);
+      border-radius: 18px;
+      padding: 22px 24px;
+      margin: 22px 0;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 245, 237, 0.1);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s var(--ease), border-color 0.35s, box-shadow 0.35s;
+    }
+
+    .premium-bio-box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--rose-light), var(--gold), var(--rose-deep));
+      border-radius: 4px 0 0 4px;
+    }
+
+    .premium-bio-box:hover {
+      border-color: rgba(240, 200, 200, 0.65);
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.5), 0 0 25px rgba(215, 160, 162, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .hero-description {
+      color: #e0d5e0;
+      font-size: 13.5px;
+      line-height: 1.85;
+      margin: 0;
+    }
+
     .icon-box {
       width: 49px;
       height: 49px;
@@ -1072,13 +1111,6 @@
       font-weight: 500;
       letter-spacing: -.045em;
       line-height: 1.16;
-    }
-
-    .hero-description {
-      max-width: 590px;
-      color: #c1b5c1;
-      font-size: 13px;
-      line-height: 2;
     }
 
     .hero-quick-metrics {
@@ -1959,7 +1991,7 @@
     
     <div class="ai-chat-body" id="aiChatBody">
       <div class="ai-msg bot">
-        Hello! ✨ I am Nowshin's personal AI Assistant. Bangla, Banglish, or English — ask me anything about her skills, experience, projects, or education!
+        Hello! ✨ I am Nowshin's personal AI Assistant. Ask me anything in Bangla, Banglish, or English about her Graphic Design, NYDA Teaching, SEO, Services, or Education!
       </div>
       <!-- Typing animation box -->
       <div class="ai-typing-indicator" id="aiTypingIndicator">
@@ -1972,7 +2004,8 @@
     <div class="ai-chat-suggestions">
       <span class="ai-suggestion-chip" data-question="About Nowshin">📌 About Nowshin</span>
       <span class="ai-suggestion-chip" data-question="Skills & Expertise">⚡ Skills</span>
-      <span class="ai-suggestion-chip" data-question="NYDA Experience">👩‍🏫 NYDA Experience</span>
+      <span class="ai-suggestion-chip" data-question="Graphic Design Services">🎨 Design Services</span>
+      <span class="ai-suggestion-chip" data-question="NYDA Experience">👩‍🏫 NYDA Instructor</span>
       <span class="ai-suggestion-chip" data-question="Contact Info">📩 Contact Details</span>
     </div>
 
@@ -2014,10 +2047,13 @@
               <span class="name gradient-text">Nur Jannat<br class="desktop-break"> Nowshin</span>
             </h1>
 
-            <p class="hero-description">
-              English Literature Undergraduate, Creative Graphic Designer, SEO &amp; Digital Marketer, and Professional IT Instructor.<br>
-              Dedicated to driving growth through creative branding, digital strategies, and practical training.
-            </p>
+            <!-- PREMIUM GLASSMORPHISM BIO BOX -->
+            <div class="premium-bio-box">
+              <p class="hero-description">
+                English Literature Undergraduate, Creative Graphic Designer, SEO &amp; Digital Marketer, and Professional IT Instructor.<br><br>
+                Dedicated to driving growth through creative branding, digital strategies, and practical training.
+              </p>
+            </div>
 
             <div class="hero-quick-metrics">
               <div class="quick-stat-badge"><strong>50+</strong><span>Brand Assets Designed</span></div>
@@ -3224,23 +3260,23 @@
     function generateSmartResponse(query) {
       const q = query.toLowerCase().trim();
 
-      // Detection flags for Language
+      // Language Detection Flags
       const isBangla = /[\u0980-\u09FF]/.test(q);
-      const isBanglish = (q.includes("kemon") || q.includes("nam") || q.includes("ki") || q.includes("kore") || q.includes("khobor") || q.includes("bhalo") || q.includes("janate") || q.includes("koi") || q.includes("somporke") || q.includes("kaj") || q.includes("shiksha"));
+      const isBanglish = (q.includes("kemon") || q.includes("nam") || q.includes("ki") || q.includes("kore") || q.includes("khobor") || q.includes("bhalo") || q.includes("janate") || q.includes("koi") || q.includes("somporke") || q.includes("kaj") || q.includes("shiksha") || q.includes("korba") || q.includes("bolo"));
 
       // 1. GREETINGS & INTRO
       if (q.includes("hi") || q.includes("hello") || q.includes("hey") || q.includes("assalamu") || q.includes("salam") || q.includes("kemon") || q.includes("কেমন") || q.includes("হাই") || q.includes("হ্যালো") || q.includes("সালাম")) {
         if (isBangla) {
-          return "হ্যালো! ✨ নূর জান্নাত নওশিনের পোর্টফোলিওতে আপনাকে স্বাগতম। আমি নওশিনের এআই অ্যাসিস্ট্যান্ট। আপনি নওশিনের স্কিল, কাজের অভিজ্ঞতা, পড়াশোনা বা যোগাযোগ করার মাধ্যম সম্পর্কে যেকোনো প্রশ্ন করতে পারেন!";
+          return "হ্যালো! ✨ নূর জান্নাত নওশিনের পোর্টফোলিওতে আপনাকে স্বাগতম। আমি নওশিনের এআই অ্যাসিস্ট্যান্ট। আপনি নওশিনের গ্রাফিক ডিজাইন, ইনস্ট্রাক্টরশিপ, এসইও বা যেকোনো সার্ভিস সম্পর্কে জানতে পারেন!";
         } else if (isBanglish) {
-          return "Hello! ✨ Nur Jannat Nowshin er portfolio te apnake swagotom. Ami Nowshin er AI Assistant. Apni Nowshin er skills, experience, porashona ba jogajog er bishoye jekono proshno korte paren!";
+          return "Hello! ✨ Nur Jannat Nowshin er official portfolio te apnake swagotom. Ami Nowshin er AI Assistant. Apni Nowshin er skills, experience, NYDA teaching ba jogajog niye jekono proshno korte paren!";
         } else {
           return "Hello! ✨ Welcome to Nur Jannat Nowshin's official portfolio. I am her AI Concierge. How can I assist you today? Feel free to ask about her graphic design, teaching at NYDA, SEO expertise, or education!";
         }
       }
 
       // 2. WHO IS NOWSHIN / ABOUT ME
-      if (q.includes("who") || q.includes("nowshin") || q.includes("about") || q.includes("identity") || q.includes("ke") || q.includes("কার") || q.includes("নওশিন কে") || q.includes("পরিচয়")) {
+      if (q.includes("who") || q.includes("nowshin") || q.includes("about") || q.includes("identity") || q.includes("ke") || q.includes("কার") || q.includes("নওশিন কে") || q.includes("পরিচয়") || q.includes("details")) {
         if (isBangla) {
           return "📌 <b>নূর জান্নাত নওশিন সম্পর্কে:</b><br>নওশিন একজন অত্যন্ত সৃজনশীল ডিজিটাল প্রফেশনাল এবং ন্যাশনাল ইয়ুথ ডেভেলপমেন্ট একাডেমি (NYDA) এর ইনস্ট্রাক্টর। তিনি ইংরেজি সাহিত্যে অনার্স করছেন এবং পেশাদার গ্রাফিক ডিজাইন, ডিজিটাল মার্কেটিং ও এসইও (SEO) নিয়ে কাজ করছেন।";
         } else if (isBanglish) {
@@ -3251,7 +3287,7 @@
       }
 
       // 3. TEACHING & NYDA EXPERIENCE
-      if (q.includes("nyda") || q.includes("instructor") || q.includes("teach") || q.includes("trainee") || q.includes("mentorship") || q.includes("job") || q.includes("experience") || q.includes("পড়ান") || q.includes("চাকরি") || q.includes("অভিজ্ঞতা") || q.includes("ইনস্ট্রাক্টর")) {
+      if (q.includes("nyda") || q.includes("instructor") || q.includes("teach") || q.includes("trainee") || q.includes("mentorship") || q.includes("job") || q.includes("experience") || q.includes("পড়ান") || q.includes("চাকরি") || q.includes("অভিজ্ঞতা") || q.includes("ইনস্ট্রাক্টর") || q.includes("course") || q.includes("কোর্স")) {
         if (isBangla) {
           return "👩‍🏫 <b>NYDA ইনস্ট্রাক্টর অভিজ্ঞতা:</b><br>নওশিন <b>National Youth Development Academy (NYDA)</b>-এ আইটি ও কম্পিউটার অ্যাপ্লিকেশনের প্রফেশনাল ইনস্ট্রাক্টর হিসেবে নিয়োজিত আছেন।<br>• <b>১০০+ এর বেশি ট্রেইনিকে</b> প্রশিক্ষণ দিয়েছেন।<br>• কোর্স সমাপনী হার <b>৯৫%+</b>।<br>• শিক্ষার্থীদের ব্যবহারিক কাজের মাধ্যমে দক্ষ করে তুলছেন।";
         } else if (isBanglish) {
@@ -3262,7 +3298,7 @@
       }
 
       // 4. GRAPHIC DESIGN & BRANDING
-      if (q.includes("graphic") || q.includes("design") || q.includes("illustrator") || q.includes("photoshop") || q.includes("canva") || q.includes("logo") || q.includes("brand") || q.includes("গ্রাফিক") || q.includes("ডিজাইন") || q.includes("লোগো")) {
+      if (q.includes("graphic") || q.includes("design") || q.includes("illustrator") || q.includes("photoshop") || q.includes("canva") || q.includes("logo") || q.includes("brand") || q.includes("গ্রাফিক") || q.includes("ডিজাইন") || q.includes("লোগো") || q.includes("flyer") || q.includes("banner")) {
         if (isBangla) {
           return "🎨 <b>গ্রাফিক ডিজাইন ও ব্র্যান্ডিং স্কিল:</b><br>নওশিন ৩০টিরও বেশি ব্র্যান্ডিং প্যাকেজ সফলভাবে ডেলিভারি করেছেন।<br>• <b>Adobe Illustrator CC:</b> ৯২% দক্ষতা<br>• <b>Adobe Photoshop:</b> ৮৮% দক্ষতা<br>• <b>Canva Pro:</b> ৯৫% দক্ষতা<br>তিনি লাক্সারি মনোগ্রাম লোগো, সোশ্যাল মিডিয়া ব্যানার, ফ্লাইয়ার ও ব্র্যান্ড আইডেন্টিটি তৈরিতে পারদর্শী।";
         } else if (isBanglish) {
@@ -3284,7 +3320,7 @@
       }
 
       // 6. WEB DESIGN & CMS
-      if (q.includes("web") || q.includes("wordpress") || q.includes("elementor") || q.includes("site") || q.includes("e-commerce") || q.includes("ওয়েবসাইট") || q.includes("ওয়ার্ডপ্রেস")) {
+      if (q.includes("web") || q.includes("wordpress") || q.includes("elementor") || q.includes("site") || q.includes("e-commerce") || q.includes("ওয়েবসাইট") || q.includes("ওয়ার্ডপ্রেস")) {
         if (isBangla) {
           return "💻 <b>ওয়েব ডিজাইন ও ওয়ার্ডপ্রেস:</b><br>নওশিন ওয়ার্ডপ্রেস (WordPress) এবং এলিমেন্টর (Elementor) ব্যবহার করে রেসপন্সিভ ই-কমার্স ওয়েবসাইট ও পোর্টফোলিও লেআউট তৈরি করেন।";
         } else if (isBanglish) {
@@ -3295,7 +3331,7 @@
       }
 
       // 7. ALL SKILLS OVERVIEW
-      if (q.includes("skill") || q.includes("expert") || q.includes("know") || q.includes("দক্ষতা") || q.includes("স্কিল") || q.includes("কী পারো")) {
+      if (q.includes("skill") || q.includes("expert") || q.includes("know") || q.includes("দক্ষতা") || q.includes("স্কিল") || q.includes("কী পারো") || q.includes("parbe")) {
         if (isBangla) {
           return "⚡ <b>নওশিনের মূল দক্ষতাসমূহ:</b><br>১. <b>গ্রাফিক ডিজাইন:</b> Illustrator, Photoshop, Canva Pro<br>২. <b>মার্কেটিং ও এসইও:</b> Meta Ads, SEMrush, Content Strategy<br>৩. <b>ওয়েব ডেভেলপমেন্ট:</b> WordPress & Elementor<br>৪. <b>ট্রেনিং ও অন্যান্য:</b> MS Office, Public Speaking & Mentorship";
         } else if (isBanglish) {
