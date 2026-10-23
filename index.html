@@ -825,7 +825,7 @@
     }
     .vault-close:hover { background: rgba(215,160,162,0.2); }
 
-    /* NOWSHIN AI ASSISTANT WIDGET STYLES (ULTRA-SMART, MULTI-LINGUAL & DETAILED) */
+    /* ENHANCED NOWSHIN AI ASSISTANT WIDGET STYLES */
     .ai-chatbot-widget {
       position: fixed;
       right: 20px;
@@ -833,11 +833,13 @@
       z-index: 99;
       width: 380px;
       max-width: calc(100vw - 40px);
-      height: 530px;
+      height: 540px;
       max-height: calc(100vh - 120px);
       display: flex;
       flex-direction: column;
-      background: linear-gradient(145deg, #1c1520, #0f0a12);
+      background: linear-gradient(145deg, rgba(28,21,32,0.95), rgba(15,10,18,0.98));
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(215, 160, 162, 0.4);
       border-radius: 22px;
       box-shadow: 0 25px 70px rgba(0,0,0,0.7), 0 0 30px rgba(215, 160, 162, 0.2);
@@ -891,6 +893,7 @@
       border-radius: 14px;
       word-break: break-word;
       animation: msgPopIn 0.3s var(--ease) forwards;
+      position: relative;
     }
     @keyframes msgPopIn {
       from { opacity: 0; transform: translateY(8px) scale(0.98); }
@@ -902,6 +905,7 @@
       color: var(--ivory);
       align-self: flex-start;
       border-top-left-radius: 3px;
+      padding-bottom: 28px;
     }
     .ai-msg.user {
       background: linear-gradient(115deg, #e8b9ba, #d7a0a2);
@@ -911,6 +915,72 @@
       border-top-right-radius: 3px;
       box-shadow: 0 4px 15px rgba(183,124,131,0.25);
     }
+
+    /* TTS Voice Speaker Button inside Bot Message */
+    .tts-btn {
+      position: absolute;
+      bottom: 6px;
+      right: 8px;
+      background: rgba(215, 160, 162, 0.15);
+      border: 1px solid rgba(215, 160, 162, 0.3);
+      color: var(--rose-light);
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+    .tts-btn:hover {
+      background: rgba(215, 160, 162, 0.3);
+      color: var(--ivory);
+      transform: scale(1.05);
+    }
+    .tts-btn.speaking {
+      background: var(--rose);
+      color: #241720;
+      box-shadow: 0 0 10px rgba(215, 160, 162, 0.6);
+    }
+
+    /* Interactive Lead Form Inside Chat */
+    .chat-lead-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 10px;
+      background: rgba(8, 6, 10, 0.6);
+      border: 1px solid rgba(215, 160, 162, 0.3);
+      border-radius: 10px;
+    }
+    .chat-lead-form input, .chat-lead-form select, .chat-lead-form textarea {
+      width: 100%;
+      padding: 7px 10px;
+      background: rgba(23, 18, 26, 0.8);
+      border: 1px solid rgba(215, 160, 162, 0.25);
+      border-radius: 6px;
+      color: var(--ivory);
+      font-size: 11px;
+      outline: none;
+    }
+    .chat-lead-form input:focus, .chat-lead-form select:focus, .chat-lead-form textarea:focus {
+      border-color: var(--rose);
+    }
+    .chat-lead-btn {
+      padding: 8px;
+      border-radius: 6px;
+      border: 0;
+      background: linear-gradient(135deg, var(--rose-light), var(--rose-deep));
+      color: #241720;
+      font-weight: 700;
+      font-size: 11px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .chat-lead-btn:hover { transform: scale(1.02); }
+
     .ai-typing-indicator {
       display: none;
       align-self: flex-start;
@@ -1973,7 +2043,7 @@
     </div>
   </div>
 
-  <!-- NOWSHIN AI ASSISTANT WIDGET (ULTRA-SMART & MULTILINGUAL) -->
+  <!-- NOWSHIN AI ASSISTANT WIDGET (ULTRA-SMART & MULTILINGUAL WITH TTS & LEAD FORM) -->
   <div class="ai-chatbot-widget" id="aiChatWidget">
     <div class="ai-chat-header">
       <div class="ai-chat-title-wrap">
@@ -1990,8 +2060,11 @@
     </div>
     
     <div class="ai-chat-body" id="aiChatBody">
-      <div class="ai-msg bot">
+      <div class="ai-msg bot" id="welcomeMsg">
         Hello! ✨ I am Nowshin's personal AI Assistant. Ask me anything in Bangla, Banglish, or English about her Graphic Design, NYDA Teaching, SEO, Services, or Education!
+        <button class="tts-btn" onclick="speakText('Hello! I am Nowshin\'s personal AI Assistant. Ask me anything in Bangla, Banglish, or English about her Graphic Design, NYDA Teaching, SEO, Services, or Education!', this)">
+          <i class="fa-solid fa-volume-high"></i> Voice
+        </button>
       </div>
       <!-- Typing animation box -->
       <div class="ai-typing-indicator" id="aiTypingIndicator">
@@ -2007,6 +2080,7 @@
       <span class="ai-suggestion-chip" data-question="Graphic Design Services">🎨 Design Services</span>
       <span class="ai-suggestion-chip" data-question="NYDA Experience">👩‍🏫 NYDA Instructor</span>
       <span class="ai-suggestion-chip" data-question="Contact Info">📩 Contact Details</span>
+      <span class="ai-suggestion-chip" data-action="lead_form">📋 Book / Inquire Service</span>
     </div>
 
     <div class="ai-chat-footer">
@@ -3219,7 +3293,82 @@
       });
     }
 
-    // ULTRA-SMART, MULTILINGUAL & HIGH-INTELLIGENCE NOWSHIN AI ASSISTANT CHATBOT
+    // AUDIO CHIME FUNCTION (WEB AUDIO API)
+    function playChimeSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5 tone
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15); // A5 tone
+        gain.gain.setValueAtTime(0.05, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.3);
+      } catch (e) {
+        // Fallback or muted browser
+      }
+    }
+
+    // TEXT-TO-SPEECH (SPEECH SYNTHESIS VOICE READER)
+    let currentSpeech = null;
+    function speakText(text, btnElement) {
+      if (!('speechSynthesis' in window)) {
+        alert("Text-to-speech is not supported in your browser.");
+        return;
+      }
+
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        document.querySelectorAll('.tts-btn').forEach(b => b.classList.remove('speaking'));
+        if (btnElement && btnElement.getAttribute('data-is-speaking') === 'true') {
+          btnElement.setAttribute('data-is-speaking', 'false');
+          return;
+        }
+      }
+
+      // Strip HTML tags for clean reading
+      const cleanText = text.replace(/<[^>]*>?/gm, '');
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.rate = 0.95;
+      utterance.pitch = 1.0;
+
+      // Detect language for proper voice accent
+      const isBangla = /[\u0980-\u09FF]/.test(cleanText);
+      if (isBangla) {
+        utterance.lang = 'bn-BD';
+      } else {
+        utterance.lang = 'en-US';
+      }
+
+      if (btnElement) {
+        btnElement.classList.add('speaking');
+        btnElement.setAttribute('data-is-speaking', 'true');
+      }
+
+      utterance.onend = () => {
+        if (btnElement) {
+          btnElement.classList.remove('speaking');
+          btnElement.setAttribute('data-is-speaking', 'false');
+        }
+      };
+
+      utterance.onerror = () => {
+        if (btnElement) {
+          btnElement.classList.remove('speaking');
+          btnElement.setAttribute('data-is-speaking', 'false');
+        }
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // ULTRA-SMART AI CHATBOT WITH HUMAN-LIKE TYPING & LEAD CAPTURE
     const aiChatWidget = document.getElementById("aiChatWidget");
     const aiChatToggle = document.getElementById("aiChatToggle");
     const aiChatClose = document.getElementById("aiChatClose");
@@ -3237,12 +3386,71 @@
 
     aiChatClose.addEventListener("click", () => {
       aiChatWidget.classList.remove("open");
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
     });
 
-    function addAiMessage(text, sender) {
+    // HUMAN-LIKE TYPING ANIMATION ENGINE FOR BOT RESPONSES
+    function addAiBotMessageTyped(fullHtmlText, onComplete) {
+      playChimeSound();
+
       const msgDiv = document.createElement("div");
-      msgDiv.className = `ai-msg ${sender}`;
-      msgDiv.innerHTML = text;
+      msgDiv.className = "ai-msg bot";
+      
+      const contentSpan = document.createElement("span");
+      msgDiv.appendChild(contentSpan);
+
+      // Create speaker button for Text-to-Speech
+      const ttsBtn = document.createElement("button");
+      ttsBtn.className = "tts-btn";
+      ttsBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i> Voice';
+      ttsBtn.onclick = function() {
+        speakText(fullHtmlText, ttsBtn);
+      };
+      msgDiv.appendChild(ttsBtn);
+
+      aiChatBody.insertBefore(msgDiv, aiTypingIndicator);
+      aiChatBody.scrollTop = aiChatBody.scrollHeight;
+
+      // Typewriter Effect logic
+      let charIndex = 0;
+      let tempBuffer = "";
+      const speed = 14; // milliseconds per character
+
+      function typeChar() {
+        if (charIndex < fullHtmlText.length) {
+          const char = fullHtmlText.charAt(charIndex);
+          
+          // Fast-forward HTML tags to avoid rendering raw HTML brackets
+          if (char === '<') {
+            const closingAngleIndex = fullHtmlText.indexOf('>', charIndex);
+            if (closingAngleIndex !== -1) {
+              tempBuffer += fullHtmlText.substring(charIndex, closingAngleIndex + 1);
+              charIndex = closingAngleIndex + 1;
+            } else {
+              tempBuffer += char;
+              charIndex++;
+            }
+          } else {
+            tempBuffer += char;
+            charIndex++;
+          }
+
+          contentSpan.innerHTML = tempBuffer;
+          aiChatBody.scrollTop = aiChatBody.scrollHeight;
+          setTimeout(typeChar, speed);
+        } else {
+          contentSpan.innerHTML = fullHtmlText; // Ensure pristine final render
+          if (onComplete) onComplete();
+        }
+      }
+
+      typeChar();
+    }
+
+    function addAiUserMessage(text) {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "ai-msg user";
+      msgDiv.innerText = text;
       aiChatBody.insertBefore(msgDiv, aiTypingIndicator);
       aiChatBody.scrollTop = aiChatBody.scrollHeight;
     }
@@ -3255,6 +3463,52 @@
     function hideTypingIndicator() {
       aiTypingIndicator.style.display = "none";
     }
+
+    // INTERACTIVE LEAD CAPTURE FORM INSIDE CHAT WIDGET
+    function renderChatLeadForm() {
+      const formHtml = `
+        📋 <b>Project / Service Inquiry Form:</b>
+        <div class="chat-lead-form">
+          <input type="text" id="cLeadName" placeholder="Your Full Name *" required>
+          <input type="email" id="cLeadEmail" placeholder="Your Email Address *" required>
+          <select id="cLeadService">
+            <option value="Graphic Design">Graphic Design & Branding</option>
+            <option value="SEO & Marketing">Digital Marketing & SEO</option>
+            <option value="Web Design">Web Design / WordPress</option>
+            <option value="NYDA Mentorship">Instruction / Mentorship</option>
+          </select>
+          <textarea id="cLeadMsg" rows="2" placeholder="Brief details about your request..."></textarea>
+          <button class="chat-lead-btn" onclick="submitChatLeadForm()">Submit Inquiry <i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+      `;
+
+      showTypingIndicator();
+      setTimeout(() => {
+        hideTypingIndicator();
+        addAiBotMessageTyped(formHtml);
+      }, 400);
+    }
+
+    window.submitChatLeadForm = function() {
+      const name = document.getElementById("cLeadName").value.trim();
+      const email = document.getElementById("cLeadEmail").value.trim();
+      const service = document.getElementById("cLeadService").value;
+      const msg = document.getElementById("cLeadMsg").value.trim();
+
+      if (!name || !email) {
+        alert("Please provide your name and email.");
+        return;
+      }
+
+      const mailtoURL = `mailto:nurjannatnowshin810@gmail.com?subject=${encodeURIComponent("[" + service + " Chat Inquiry] " + name)}&body=${encodeURIComponent("Name: " + name + "\nEmail: " + email + "\nService Needed: " + service + "\n\nDetails:\n" + msg)}`;
+      
+      showTypingIndicator();
+      setTimeout(() => {
+        hideTypingIndicator();
+        addAiBotMessageTyped(`✨ Thank you <b>${name}</b>! Your inquiry details are ready. Opening your email app to send...`);
+        window.location.href = mailtoURL;
+      }, 500);
+    };
 
     // ADVANCED MULTI-LANGUAGE & MULTI-INTENT RESPONSE ENGINE
     function generateSmartResponse(query) {
@@ -3400,14 +3654,14 @@
       const reply = generateSmartResponse(query);
       setTimeout(() => {
         hideTypingIndicator();
-        addAiMessage(reply, "bot");
+        addAiBotMessageTyped(reply);
       }, 550);
     }
 
     aiChatSend.addEventListener("click", () => {
       const text = aiChatInput.value.trim();
       if (!text) return;
-      addAiMessage(text, "user");
+      addAiUserMessage(text);
       aiChatInput.value = "";
       handleAiQuery(text);
     });
@@ -3420,9 +3674,15 @@
 
     document.querySelectorAll(".ai-suggestion-chip").forEach(chip => {
       chip.addEventListener("click", () => {
-        const question = chip.getAttribute("data-question");
-        addAiMessage(question, "user");
-        handleAiQuery(question);
+        const action = chip.getAttribute("data-action");
+        if (action === "lead_form") {
+          addAiUserMessage("Book / Inquire Service");
+          renderChatLeadForm();
+        } else {
+          const question = chip.getAttribute("data-question");
+          addAiUserMessage(question);
+          handleAiQuery(question);
+        }
       });
     });
 
